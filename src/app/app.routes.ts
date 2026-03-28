@@ -1,3 +1,5 @@
+// src/app/app.routes.ts
+
 import { Routes } from '@angular/router';
 
 // Importando os componentes respeitando a pasta 'pages'
@@ -13,7 +15,10 @@ export const routes: Routes = [
 
   // Caminhos para as outras páginas
   { path: 'central-usuario', component: CentralUsuario },
+
+  // A SUA TELA NOVA ESTÁ AQUI: acessível via localhost:4200/agendamento
   { path: 'agendamento', component: GerenciamentoAtividade },
+
   { path: 'relatorios', component: RelatorioAtividade },
   { path: 'configuracao', component: ConfiguracaoAtividade },
 

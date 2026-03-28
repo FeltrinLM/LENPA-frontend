@@ -1,1 +1,32 @@
-<p>relatorio-atividade works!</p>
+<div class="pagina-relatorio">
+
+  <h1 class="titulo-pagina">Relatórios</h1>
+
+  <div class="card-formulario">
+
+    <div class="linha-form">
+      <div class="campo">
+        <label>De (Data inicial)</label>
+        <input type="date" [(ngModel)]="dataInicio" class="input-lenpa">
+      </div>
+
+      <div class="campo">
+        <label>Até (Data final)</label>
+        <input type="date" [(ngModel)]="dataFim" class="input-lenpa">
+      </div>
+    </div>
+
+    <div *ngIf="datasInvalidas" class="mensagem-aviso">
+      <span style="font-size: 50px;">⚠️</span>
+      A data inicial não pode ser maior que a data final.
+    </div>
+
+    <div class="rodape-form">
+      <button class="btn-gerar" [disabled]="datasInvalidas" (click)="gerarRelatorio()">
+        Gerar Relatório
+      </button>
+    </div>
+
+  </div>
+
+</div>

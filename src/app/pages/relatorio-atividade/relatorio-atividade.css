@@ -1,0 +1,135 @@
+/* 1. REGRA GLOBAL: Respeita a sidebar gigante */
+:host {
+  display: block;
+  width: calc(100% - 400px);
+}
+
+/* 2. CONTAINER DA PÁGINA */
+.pagina-relatorio {
+  min-height: 100vh;
+  padding: 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8fafc;
+}
+
+/* 3. TÍTULO DA PÁGINA */
+.titulo-pagina {
+  font-family: monospace, 'Courier New', Courier;
+  color: #005A32;
+  font-size: 100px;
+  margin-bottom: 80px;
+  text-align: center;
+  font-weight: 900;
+}
+
+/* 4. CARD BRANCO (Igual ao de Agendamento) */
+.card-formulario {
+  background-color: white;
+  padding: 80px;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+
+  width: 100%;
+  max-width: 1800px; /* LARGURA GIGANTE */
+
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+/* Deixa os campos lado a lado em telas grandes */
+.linha-form {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+}
+
+/* Cada campo individual (label + input) */
+.campo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 15px;
+}
+
+.campo label {
+  font-family: monospace, sans-serif;
+  font-weight: bold;
+  color: #006633;
+  font-size: 36px;
+}
+
+/* Inputs de data (Brancos com borda verde) */
+.input-lenpa {
+  padding: 30px 40px;
+  border: 4px solid #006633;
+  border-radius: 16px;
+  background-color: white;
+  color: #333;
+  font-family: sans-serif;
+  font-size: 40px;
+  outline: none;
+  transition: all 0.2s;
+  height: auto;
+}
+
+.input-lenpa:focus {
+  border-color: #a3e635;
+  box-shadow: 0 0 0 8px rgba(163, 230, 53, 0.2);
+}
+
+/* ALERTA DE ERRO (#F0A400) */
+.mensagem-aviso {
+  background-color: #fffbeb; /* Um amarelo muito clarinho no fundo */
+  color: #b37a00; /* Tom mais escuro do mostarda para o texto ficar legível */
+  border: 6px solid #F0A400; /* A cor da paleta aplicada na borda */
+  padding: 30px 40px;
+  border-radius: 16px;
+  font-size: 36px;
+  font-family: sans-serif;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Botão principal verde */
+.rodape-form {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.btn-gerar {
+  background-color: #006633;
+  color: white;
+  border: none;
+  padding: 30px 100px;
+  font-size: 48px;
+  font-weight: bold;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-gerar:hover:not(:disabled) {
+  background-color: #004d26;
+  transform: translateY(-4px);
+}
+
+/* Visual do botão quando as datas estão erradas */
+.btn-gerar:disabled {
+  background-color: #cccccc;
+  color: #888888;
+  cursor: not-allowed;
+  transform: none;
+}

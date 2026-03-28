@@ -1,7 +1,5 @@
 <div class="pagina-inicial-container">
-
   <div class="banner-imagem">
-
     <header class="header-banner">
       <div class="logo-container">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M63.81,192.19c-47.89-79.81,16-159.62,151.64-151.64C223.43,176.23,143.62,240.08,63.81,192.19Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="160" y1="96" x2="40" y2="216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
@@ -9,7 +7,7 @@
       </div>
 
       <div class="usuario-container">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+        <svg (click)="abrirLogin()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
       </div>
     </header>
 
@@ -17,7 +15,32 @@
       Encontre eventos<br>
       Explore sua natureza
     </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="exibirLogin" (click)="fecharLogin()">
+
+  <div class="modal-login" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+      <h2>Login</h2>
+    </div>
+    <p class="modal-subtitulo">Login reservado a<br>Funcionários do LENPA</p>
+
+    <form style="width: 100%; display: flex; flex-direction: column; gap: 40px;">
+
+      <div class="modal-inputs">
+        <input type="email" placeholder="E-mail" required>
+        <input type="password" placeholder="Senha" required minlength="6">
+      </div>
+
+      <div class="modal-botoes">
+        <button type="button" class="btn-voltar" (click)="fecharLogin()">Voltar</button>
+        <button type="submit" class="btn-entrar">Entrar</button>
+      </div>
+
+    </form>
 
   </div>
-
 </div>

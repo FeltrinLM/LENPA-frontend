@@ -1,0 +1,145 @@
+/* 1. REGRA GLOBAL: Respeita a sidebar gigante */
+:host {
+  display: block;
+  /* Assumindo que sua sidebar tem uns 400px baseados nos códigos anteriores */
+  width: calc(100% - 400px);
+}
+
+/* 2. CONTAINER DA PÁGINA */
+.pagina-gerenciamento {
+  min-height: 100vh;
+  padding: 80px; /* Mais respiro nas bordas da tela */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8fafc;
+}
+
+/* 3. TÍTULO DA PÁGINA GIGANTE */
+.titulo-pagina {
+  font-family: monospace, 'Courier New', Courier;
+  color: #005A32;
+  font-size: 100px; /* Era 40px, agora grita na tela */
+  margin-bottom: 80px; /* Espaço gigante abaixo do título */
+  text-align: center;
+  font-weight: 900;
+}
+
+/* 4. O CARD DO FORMULÁRIO */
+.card-formulario-condicional {
+  background-color: white;
+  padding: 80px; /* Dobro de espaço interno */
+  border-radius: 24px; /* Cantos bem mais redondos */
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+
+  width: 100%;
+  max-width: 1800px; /* LARGURA GIGANTE (era 800px) */
+
+  display: flex;
+  flex-direction: column;
+  gap: 50px; /* Muito mais espaço entre as linhas do formulário */
+}
+
+/* Deixa os campos lado a lado em telas grandes */
+.linha-form {
+  display: flex;
+  gap: 40px; /* Espaço maior entre os campos da mesma linha */
+  width: 100%;
+}
+
+/* Cada campo individual (label + input/select) */
+.campo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 15px; /* Espaço entre a Label e o Input */
+}
+
+.campo label {
+  font-family: monospace, sans-serif;
+  font-weight: bold;
+  color: #006633;
+  font-size: 36px; /* Textos de instrução gigantes */
+}
+
+/* Padronização de Inputs e Selects GIGANTES */
+.input-lenpa {
+  padding: 30px 40px; /* Input super "gordinho" */
+  border: 4px solid #006633; /* Borda bem grossa */
+  border-radius: 16px;
+  background-color: white;
+  color: #333;
+  font-family: sans-serif;
+  font-size: 40px; /* Letra de quem tá digitando gigante */
+  outline: none;
+  transition: all 0.2s;
+  /* Garante que o select tenha a mesma altura que o input */
+  height: auto;
+}
+
+.input-lenpa:focus {
+  border-color: #a3e635;
+  box-shadow: 0 0 0 8px rgba(163, 230, 53, 0.2); /* Sombra de foco maior */
+}
+
+/* Consertando a setinha do <select> para telas grandes */
+select.input-lenpa {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23006633' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 30px center;
+  background-size: 40px;
+  padding-right: 80px;
+}
+
+/* Blocos que aparecem/somem */
+.bloco-condicional {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-top: 40px;
+  border-top: 4px dashed #ddd; /* Linha divisória mais grossa */
+}
+
+/* Destaque visual para a área de cadastro de nova pessoa */
+.caixa-nova-pessoa {
+  background-color: #f0fdf4;
+  padding: 40px;
+  border-radius: 16px;
+  border: 3px solid #bbf7d0;
+}
+
+/* Animação suave */
+.animacao-surgir {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Botão principal */
+.rodape-form {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.btn-cadastrar {
+  background-color: #006633;
+  color: white;
+  border: none;
+  padding: 30px 100px; /* Botão massivo */
+  font-size: 48px; /* Texto do botão gigante */
+  font-weight: bold;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-cadastrar:hover {
+  background-color: #004d26;
+  transform: translateY(-4px);
+}

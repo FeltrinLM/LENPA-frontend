@@ -1,1 +1,109 @@
-<p>gerenciamento-atividade works!</p>
+<div class="pagina-gerenciamento">
+
+  <h1 class="titulo-pagina">Agendamento e Presença</h1>
+
+  <div class="card-formulario-condicional">
+
+    <div class="linha-form">
+      <div class="campo" style="flex: 1;">
+        <label>Qual atividade?</label>
+        <select [(ngModel)]="formCadastro.eventoSelecionado" class="input-lenpa">
+          <option value="" disabled selected>Selecione a atividade no sistema...</option>
+
+          <option *ngFor="let evento of eventosDisponiveis" [value]="evento.id">
+            {{ evento.nome }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <hr style="border: 0; border-top: 4px dashed #ddd; margin: 10px 0; width: 100%;">
+
+    <div class="linha-form">
+      <div class="campo">
+        <label>Ação</label>
+        <select [(ngModel)]="formCadastro.acao" class="input-lenpa">
+          <option value="agendar">Agendar</option>
+          <option value="confirmar">Confirmar Presença</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Tipo de Visitante</label>
+        <select [(ngModel)]="formCadastro.tipoVisitante" class="input-lenpa">
+          <option value="individual">Individual</option>
+          <option value="instituicao">Instituição/Grupo</option>
+        </select>
+      </div>
+    </div>
+
+    <div *ngIf="formCadastro.tipoVisitante === 'individual'" class="bloco-condicional">
+      <div class="campo">
+        <label>Selecionar Visitante</label>
+        <select [(ngModel)]="formCadastro.pessoaSelecionada" class="input-lenpa">
+          <option value="" disabled selected>Escolha uma opção...</option>
+          <option value="novo">➕ Sem conta (Cadastrar Novo)</option>
+          <option *ngFor="let p of pessoasCadastradas" [value]="p.id">{{ p.nome }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="formCadastro.pessoaSelecionada === 'novo'" class="linha-form animacao-surgir">
+        <div class="campo">
+          <label>Nome do Visitante</label>
+          <input type="text" [(ngModel)]="formCadastro.novaPessoa.nome" class="input-lenpa" placeholder="Nome completo">
+        </div>
+        <div class="campo">
+          <label>Cidade em que reside</label>
+          <input type="text" [(ngModel)]="formCadastro.novaPessoa.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="formCadastro.tipoVisitante === 'instituicao'" class="bloco-condicional">
+      <div class="linha-form">
+        <div class="campo">
+          <label>Nome da instituição/grupo</label>
+          <input type="text" [(ngModel)]="formCadastro.instituicao.nome" class="input-lenpa" placeholder="Ex: Escola Estadual ou Grupo de Escoteiros">
+        </div>
+      </div>
+
+      <div class="linha-form">
+        <div class="campo">
+          <label>Quantidade de Pessoas</label>
+          <input type="number" [(ngModel)]="formCadastro.instituicao.quantidade" class="input-lenpa" placeholder="Ex: 40">
+        </div>
+        <div class="campo">
+          <label>Cidade</label>
+          <input type="text" [(ngModel)]="formCadastro.instituicao.local" class="input-lenpa" placeholder="Ex: Santa Maria">
+        </div>
+      </div>
+
+      <div class="campo destaque-responsavel">
+        <label>Responsável pela Instituição/Grupo</label>
+        <select [(ngModel)]="formCadastro.responsavelSelecionado" class="input-lenpa">
+          <option value="" disabled selected>Selecione o responsável...</option>
+          <option value="novo">➕ Sem conta (Cadastrar Responsável)</option>
+          <option *ngFor="let p of pessoasCadastradas" [value]="p.id">{{ p.nome }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="formCadastro.responsavelSelecionado === 'novo'" class="linha-form animacao-surgir caixa-nova-pessoa">
+        <div class="campo">
+          <label>Nome do Responsável</label>
+          <input type="text" [(ngModel)]="formCadastro.novoResponsavel.nome" class="input-lenpa" placeholder="Nome do professor ou líder">
+        </div>
+        <div class="campo">
+          <label>Cidade do Responsável</label>
+          <input type="text" [(ngModel)]="formCadastro.novoResponsavel.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
+        </div>
+      </div>
+    </div>
+
+    <div class="rodape-form">
+      <button class="btn-cadastrar" (click)="salvarCadastro()">
+        {{ formCadastro.acao === 'agendar' ? 'Registrar Agendamento' : 'Confirmar Presença' }}
+      </button>
+    </div>
+
+  </div>
+</div>
