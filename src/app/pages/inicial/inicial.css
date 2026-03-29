@@ -1,13 +1,29 @@
-/* Força o componente do Angular a respeitar a sidebar */
-:host {
-  display: block;
-  width: calc(100% - 400px);
-}
-
 /* Container Principal */
+/* Adicionado max-width e overflow-x para impedir o vazamento sob a sidebar */
 .pagina-inicial-container {
   width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   box-sizing: border-box;
+}
+
+/* ==========================================
+   FOOTER DA PÁGINA INICIAL
+   ========================================== */
+.footer-inicial {
+  width: 100%;
+  height: 400px; /* Altura gigante para acompanhar o zoom */
+  background-color: #00331c; /* Verde bem escuro, quase preto */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Estilo do texto placeholder */
+  color: rgba(255, 255, 255, 0.6); /* Branco meio transparente */
+  font-family: monospace, sans-serif;
+  font-size: 60px; /* Texto gigante */
+  text-align: center;
+  padding: 0 50px;
 }
 
 /* -------------------------------------------
@@ -78,8 +94,9 @@
   height: 300px;
 }
 
+/* Diminuída a margem direita para o ícone não bater na sidebar quando ela abrir */
 .usuario-container {
-  margin-right: 200px; /* Ajuste esse valor para afastar mais ou menos da sidebar */
+  margin-right: 50px;
 }
 
 /* Tamanho específico do Usuário */
@@ -88,12 +105,10 @@
   height: 200px;
   cursor: pointer; /* Adiciona a mãozinha ao passar o mouse */
 
-  /* --- ADICIONADO AQUI --- */
   /* Adiciona a transição para o movimento ser suave ao passar o mouse */
   transition: transform 0.3s ease;
 }
 
-/* --- ADICIONADO AQUI --- */
 /* Efeito de hover: Aumenta um pouquinho o ícone de usuário */
 .usuario-container svg:hover {
   /* scale(1.1) aumenta o ícone em 10% do tamanho original (vai para 220px) */

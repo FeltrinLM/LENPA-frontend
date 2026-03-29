@@ -1,13 +1,18 @@
+/* Removemos o height: 100% do :host, não é mais necessário */
+
 body {
   margin: 0;
   font-family: sans-serif;
 }
 
 .retangulo-verde {
+  /* VOLTAMOS PARA O FIXED (É O MAIS SEGURO) */
   position: fixed;
-  right: 0;
   top: 0;
-  width: 400px;
+  right: 0; /* Gruda no canto direito da tela */
+  z-index: 1000; /* Super alto para garantir que nada passe por cima dela */
+
+  width: 400px; /* Mesma largura do padding que criamos no app-layout! */
   height: 100vh;
   background-color: #006334;
 
@@ -15,14 +20,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-
-  /* Garante que você consiga rolar a barra se os ícones de 200px não couberem na tela */
   overflow-y: auto;
 }
 
-/* Container de cada ícone */
+/* O resto continua IGUAL: */
 .icon-wrapper {
-  /* position: relative é OBRIGATÓRIO aqui para o texto não voar pela tela toda */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -30,54 +32,38 @@ body {
   cursor: pointer;
 }
 
-/* Estilo dos SVGs */
 .icon-wrapper svg {
   width: 200px;
   height: 200px;
   color: white;
-
-  /* Adicionamos a transição para o movimento e a cor serem suaves */
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Estilo do texto com a transição e quebra de linha */
 .icon-text {
-  /* position absolute faz o texto flutuar sem empurrar os outros ícones */
   position: absolute;
-  bottom: -40px; /* Joga a base do texto um pouco mais para baixo */
+  bottom: -40px;
   left: 50%;
-  transform: translateX(-50%); /* Centraliza o texto perfeitamente com o ícone */
-
+  transform: translateX(-50%);
   color: white;
   font-size: 50px;
-
-  /* Propriedades para permitir a quebra de linha do texto longo */
-  width: 350px;       /* Limita a largura para caber na sidebar */
-  text-align: center; /* Mantém o texto centralizado se tiver mais de uma linha */
-  line-height: 1.1;   /* Espaçamento entre as linhas do texto */
-
-  /* Oculta o texto usando opacidade */
+  width: 350px;
+  text-align: center;
+  line-height: 1.1;
   opacity: 0;
-  visibility: hidden; /* impede cliques no texto invisível */
-
-  /* Configura a animação suave de 0.3 segundos */
+  visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
 
-/* Quando passar o mouse no wrapper, o SVG sobe 20 pixels */
 .icon-wrapper:hover svg {
   transform: translateY(-20px);
 }
 
-/* Quando o mouse passar no wrapper, o texto aparece */
 .icon-wrapper:hover .icon-text {
   opacity: 1;
   visibility: visible;
-  /* Empurra o texto um pouco mais pra baixo ao aparecer, para não bater no ícone */
   transform: translate(-50%, 30px);
 }
 
-/* --- ADICIONADO AQUI: Cor para o ícone ativo --- */
 .icon-wrapper.ativo svg {
-  color: #A6CD29; /* Troque por outra cor (ex: #a3e635) se quiser */
+  color: #A6CD29;
 }

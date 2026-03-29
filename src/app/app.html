@@ -1,9 +1,6 @@
-<div class="flex h-screen w-full bg-gray-100 overflow-hidden">
-
-  <main class="flex-1 overflow-y-auto">
+<div class="app-layout">
+  <app-sidebar></app-sidebar>
+  <main class="conteudo-principal" [class.com-sidebar]="authService.isLoggedIn()">
     <router-outlet></router-outlet>
   </main>
-
-  <app-sidebar></app-sidebar>
-
 </div>
