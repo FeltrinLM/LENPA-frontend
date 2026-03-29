@@ -1,0 +1,92 @@
+.central-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f4f7f6;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+}
+
+.central-header {
+  background-color: #004325;
+  color: white;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.btn-sair {
+  background-color: transparent;
+  color: white;
+  border: 2px solid #a3e635;
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.btn-sair:hover {
+  background-color: #a3e635;
+  color: #004325;
+}
+
+.central-content {
+  padding: 80px 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.card-boas-vindas {
+  background: white;
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.card-boas-vindas h1 {
+  color: #006A3B;
+  margin-top: 0;
+  font-size: 32px;
+}
+
+.card-boas-vindas p {
+  color: #666;
+  font-size: 18px;
+}
+
+.info-usuario {
+  margin-top: 40px;
+  padding: 30px;
+  background-color: #eaf3ed;
+  border-radius: 12px;
+  border-left: 8px solid #a3e635;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.label {
+  font-size: 14px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.valor {
+  font-size: 28px;
+  color: #004325;
+  font-weight: 900;
+}

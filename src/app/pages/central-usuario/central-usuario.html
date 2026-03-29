@@ -1,1 +1,20 @@
-<p>central-usuario works!</p>
+<div class="central-container">
+
+  <header class="central-header">
+    <div class="logo">LENPA - Painel de Controle</div>
+    <button class="btn-sair" (click)="sair()">Sair do Sistema</button>
+  </header>
+
+  <main class="central-content">
+    <div class="card-boas-vindas">
+      <h1>Autenticação Concluída!</h1>
+      <p>O seu Token JWT foi validado e decodificado com sucesso no navegador.</p>
+
+      <div class="info-usuario">
+        <span class="label">Você está logado como:</span>
+        <span class="valor">{{ emailUsuario }}</span>
+      </div>
+    </div>
+  </main>
+
+</div>
