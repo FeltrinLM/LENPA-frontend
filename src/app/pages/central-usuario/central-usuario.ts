@@ -18,7 +18,6 @@ export class CentralUsuario implements OnInit {
 
   usuario: UsuarioLogado | null = null;
 
-  // --- VARIÁVEIS DE EDIÇÃO ---
   editandoNome: boolean = false;
   nomeEditado: string = '';
 
@@ -30,13 +29,23 @@ export class CentralUsuario implements OnInit {
   novaSenha: string = '';
   erroSenha: string = '';
 
-  // --- CONFIGURAÇÃO DO MODAL DINÂMICO ÚNICO ---
   modal = {
     exibir: false,
     titulo: '',
     mensagem: '',
     textoConfirmar: '',
     acaoConfirmar: () => {}
+  };
+
+  modalNovoUsuario = {
+    exibir: false,
+    nivelPermissao: '',
+    nome: '',
+    email: '',
+    senha: '',
+    confirmarSenha: '',
+    nomeCompleto: '',
+    cidade: ''
   };
 
   ngOnInit() {
@@ -47,17 +56,23 @@ export class CentralUsuario implements OnInit {
     this.usuario = this.authService.getDadosUsuario();
   }
 
-  // ==========================================
-  // LÓGICA DE EDIÇÃO SIMPLES (NOME E E-MAIL)
-  // ==========================================
   editarNome() {
     this.nomeEditado = this.usuario?.nome || '';
     this.editandoNome = true;
   }
 
   salvarNome() {
-    if (this.usuario) this.usuario.nome = this.nomeEditado;
-    this.editandoNome = false;
+    if (!this.usuario) return;
+    const dados = { nome: this.nomeEditado, email: this.usuario.email };
+
+    this.authService.atualizarPerfil(dados).subscribe({
+      next: () => {
+        this.usuario!.nome = this.nomeEditado;
+        this.editandoNome = false;
+        alert('Nome atualizado com sucesso!');
+      },
+      error: (err: any) => alert(err.error?.message || 'Erro ao atualizar nome.')
+    });
   }
 
   editarEmail() {
@@ -66,8 +81,17 @@ export class CentralUsuario implements OnInit {
   }
 
   salvarEmail() {
-    if (this.usuario) this.usuario.email = this.emailEditado;
-    this.editandoEmail = false;
+    if (!this.usuario) return;
+    const dados = { nome: this.usuario.nome, email: this.emailEditado };
+
+    this.authService.atualizarPerfil(dados).subscribe({
+      next: () => {
+        this.usuario!.email = this.emailEditado;
+        this.editandoEmail = false;
+        alert('E-mail atualizado com sucesso!');
+      },
+      error: (err: any) => alert(err.error?.message || 'Erro ao atualizar e-mail.')
+    });
   }
 
   cancelarEdicao(campo: 'nome' | 'email' | 'senha') {
@@ -79,9 +103,6 @@ export class CentralUsuario implements OnInit {
     }
   }
 
-  // ==========================================
-  // LÓGICA DE SENHA
-  // ==========================================
   editarSenha() {
     this.editandoSenha = true;
     this.senhaAtual = '';
@@ -91,19 +112,9 @@ export class CentralUsuario implements OnInit {
 
   tentarSalvarSenha() {
     this.erroSenha = '';
-
-    if (!this.senhaAtual || this.senhaAtual.trim() === '') {
-      this.erroSenha = 'Por favor, informe a senha atual.';
-      return;
-    }
-    if (!this.novaSenha || this.novaSenha.trim() === '') {
-      this.erroSenha = 'A nova senha não pode ficar em branco.';
-      return;
-    }
-    if (this.senhaAtual === this.novaSenha) {
-      this.erroSenha = 'A nova senha deve ser diferente da atual.';
-      return;
-    }
+    if (!this.senhaAtual) { this.erroSenha = 'Por favor, informe a senha atual.'; return; }
+    if (!this.novaSenha) { this.erroSenha = 'A nova senha não pode ficar em branco.'; return; }
+    if (this.senhaAtual === this.novaSenha) { this.erroSenha = 'A nova senha deve ser diferente da atual.'; return; }
 
     this.abrirModal(
       'Confirmar Alteração',
@@ -114,60 +125,67 @@ export class CentralUsuario implements OnInit {
   }
 
   executarTrocaSenha() {
-    console.log('Senha alterada visualmente com sucesso!');
-    this.editandoSenha = false;
-    this.fecharModal();
+    const dados = { senhaAtual: this.senhaAtual, novaSenha: this.novaSenha };
+    this.authService.alterarSenha(dados).subscribe({
+      next: () => {
+        this.fecharModal();
+        this.editandoSenha = false;
+        alert('Senha alterada com sucesso!');
+      },
+      error: (err: any) => {
+        this.fecharModal();
+        this.erroSenha = err.error?.message || 'Erro ao alterar senha.';
+      }
+    });
   }
 
-  // ==========================================
-  // CONTROLE DO MODAL DINÂMICO E LOGOUT
-  // ==========================================
+  abrirModalNovoUsuario() {
+    this.modalNovoUsuario = {
+      exibir: true, nivelPermissao: '', nome: '', email: '', senha: '', confirmarSenha: '', nomeCompleto: '', cidade: ''
+    };
+  }
+
+  fecharModalNovoUsuario() { this.modalNovoUsuario.exibir = false; }
+
+  confirmarNovoUsuario() {
+    const nivel = this.modalNovoUsuario.nivelPermissao;
+    if (!nivel) { alert('Selecione um nível de permissão!'); return; }
+    if (nivel !== 'Visitante' && this.modalNovoUsuario.senha !== this.modalNovoUsuario.confirmarSenha) {
+      alert('As senhas não coincidem!'); return;
+    }
+
+    if (nivel === 'Administrador' || nivel === 'Bolsista') {
+      const payload = {
+        nome: this.modalNovoUsuario.nome,
+        email: this.modalNovoUsuario.email,
+        senha: this.modalNovoUsuario.senha,
+        nivelPermissao: nivel === 'Administrador' ? 'ADMIN' : 'BOLSISTA'
+      };
+
+      this.authService.cadastrarFuncionario(payload).subscribe({
+        next: () => {
+          alert('Funcionário cadastrado com sucesso!');
+          this.fecharModalNovoUsuario();
+        },
+        error: (err: any) => alert(err.error?.message || 'Erro ao cadastrar funcionário.')
+      });
+    } else {
+      console.log('Visitante:', this.modalNovoUsuario);
+      alert('Funcionalidade de visitante em desenvolvimento!');
+      this.fecharModalNovoUsuario();
+    }
+  }
+
   abrirModalSair() {
-    this.abrirModal(
-      'Deseja sair?',
-      'Você precisará fazer login novamente para acessar o sistema.',
-      'Sim, sair',
-      () => {
-        this.authService.logout();
-        this.router.navigate(['/']);
-      }
-    );
+    this.abrirModal('Deseja sair?', 'Você precisará fazer login novamente.', 'Sim, sair', () => {
+      this.authService.logout();
+      this.router.navigate(['/']);
+    });
   }
 
   abrirModal(titulo: string, mensagem: string, textoConfirmar: string, acao: () => void) {
     this.modal = { exibir: true, titulo, mensagem, textoConfirmar, acaoConfirmar: acao };
   }
 
-  fecharModal() {
-    this.modal.exibir = false;
-  }
-
-  modalNovoUsuario = {
-    exibir: false,
-    nivelPermissao: '' // Começa vazio para forçar a escolha
-  };
-
-  // ==========================================
-  // LÓGICA DE CADASTRO DE NOVO USUÁRIO
-  // ==========================================
-  abrirModalNovoUsuario() {
-    this.modalNovoUsuario.nivelPermissao = ''; // Reseta sempre que abrir
-    this.modalNovoUsuario.exibir = true;
-  }
-
-  fecharModalNovoUsuario() {
-    this.modalNovoUsuario.exibir = false;
-  }
-
-  confirmarNovoUsuario() {
-    if (!this.modalNovoUsuario.nivelPermissao) {
-      // Pequena validação visual rápida se ele tentar avançar sem escolher
-      alert('Selecione um nível de permissão antes de continuar!');
-      return;
-    }
-
-    console.log('Iniciando cadastro para:', this.modalNovoUsuario.nivelPermissao);
-    // Aqui no futuro a gente avança para o próximo passo ou fecha
-    this.fecharModalNovoUsuario();
-  }
+  fecharModal() { this.modal.exibir = false; }
 }

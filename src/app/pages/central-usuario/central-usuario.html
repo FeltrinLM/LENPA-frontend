@@ -16,7 +16,6 @@
       <div class="campo">
         <label>Nome da conta:</label>
         <div class="input-falso" [class.modo-edicao]="editandoNome">
-
           <ng-container *ngIf="!editandoNome">
             <span>{{ usuario?.nome }}</span>
             <span class="icone-acao lapis" (click)="editarNome()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
@@ -29,14 +28,12 @@
               <span class="icone-acao cancelar" (click)="cancelarEdicao('nome')"><ng-container *ngTemplateOutlet="svgCancelar"></ng-container></span>
             </div>
           </ng-container>
-
         </div>
       </div>
 
       <div class="campo">
         <label>E-mail:</label>
         <div class="input-falso" [class.modo-edicao]="editandoEmail">
-
           <ng-container *ngIf="!editandoEmail">
             <span>{{ usuario?.email }}</span>
             <span class="icone-acao lapis" (click)="editarEmail()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
@@ -49,13 +46,11 @@
               <span class="icone-acao cancelar" (click)="cancelarEdicao('email')"><ng-container *ngTemplateOutlet="svgCancelar"></ng-container></span>
             </div>
           </ng-container>
-
         </div>
       </div>
 
       <div class="campo">
         <label>Senha:</label>
-
         <div class="input-falso" *ngIf="!editandoSenha">
           <span>********</span>
           <span class="icone-acao lapis" (click)="editarSenha()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
@@ -66,9 +61,7 @@
             <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="senhaAtual" placeholder="Senha atual...">
             <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="novaSenha" placeholder="Nova senha...">
           </div>
-
           <span class="mensagem-erro-senha" *ngIf="erroSenha">{{ erroSenha }}</span>
-
           <div class="acoes-edicao-senha">
             <button class="btn-secundario" (click)="cancelarEdicao('senha')">Cancelar</button>
             <button class="btn-primario" (click)="tentarSalvarSenha()">Salvar Alteração</button>
@@ -98,7 +91,7 @@
   <div class="modal-overlay" *ngIf="modalNovoUsuario.exibir" (click)="fecharModalNovoUsuario()">
     <div class="modal-confirmacao modal-cadastro" (click)="$event.stopPropagation()">
       <h2>Novo Usuário</h2>
-      <p>Selecione o nível de acesso para a nova conta no LENPA.</p>
+      <p>Preencha os dados para criar a nova conta no LENPA.</p>
 
       <div class="campo-cadastro">
         <label>Nível de Permissão:</label>
@@ -108,6 +101,22 @@
           <option value="Bolsista">Bolsista</option>
           <option value="Visitante">Visitante</option>
         </select>
+      </div>
+
+      <div class="form-dinamico" *ngIf="modalNovoUsuario.nivelPermissao === 'Administrador' || modalNovoUsuario.nivelPermissao === 'Bolsista'">
+        <div class="grupo-inputs">
+          <input type="text" class="input-modal" [(ngModel)]="modalNovoUsuario.nome" placeholder="Nome da conta">
+          <input type="email" class="input-modal" [(ngModel)]="modalNovoUsuario.email" placeholder="E-mail">
+          <input type="password" class="input-modal" [(ngModel)]="modalNovoUsuario.senha" placeholder="Senha">
+          <input type="password" class="input-modal" [(ngModel)]="modalNovoUsuario.confirmarSenha" placeholder="Confirmar senha">
+        </div>
+      </div>
+
+      <div class="form-dinamico" *ngIf="modalNovoUsuario.nivelPermissao === 'Visitante'">
+        <div class="grupo-inputs">
+          <input type="text" class="input-modal" [(ngModel)]="modalNovoUsuario.nomeCompleto" placeholder="Nome Completo">
+          <input type="text" class="input-modal" [(ngModel)]="modalNovoUsuario.cidade" placeholder="Cidade que reside">
+        </div>
       </div>
 
       <div class="botoes-confirmacao">
@@ -133,11 +142,9 @@
 <ng-template #svgLapis>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M92.69,216H48a8,8,0,0,1-8-8V163.31a8,8,0,0,1,2.34-5.65L165.66,34.34a8,8,0,0,1,11.31,0L221.66,79a8,8,0,0,1,0,11.31L98.34,213.66A8,8,0,0,1,92.69,216Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
 </ng-template>
-
 <ng-template #svgSalvar>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
 </ng-template>
-
 <ng-template #svgCancelar>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><line x1="200" y1="200" x2="56" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
 </ng-template>
