@@ -1,5 +1,5 @@
 /* ==========================================
-   LAYOUT PADRÃO DO SISTEMA
+   LAYOUT PADRÃO E CARD
    ========================================== */
 .pagina-central {
   min-height: 100vh;
@@ -28,18 +28,13 @@
   font-weight: 900;
 }
 
-/* ==========================================
-   CARD BRANCO (ESTILO AGENDAMENTO)
-   ========================================== */
 .card-formulario {
   background-color: white;
   padding: 80px;
   border-radius: 24px;
   box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-
   width: 100%;
   max-width: 1800px;
-
   display: flex;
   flex-direction: column;
   gap: 60px;
@@ -59,7 +54,7 @@
 }
 
 /* ==========================================
-   LISTA DE CREDENCIAIS
+   CAMPOS E INPUTS
    ========================================== */
 .lista-credenciais {
   display: flex;
@@ -80,7 +75,6 @@
   font-size: 40px;
 }
 
-/* Flexbox adicionado para separar o texto do ícone do lápis */
 .input-falso {
   padding: 30px 40px;
   border: 4px solid #006633;
@@ -95,109 +89,175 @@
   align-items: center;
 }
 
-/* Estilo do ícone de Lápis */
-.icone-lapis {
-  width: 60px; /* Tamanho proporcional à fonte */
-  height: 60px;
-  color: #006633;
-  cursor: pointer; /* Dá a ideia de que pode ser clicado */
-  transition: transform 0.2s ease, color 0.2s ease;
+.input-falso.modo-edicao {
+  background-color: white;
+  border: 4px dashed #006633;
 }
 
-/* Efeito ao passar o mouse no lápis */
-.icone-lapis:hover {
-  transform: scale(1.1);
-  color: #F0A400; /* O verde clarinho do projeto */
+.campo-edicao {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #004325;
+  font-family: sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  padding: 0;
+  margin-right: 40px;
+  border-bottom: 4px solid #eaf3ed;
+  transition: border-color 0.3s;
+}
+
+.campo-edicao:focus {
+  border-bottom-color: #a3e635;
 }
 
 /* ==========================================
-   BOTÕES DA LISTA E MODAL
+   FORMULÁRIO DE SENHA E ERROS
    ========================================== */
-.btn-sair-lista {
-  background-color: transparent;
-  color: #d18f00;
-  border: 6px solid #F0A400;
+.container-editar-senha {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: white;
+  padding: 50px;
+  border-radius: 16px;
+  border: 4px dashed #006633;
+}
+
+.campo-senha-duplo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campo-senha-interno {
+  font-family: monospace, sans-serif;
+  font-size: 40px;
+  color: #555;
+  background-color: white;
+  outline: none;
+}
+
+.campo-senha-interno:focus {
+  border-color: #F0A400;
+}
+
+.mensagem-erro-senha {
+  color: #F0A400;
+  font-size: 35px;
+  font-weight: bold;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.acoes-edicao-senha {
+  display: flex;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+/* ==========================================
+   ÍCONES DE AÇÃO
+   ========================================== */
+.acoes-edicao {
+  display: flex;
+  gap: 30px;
+}
+
+.icone-acao svg {
+  width: 65px;
+  height: 65px;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icone-acao.lapis svg,
+.icone-acao.salvar svg {
+  color: #006633;
+}
+
+.icone-acao.lapis:hover svg,
+.icone-acao.salvar:hover svg {
+  transform: scale(1.15);
+  color: #a3e635;
+}
+
+.icone-acao.cancelar svg {
+  color: #F0A400;
+}
+
+.icone-acao.cancelar:hover svg {
+  transform: scale(1.15);
+  color: #c28400; /* Tom ligeiramente mais escuro de F0A400 para o hover */
+}
+
+/* ==========================================
+   SISTEMA DE BOTÕES PADRONIZADO
+   ========================================== */
+button {
+  flex: 1;
   padding: 30px 40px;
   border-radius: 16px;
-  cursor: pointer;
+  font-size: 45px;
   font-weight: bold;
-  font-size: 50px;
+  cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 2px;
   transition: all 0.2s ease;
+}
+
+.btn-secundario {
+  background-color: white;
+  color: #005A32;
+  border: 4px solid #005A32;
+}
+
+.btn-secundario:hover {
+  background-color: rgba(0, 90, 50, 0.1);
+  transform: translateY(-4px);
+}
+
+.btn-primario {
+  background-color: #005A32;
+  color: white;
+  border: none;
+}
+
+.btn-primario:hover {
+  background-color: #004325;
+  transform: translateY(-4px);
+}
+
+.btn-atencao-borda {
+  background-color: transparent;
+  color: #c28400;
+  border: 6px solid #F0A400;
   margin-top: 40px;
 }
 
-.btn-sair-lista:hover {
+.btn-atencao-borda:hover {
   background-color: #F0A400;
   color: white;
   transform: translateY(-4px);
   box-shadow: 0 15px 30px rgba(240, 164, 0, 0.3);
 }
 
-/* ==========================================
-   BOTÃO FLUTUANTE (FAB)
-   ========================================== */
-.btn-flutuante-cadastrar {
-  position: fixed;
-  bottom: 120px;
-  right: 500px;
-  width: 300px;
-  height: 300px;
-  background-color: #005A32;
+.btn-atencao-preenchido {
+  background-color: #F0A400;
   color: white;
   border: none;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  cursor: pointer;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-  transition: width 0.3s ease, border-radius 0.3s ease, padding 0.3s ease;
-  z-index: 900;
 }
 
-.texto-fab {
-  font-family: monospace, sans-serif;
-  font-size: 70px;
-  font-weight: bold;
-  white-space: nowrap;
-  width: 0;
-  opacity: 0;
-  visibility: hidden;
-  margin-right: 0;
-  transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease, margin-right 0.3s ease;
-}
-
-.icone-fab {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 160px;
-  height: 160px;
-}
-
-.icone-fab svg {
-  width: 100%;
-  height: 100%;
-}
-
-.btn-flutuante-cadastrar:hover {
-  width: 1400px;
-  border-radius: 150px;
-  padding: 0 100px;
-}
-
-.btn-flutuante-cadastrar:hover .texto-fab {
-  width: auto;
-  opacity: 1;
-  visibility: visible;
-  margin-right: 60px;
+.btn-atencao-preenchido:hover {
+  background-color: #c28400;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(240, 164, 0, 0.4);
 }
 
 /* ==========================================
-   MODAL DE CONFIRMAÇÃO DE SAÍDA (EFEITO BLUR)
+   MODAL DINÂMICO E OVERLAY
    ========================================== */
 @keyframes overlayFadeIn {
   from { opacity: 0; backdrop-filter: blur(0px); }
@@ -259,36 +319,110 @@
   margin-top: 40px;
 }
 
-.botoes-confirmacao button {
-  flex: 1;
-  padding: 40px;
-  border-radius: 20px;
-  font-size: 50px;
+/* ==========================================
+   MODAL DE NOVO USUÁRIO E SELECT
+   ========================================== */
+.modal-cadastro {
+  max-width: 1000px;
+  gap: 40px;
+}
+
+.campo-cadastro {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  text-align: left;
+}
+
+.campo-cadastro label {
+  font-family: monospace, sans-serif;
   font-weight: bold;
+  color: #006633;
+  font-size: 35px;
+}
+
+.select-permissao {
+  width: 100%;
+  padding: 30px 40px;
+  border: 4px solid #006633;
+  border-radius: 16px;
+  background-color: #f0fdf4;
+  color: #004325;
+  font-family: sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+  outline: none;
   cursor: pointer;
-  text-transform: uppercase;
-  transition: all 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23006633%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 40px top 50%;
+  background-size: 30px auto;
+  transition: border-color 0.3s;
 }
 
-.btn-voltar {
-  background-color: white;
-  color: #005A32;
-  border: 6px solid #005A32;
+.select-permissao:focus {
+  border-color: #A6CD29;
 }
 
-.btn-voltar:hover {
-  background-color: rgba(0, 90, 50, 0.1);
-  transform: translateY(-4px);
-}
-
-.btn-confirmar-sair {
-  background-color: #F0A400;
+/* ==========================================
+   BOTÃO FLUTUANTE (FAB)
+   ========================================== */
+.btn-flutuante-cadastrar {
+  position: fixed;
+  bottom: 120px;
+  right: 500px;
+  width: 300px;
+  height: 300px;
+  background-color: #005A32;
   color: white;
   border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  transition: width 0.3s ease, border-radius 0.3s ease, padding 0.3s ease;
+  z-index: 900;
 }
 
-.btn-confirmar-sair:hover {
-  background-color: #d18f00;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(240, 164, 0, 0.4);
+.texto-fab {
+  font-family: monospace, sans-serif;
+  font-size: 70px;
+  font-weight: bold;
+  white-space: nowrap;
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+  margin-right: 0;
+  transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease, margin-right 0.3s ease;
+}
+
+.icone-fab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 160px;
+  height: 160px;
+}
+
+.icone-fab svg {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-flutuante-cadastrar:hover {
+  width: 1400px;
+  border-radius: 150px;
+  padding: 0 100px;
+}
+
+.btn-flutuante-cadastrar:hover .texto-fab {
+  width: auto;
+  opacity: 1;
+  visibility: visible;
+  margin-right: 60px;
 }

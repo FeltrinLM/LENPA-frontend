@@ -15,25 +15,64 @@
 
       <div class="campo">
         <label>Nome da conta:</label>
-        <div class="input-falso">
-          <span>{{ usuario?.nome }}</span>
-          <svg class="icone-lapis" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M92.69,216H48a8,8,0,0,1-8-8V163.31a8,8,0,0,1,2.34-5.65L165.66,34.34a8,8,0,0,1,11.31,0L221.66,79a8,8,0,0,1,0,11.31L98.34,213.66A8,8,0,0,1,92.69,216Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+        <div class="input-falso" [class.modo-edicao]="editandoNome">
+
+          <ng-container *ngIf="!editandoNome">
+            <span>{{ usuario?.nome }}</span>
+            <span class="icone-acao lapis" (click)="editarNome()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
+          </ng-container>
+
+          <ng-container *ngIf="editandoNome">
+            <input type="text" class="campo-edicao" [(ngModel)]="nomeEditado" placeholder="Digite seu nome...">
+            <div class="acoes-edicao">
+              <span class="icone-acao salvar" (click)="salvarNome()"><ng-container *ngTemplateOutlet="svgSalvar"></ng-container></span>
+              <span class="icone-acao cancelar" (click)="cancelarEdicao('nome')"><ng-container *ngTemplateOutlet="svgCancelar"></ng-container></span>
+            </div>
+          </ng-container>
+
         </div>
       </div>
 
       <div class="campo">
         <label>E-mail:</label>
-        <div class="input-falso">
-          <span>{{ usuario?.email }}</span>
-          <svg class="icone-lapis" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M92.69,216H48a8,8,0,0,1-8-8V163.31a8,8,0,0,1,2.34-5.65L165.66,34.34a8,8,0,0,1,11.31,0L221.66,79a8,8,0,0,1,0,11.31L98.34,213.66A8,8,0,0,1,92.69,216Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+        <div class="input-falso" [class.modo-edicao]="editandoEmail">
+
+          <ng-container *ngIf="!editandoEmail">
+            <span>{{ usuario?.email }}</span>
+            <span class="icone-acao lapis" (click)="editarEmail()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
+          </ng-container>
+
+          <ng-container *ngIf="editandoEmail">
+            <input type="email" class="campo-edicao" [(ngModel)]="emailEditado" placeholder="Digite seu e-mail...">
+            <div class="acoes-edicao">
+              <span class="icone-acao salvar" (click)="salvarEmail()"><ng-container *ngTemplateOutlet="svgSalvar"></ng-container></span>
+              <span class="icone-acao cancelar" (click)="cancelarEdicao('email')"><ng-container *ngTemplateOutlet="svgCancelar"></ng-container></span>
+            </div>
+          </ng-container>
+
         </div>
       </div>
 
       <div class="campo">
         <label>Senha:</label>
-        <div class="input-falso">
+
+        <div class="input-falso" *ngIf="!editandoSenha">
           <span>********</span>
-          <svg class="icone-lapis" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M92.69,216H48a8,8,0,0,1-8-8V163.31a8,8,0,0,1,2.34-5.65L165.66,34.34a8,8,0,0,1,11.31,0L221.66,79a8,8,0,0,1,0,11.31L98.34,213.66A8,8,0,0,1,92.69,216Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+          <span class="icone-acao lapis" (click)="editarSenha()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
+        </div>
+
+        <div class="container-editar-senha" *ngIf="editandoSenha">
+          <div class="campo-senha-duplo">
+            <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="senhaAtual" placeholder="Senha atual...">
+            <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="novaSenha" placeholder="Nova senha...">
+          </div>
+
+          <span class="mensagem-erro-senha" *ngIf="erroSenha">{{ erroSenha }}</span>
+
+          <div class="acoes-edicao-senha">
+            <button class="btn-secundario" (click)="cancelarEdicao('senha')">Cancelar</button>
+            <button class="btn-primario" (click)="tentarSalvarSenha()">Salvar Alteração</button>
+          </div>
         </div>
       </div>
 
@@ -44,28 +83,61 @@
         </div>
       </div>
 
-      <button class="btn-sair-lista" (click)="abrirModalSair()">Sair</button>
+      <button class="btn-atencao-borda" (click)="abrirModalSair()">Sair</button>
 
     </div>
-
   </div>
 
-  <button class="btn-flutuante-cadastrar">
+  <button class="btn-flutuante-cadastrar" (click)="abrirModalNovoUsuario()">
     <span class="texto-fab">Cadastrar novo usuário</span>
     <div class="icone-fab">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="136" x2="248" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="224" y1="112" x2="224" y2="160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="108" cy="100" r="60" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M24,200c20.55-24.45,49.56-40,84-40s63.45,15.55,84,40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
     </div>
   </button>
 
-  <div class="modal-overlay" *ngIf="exibirModalSair" (click)="fecharModalSair()">
-    <div class="modal-confirmacao" (click)="$event.stopPropagation()">
-      <h2>Deseja sair?</h2>
-      <p>Você precisará fazer login novamente para acessar o sistema.</p>
+  <div class="modal-overlay" *ngIf="modalNovoUsuario.exibir" (click)="fecharModalNovoUsuario()">
+    <div class="modal-confirmacao modal-cadastro" (click)="$event.stopPropagation()">
+      <h2>Novo Usuário</h2>
+      <p>Selecione o nível de acesso para a nova conta no LENPA.</p>
+
+      <div class="campo-cadastro">
+        <label>Nível de Permissão:</label>
+        <select class="select-permissao" [(ngModel)]="modalNovoUsuario.nivelPermissao">
+          <option value="" disabled selected>Escolha uma opção...</option>
+          <option value="Administrador">Administrador</option>
+          <option value="Bolsista">Bolsista</option>
+          <option value="Visitante">Visitante</option>
+        </select>
+      </div>
+
       <div class="botoes-confirmacao">
-        <button class="btn-voltar" (click)="fecharModalSair()">Voltar</button>
-        <button class="btn-confirmar-sair" (click)="confirmarSair()">Sim, sair</button>
+        <button class="btn-atencao-preenchido" (click)="fecharModalNovoUsuario()">Cancelar</button>
+        <button class="btn-secundario" (click)="confirmarNovoUsuario()">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="modal.exibir" (click)="fecharModal()">
+    <div class="modal-confirmacao" (click)="$event.stopPropagation()">
+      <h2>{{ modal.titulo }}</h2>
+      <p>{{ modal.mensagem }}</p>
+      <div class="botoes-confirmacao">
+        <button class="btn-secundario" (click)="fecharModal()">Voltar</button>
+        <button class="btn-atencao-preenchido" (click)="modal.acaoConfirmar()">{{ modal.textoConfirmar }}</button>
       </div>
     </div>
   </div>
 
 </div>
+
+<ng-template #svgLapis>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M92.69,216H48a8,8,0,0,1-8-8V163.31a8,8,0,0,1,2.34-5.65L165.66,34.34a8,8,0,0,1,11.31,0L221.66,79a8,8,0,0,1,0,11.31L98.34,213.66A8,8,0,0,1,92.69,216Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+</ng-template>
+
+<ng-template #svgSalvar>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+</ng-template>
+
+<ng-template #svgCancelar>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="56" x2="56" y2="200" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><line x1="200" y1="200" x2="56" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+</ng-template>
