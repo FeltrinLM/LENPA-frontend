@@ -190,7 +190,7 @@
 
 .icone-acao.cancelar:hover svg {
   transform: scale(1.15);
-  color: #c28400; /* Tom ligeiramente mais escuro de F0A400 para o hover */
+  color: #c28400;
 }
 
 /* ==========================================
@@ -310,6 +310,7 @@ button {
   color: #666;
   margin: 0;
   line-height: 1.4;
+  margin-bottom: 20px; /* Ajuste para quando o dropdown sumir */
 }
 
 .botoes-confirmacao {
@@ -323,7 +324,8 @@ button {
    MODAL DE NOVO USUÁRIO E SELECT
    ========================================== */
 .modal-cadastro {
-  max-width: 1000px;
+  max-width: 1200px; /* Levemente mais largo para os formulários dinâmicos */
+  min-width: 800px;
   gap: 40px;
 }
 
@@ -363,7 +365,7 @@ button {
 }
 
 .select-permissao:focus {
-  border-color: #A6CD29;
+  border-color: #005A32;
 }
 
 /* ==========================================
@@ -432,7 +434,7 @@ button {
    ========================================== */
 .form-dinamico {
   width: 100%;
-  animation: modalPopIn 0.3s ease-out; /* Efeito suave ao aparecer */
+  animation: modalPopIn 0.3s ease-out;
 }
 
 .grupo-inputs {
@@ -465,10 +467,3 @@ button {
   color: #006633;
   opacity: 0.5;
 }
-
-/* Ajuste no modal de cadastro para comportar mais campos se necessário */
-.modal-cadastro {
-  max-width: 1200px;
-  min-width: 800px;
-}
-

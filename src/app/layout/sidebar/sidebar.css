@@ -6,19 +6,18 @@ body {
 }
 
 .retangulo-verde {
-  /* VOLTAMOS PARA O FIXED (É O MAIS SEGURO) */
   position: fixed;
   top: 0;
-  right: 0; /* Gruda no canto direito da tela */
-  z-index: 1000; /* Super alto para garantir que nada passe por cima dela */
-
-  width: 400px; /* Mesma largura do padding que criamos no app-layout! */
+  right: 0;
+  z-index: 1000;
+  width: 400px;
   height: 100vh;
   background-color: #006334;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Isso aqui garante que, se tiverem 5 ícones ou 4 ícones, o espaço entre eles será igual e proporcional */
   justify-content: space-evenly;
   overflow-y: auto;
 }

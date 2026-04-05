@@ -18,6 +18,7 @@ export class CentralUsuario implements OnInit {
 
   usuario: UsuarioLogado | null = null;
 
+  // --- EDIÇÃO DE PERFIL ---
   editandoNome: boolean = false;
   nomeEditado: string = '';
 
@@ -29,6 +30,7 @@ export class CentralUsuario implements OnInit {
   novaSenha: string = '';
   erroSenha: string = '';
 
+  // --- MODAL DINÂMICO ---
   modal = {
     exibir: false,
     titulo: '',
@@ -37,6 +39,7 @@ export class CentralUsuario implements OnInit {
     acaoConfirmar: () => {}
   };
 
+  // --- CADASTRO DE NOVO USUÁRIO ---
   modalNovoUsuario = {
     exibir: false,
     nivelPermissao: '',
@@ -56,6 +59,9 @@ export class CentralUsuario implements OnInit {
     this.usuario = this.authService.getDadosUsuario();
   }
 
+  // ==========================================
+  // ATUALIZAR NOME E EMAIL
+  // ==========================================
   editarNome() {
     this.nomeEditado = this.usuario?.nome || '';
     this.editandoNome = true;
@@ -103,6 +109,9 @@ export class CentralUsuario implements OnInit {
     }
   }
 
+  // ==========================================
+  // TROCA DE SENHA
+  // ==========================================
   editarSenha() {
     this.editandoSenha = true;
     this.senhaAtual = '';
@@ -118,7 +127,7 @@ export class CentralUsuario implements OnInit {
 
     this.abrirModal(
       'Confirmar Alteração',
-      'Deseja realmente alterar a sua senha de acesso ao sistema?',
+      'Deseja realmente alterar a sua senha?',
       'Sim, alterar',
       () => this.executarTrocaSenha()
     );
@@ -139,9 +148,22 @@ export class CentralUsuario implements OnInit {
     });
   }
 
+  // ==========================================
+  // CRIAR NOVO USUÁRIO (LÓGICA HIERÁRQUICA)
+  // ==========================================
   abrirModalNovoUsuario() {
+    // Verificamos se o usuário atual é Bolsista (Ajustado para 'BOLSISTA')
+    const eBolsista = this.usuario?.role === 'BOLSISTA';
+
     this.modalNovoUsuario = {
-      exibir: true, nivelPermissao: '', nome: '', email: '', senha: '', confirmarSenha: '', nomeCompleto: '', cidade: ''
+      exibir: true,
+      nivelPermissao: eBolsista ? 'Visitante' : '',
+      nome: '',
+      email: '',
+      senha: '',
+      confirmarSenha: '',
+      nomeCompleto: '',
+      cidade: ''
     };
   }
 
@@ -150,32 +172,37 @@ export class CentralUsuario implements OnInit {
   confirmarNovoUsuario() {
     const nivel = this.modalNovoUsuario.nivelPermissao;
     if (!nivel) { alert('Selecione um nível de permissão!'); return; }
-    if (nivel !== 'Visitante' && this.modalNovoUsuario.senha !== this.modalNovoUsuario.confirmarSenha) {
-      alert('As senhas não coincidem!'); return;
-    }
 
     if (nivel === 'Administrador' || nivel === 'Bolsista') {
+      if (this.modalNovoUsuario.senha !== this.modalNovoUsuario.confirmarSenha) {
+        alert('As senhas não coincidem!');
+        return;
+      }
+
       const payload = {
         nome: this.modalNovoUsuario.nome,
         email: this.modalNovoUsuario.email,
         senha: this.modalNovoUsuario.senha,
-        nivelPermissao: nivel === 'Administrador' ? 'ADMIN' : 'BOLSISTA'
+        nivelPermissao: nivel === 'Administrador' ? 'ADMINISTRADOR' : 'BOLSISTA'
       };
 
       this.authService.cadastrarFuncionario(payload).subscribe({
         next: () => {
-          alert('Funcionário cadastrado com sucesso!');
+          alert(`${nivel} cadastrado com sucesso!`);
           this.fecharModalNovoUsuario();
         },
         error: (err: any) => alert(err.error?.message || 'Erro ao cadastrar funcionário.')
       });
     } else {
-      console.log('Visitante:', this.modalNovoUsuario);
-      alert('Funcionalidade de visitante em desenvolvimento!');
+      console.log('Dados do visitante:', this.modalNovoUsuario);
+      alert('Cadastro de visitante em processamento...');
       this.fecharModalNovoUsuario();
     }
   }
 
+  // ==========================================
+  // LOGOUT E AUXILIARES
+  // ==========================================
   abrirModalSair() {
     this.abrirModal('Deseja sair?', 'Você precisará fazer login novamente.', 'Sim, sair', () => {
       this.authService.logout();

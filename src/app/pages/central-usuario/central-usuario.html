@@ -91,9 +91,11 @@
   <div class="modal-overlay" *ngIf="modalNovoUsuario.exibir" (click)="fecharModalNovoUsuario()">
     <div class="modal-confirmacao modal-cadastro" (click)="$event.stopPropagation()">
       <h2>Novo Usuário</h2>
-      <p>Preencha os dados para criar a nova conta no LENPA.</p>
 
-      <div class="campo-cadastro">
+      <p *ngIf="usuario?.role !== 'BOLSISTA'">Selecione o nível e preencha os dados abaixo.</p>
+      <p *ngIf="usuario?.role === 'BOLSISTA'">Preencha os dados do visitante para o cadastro.</p>
+
+      <div class="campo-cadastro" *ngIf="usuario?.role !== 'BOLSISTA'">
         <label>Nível de Permissão:</label>
         <select class="select-permissao" [(ngModel)]="modalNovoUsuario.nivelPermissao">
           <option value="" disabled selected>Escolha uma opção...</option>
