@@ -1,8 +1,7 @@
-// src/app/app.routes.ts
-
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
-// Importando os componentes respeitando a pasta 'pages'
 import { Inicial } from './pages/inicial/inicial';
 import { CentralUsuario } from './pages/central-usuario/central-usuario';
 import { ConfiguracaoAtividade } from './pages/configuracao-atividade/configuracao-atividade';
@@ -10,18 +9,32 @@ import { GerenciamentoAtividade } from './pages/gerenciamento-atividade/gerencia
 import { RelatorioAtividade } from './pages/relatorio-atividade/relatorio-atividade';
 
 export const routes: Routes = [
-  // Caminho vazio é a sua página inicial
+  // ABERTA: Página de Login/Inicial
   { path: '', component: Inicial },
 
-  // Caminhos para as outras páginas
-  { path: 'central-usuario', component: CentralUsuario },
+  // PROTEGIDAS: Só logados entram
+  {
+    path: 'central-usuario',
+    component: CentralUsuario,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'agendamento',
+    component: GerenciamentoAtividade,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'relatorios',
+    component: RelatorioAtividade,
+    canActivate: [authGuard]
+  },
 
-  // A SUA TELA NOVA ESTÁ AQUI: acessível via localhost:4200/agendamento
-  { path: 'agendamento', component: GerenciamentoAtividade },
+  // RESTRITA: Só Administrador entra
+  {
+    path: 'configuracao',
+    component: ConfiguracaoAtividade,
+    canActivate: [authGuard, adminGuard]
+  },
 
-  { path: 'relatorios', component: RelatorioAtividade },
-  { path: 'configuracao', component: ConfiguracaoAtividade },
-
-  // Rota coringa: se a URL não existir, volta pro início
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

@@ -1,5 +1,4 @@
 /* Container Principal */
-/* Adicionado max-width e overflow-x para impedir o vazamento sob a sidebar */
 .pagina-inicial-container {
   width: 100%;
   max-width: 100%;
@@ -12,16 +11,14 @@
    ========================================== */
 .footer-inicial {
   width: 100%;
-  height: 400px; /* Altura gigante para acompanhar o zoom */
-  background-color: #00331c; /* Verde bem escuro, quase preto */
+  height: 400px;
+  background-color: #00331c;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Estilo do texto placeholder */
-  color: rgba(255, 255, 255, 0.6); /* Branco meio transparente */
+  color: rgba(255, 255, 255, 0.6);
   font-family: monospace, sans-serif;
-  font-size: 60px; /* Texto gigante */
+  font-size: 60px;
   text-align: center;
   padding: 0 50px;
 }
@@ -50,8 +47,6 @@
 /* -------------------------------------------
    ELEMENTOS INTERNOS DO PROTÓTIPO
    ------------------------------------------- */
-
-/* Cabeçalho no topo do banner */
 .header-banner {
   position: absolute;
   top: 0;
@@ -59,21 +54,17 @@
   width: 100%;
   padding: 30px 50px;
   box-sizing: border-box;
-
-  /* Flexbox para jogar a Logo para a esquerda e o Usuário para a direita */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* Container da Logo (Folha + LENPA) */
 .logo-container {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-/* Estilo do texto "LENPA" */
 .logo-texto {
   color: white;
   font-family: 'Arial', sans-serif;
@@ -82,52 +73,40 @@
   letter-spacing: 2px;
 }
 
-/* Força os SVGs a ficarem brancos e "preenchidos" como no seu design */
 .header-banner svg {
   color: white;
   fill: white;
 }
 
-/* Tamanho específico da Folha */
 .logo-container svg {
   width: 300px;
   height: 300px;
 }
 
-/* Diminuída a margem direita para o ícone não bater na sidebar quando ela abrir */
 .usuario-container {
   margin-right: 50px;
 }
 
-/* Tamanho específico do Usuário */
 .usuario-container svg {
   width: 200px;
   height: 200px;
-  cursor: pointer; /* Adiciona a mãozinha ao passar o mouse */
-
-  /* Adiciona a transição para o movimento ser suave ao passar o mouse */
+  cursor: pointer;
   transition: transform 0.3s ease;
 }
 
-/* Efeito de hover: Aumenta um pouquinho o ícone de usuário */
 .usuario-container svg:hover {
-  /* scale(1.1) aumenta o ícone em 10% do tamanho original (vai para 220px) */
   transform: scale(1.1);
 }
 
-/* Texto no canto inferior esquerdo */
 .texto-banner {
   position: absolute;
   bottom: 100px;
   left: 100px;
-
   color: white;
-  font-family: monospace; /* Fonte que imita o estilo do seu protótipo */
+  font-family: monospace;
   font-size: 200px;
   font-weight: bold;
   line-height: 1.3;
-
-  /* Uma leve sombra para garantir a leitura independente da imagem de fundo */
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 }
 
