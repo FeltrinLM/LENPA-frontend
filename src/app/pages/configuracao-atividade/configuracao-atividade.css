@@ -1,0 +1,358 @@
+.pagina-central {
+  min-height: 100vh;
+  padding: 80px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8fafc;
+}
+
+.cabecalho-pagina {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1800px;
+  margin-bottom: 80px;
+}
+
+.titulo-pagina {
+  font-family: monospace, 'Courier New', Courier;
+  color: #005A32;
+  font-size: 100px;
+  margin: 0;
+  font-weight: 900;
+}
+
+.card-formulario {
+  background-color: white;
+  padding: 80px;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 1800px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.boas-vindas h2 {
+  color: #006633;
+  font-family: sans-serif;
+  font-size: 60px;
+  margin: 0 0 20px 0;
+}
+
+.boas-vindas p {
+  color: #666;
+  font-size: 40px;
+  margin: 0;
+}
+
+.placeholder-atividades p {
+  color: #999;
+  font-size: 40px;
+  font-style: italic;
+  text-align: center;
+  margin: 100px 0;
+}
+
+/* ==========================================
+   BOTÃO FLUTUANTE (FAB)
+   ========================================== */
+.btn-flutuante-cadastrar {
+  position: fixed;
+  bottom: 120px;
+  right: 500px;
+  width: 300px;
+  height: 300px;
+  background-color: #005A32;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  transition: width 0.3s ease, border-radius 0.3s ease, padding 0.3s ease;
+  z-index: 900;
+}
+
+.texto-fab {
+  font-family: monospace, sans-serif;
+  font-size: 70px;
+  font-weight: bold;
+  white-space: nowrap;
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+  margin-right: 0;
+  transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease, margin-right 0.3s ease;
+}
+
+.icone-fab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 160px;
+  height: 160px;
+}
+
+.icone-fab svg {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-flutuante-cadastrar:hover {
+  width: 1200px;
+  border-radius: 150px;
+  padding: 0 100px;
+}
+
+.btn-flutuante-cadastrar:hover .texto-fab {
+  width: auto;
+  opacity: 1;
+  visibility: visible;
+  margin-right: 60px;
+}
+
+/* ==========================================
+   MODAL DINÂMICO E OVERLAY
+   ========================================== */
+@keyframes overlayFadeIn {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to { opacity: 1; backdrop-filter: blur(15px); }
+}
+
+@keyframes modalPopIn {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayFadeIn 0.3s ease-out forwards;
+}
+
+.modal-confirmacao {
+  background-color: white;
+  padding: 80px 100px;
+  border-radius: 40px;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  text-align: center;
+  max-width: 1500px;
+  animation: modalPopIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-cadastro {
+  max-width: 1400px;
+  min-width: 1100px;
+}
+
+.modal-confirmacao h2 {
+  font-size: 90px;
+  color: #004325;
+  margin: 0;
+  font-family: sans-serif;
+  font-weight: 900;
+}
+
+.modal-confirmacao p {
+  font-size: 50px;
+  color: #666;
+  margin: 0 0 20px 0;
+  line-height: 1.4;
+}
+
+/* ==========================================
+   FORMULÁRIO ESTRUTURADO (NOVO)
+   ========================================== */
+.form-dinamico {
+  width: 100%;
+}
+
+.grupo-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+}
+
+.linha-inputs {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.campo-form label {
+  font-family: monospace, sans-serif;
+  font-weight: bold;
+  color: #006633;
+  font-size: 35px;
+  margin-left: 10px;
+}
+
+.input-modal {
+  width: 100%;
+  padding: 25px 30px;
+  border: 4px solid #006633;
+  border-radius: 16px;
+  background-color: #f0fdf4;
+  color: #004325;
+  font-family: sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-modal:focus {
+  border-color: #005A32;
+  background-color: white;
+}
+
+.input-modal::placeholder {
+  color: #006633;
+  opacity: 0.4;
+  font-weight: normal;
+}
+
+/* Garantindo que o Select se comporte visualmente como o Input */
+select.input-modal {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23006633%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 30px top 50%;
+  background-size: 30px auto;
+  cursor: pointer;
+}
+
+.textarea-modal {
+  resize: vertical;
+  min-height: 250px;
+}
+
+/* ==========================================
+   BOTÕES DE AÇÃO
+   ========================================== */
+.botoes-confirmacao {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+button {
+  flex: 1;
+  padding: 30px 40px;
+  border-radius: 16px;
+  font-size: 45px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.2s ease;
+}
+
+.btn-secundario {
+  background-color: white;
+  color: #005A32;
+  border: 4px solid #005A32;
+}
+
+.btn-secundario:hover {
+  background-color: rgba(0, 90, 50, 0.1);
+  transform: translateY(-4px);
+}
+
+.btn-atencao-preenchido {
+  background-color: #F0A400;
+  color: white;
+  border: none;
+}
+
+.btn-atencao-preenchido:hover {
+  background-color: #c28400;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(240, 164, 0, 0.4);
+}
+
+/* ==========================================
+   ÁREA DE DRAG AND DROP (DROPZONE)
+   ========================================== */
+.dropzone {
+  border: 4px dashed #006633;
+  border-radius: 16px;
+  background-color: #f0fdf4;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+}
+
+.dropzone.drag-over {
+  background-color: #dcfce7; /* Um verde um pouco mais escuro quando arrasta por cima */
+  border-color: #004325;
+}
+
+.dropzone svg {
+  width: 100px;
+  height: 100px;
+  color: #006633;
+  margin-bottom: 20px;
+}
+
+.dropzone p {
+  color: #004325;
+  font-size: 35px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.imagem-preview {
+  max-width: 100%;
+  max-height: 350px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.remover-imagem {
+  color: #F0A400 !important;
+  font-size: 30px !important;
+  margin-top: 25px !important;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.remover-imagem:hover {
+  color: #c28400 !important;
+}

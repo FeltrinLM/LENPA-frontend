@@ -1,1 +1,116 @@
-<p>configuracao-atividade works!</p>
+<div class="pagina-central">
+
+  <div class="cabecalho-pagina">
+    <h1 class="titulo-pagina">Configuração de Atividades</h1>
+  </div>
+
+  <div class="card-formulario">
+    <div class="boas-vindas">
+      <h2>Painel de Controle</h2>
+      <p>Gerencie eventos, workshops e horários do laboratório.</p>
+    </div>
+
+    <div class="placeholder-atividades">
+      <p>Nenhuma atividade cadastrada no momento.</p>
+    </div>
+  </div>
+
+  <button class="btn-flutuante-cadastrar" (click)="abrirModalNovaAtividade()">
+    <span class="texto-fab">Criar Atividade</span>
+    <div class="icone-fab">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+        <rect width="256" height="256" fill="none"/>
+        <rect x="40" y="40" width="176" height="176" rx="8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+        <line x1="176" y1="24" x2="176" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+        <line x1="80" y1="24" x2="80" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+        <line x1="40" y1="88" x2="216" y2="88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+        <line x1="152" y1="152" x2="104" y2="152" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+        <line x1="128" y1="128" x2="128" y2="176" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+      </svg>
+    </div>
+  </button>
+
+  <div class="modal-overlay" *ngIf="modalNovaAtividade.exibir" (click)="fecharModalNovaAtividade()">
+    <div class="modal-confirmacao modal-cadastro" (click)="$event.stopPropagation()">
+      <h2>Nova Atividade</h2>
+      <p>Preencha os detalhes para abrir inscrições.</p>
+
+      <div class="form-dinamico">
+        <div class="grupo-inputs">
+
+          <div class="campo-form">
+            <label>Nome da Atividade</label>
+            <input type="text" class="input-modal" [(ngModel)]="modalNovaAtividade.nome" placeholder="Ex: Workshop de Botânica">
+          </div>
+
+          <div class="linha-inputs">
+            <div class="campo-form" style="flex: 2;">
+              <label>Tipo de Atividade</label>
+              <select class="input-modal select-permissao" [(ngModel)]="modalNovaAtividade.tipo">
+                <option value="" disabled selected>Selecione o tipo...</option>
+                <option value="EVENTO">Evento</option>
+                <option value="WORKSHOP">Workshop</option>
+              </select>
+            </div>
+            <div class="campo-form" style="flex: 1;">
+              <label>Vagas Limite</label>
+              <input type="number" class="input-modal" [(ngModel)]="modalNovaAtividade.vagas" placeholder="Ex: 40">
+            </div>
+          </div>
+
+          <div class="linha-inputs">
+            <div class="campo-form" style="flex: 2;">
+              <label>Data</label>
+              <input type="date" class="input-modal" [(ngModel)]="modalNovaAtividade.data">
+            </div>
+            <div class="campo-form" style="flex: 1;">
+              <label>Das</label>
+              <input type="time" class="input-modal" [(ngModel)]="modalNovaAtividade.horarioInicio">
+            </div>
+            <div class="campo-form" style="flex: 1;">
+              <label>Até</label>
+              <input type="time" class="input-modal" [(ngModel)]="modalNovaAtividade.horarioFim">
+            </div>
+          </div>
+
+          <div class="campo-form">
+            <label>Imagem da Atividade</label>
+
+            <div class="dropzone"
+                 [class.drag-over]="isDragging"
+                 (dragover)="aoArrastarSobre($event)"
+                 (dragleave)="aoSairArrastar($event)"
+                 (drop)="aoSoltarArquivo($event)"
+                 (click)="fileInput.click()">
+
+              <input type="file" #fileInput hidden accept="image/*" (change)="aoSelecionarArquivo($event)">
+
+              <ng-container *ngIf="!modalNovaAtividade.imagemPreview">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="86 82 128 40 170 82" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><line x1="128" y1="152" x2="128" y2="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M216,152v56a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V152" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+                <p>Clique ou arraste uma foto aqui</p>
+              </ng-container>
+
+              <ng-container *ngIf="modalNovaAtividade.imagemPreview">
+                <img [src]="modalNovaAtividade.imagemPreview" class="imagem-preview">
+                <p class="remover-imagem" (click)="removerImagem($event)">Remover foto</p>
+              </ng-container>
+
+            </div>
+          </div>
+
+          <div class="campo-form">
+            <label>Descrição</label>
+            <textarea class="input-modal textarea-modal" [(ngModel)]="modalNovaAtividade.descricao" rows="4" placeholder="Detalhes sobre a programação, palestrantes..."></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="botoes-confirmacao">
+        <button class="btn-atencao-preenchido" (click)="fecharModalNovaAtividade()">Cancelar</button>
+        <button class="btn-secundario" (click)="salvarAtividade()">Salvar Atividade</button>
+      </div>
+    </div>
+  </div>
+
+</div>
