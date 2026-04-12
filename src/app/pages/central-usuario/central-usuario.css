@@ -467,3 +467,18 @@ button {
   color: #006633;
   opacity: 0.5;
 }
+
+.campo-form-reativo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.mensagem-erro {
+  color: #d32f2f;
+  font-size: 30px;
+  font-weight: bold;
+  margin-left: 20px;
+  text-align: left;
+}

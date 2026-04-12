@@ -1,5 +1,5 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; // Importamos HttpHeaders
+import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 
@@ -21,12 +21,6 @@ export class AuthService {
 
   private isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
-  }
-
-  // Helper para criar os headers com o token atualizado
-  private getHeaders() {
-    const token = this.getToken();
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   login(credenciais: any): Observable<any> {
@@ -68,19 +62,5 @@ export class AuthService {
     } catch (e) {
       return null;
     }
-  }
-
-  // --- MÉTODOS DE INTEGRAÇÃO COM HEADERS DE SEGURANÇA ---
-
-  atualizarPerfil(dados: {nome: string, email: string}): Observable<any> {
-    return this.http.put(`${this.BASE_URL}/funcionarios/meu-perfil`, dados, { headers: this.getHeaders() });
-  }
-
-  alterarSenha(dados: {senhaAtual: string, novaSenha: string}): Observable<any> {
-    return this.http.put(`${this.BASE_URL}/funcionarios/minha-senha`, dados, { headers: this.getHeaders() });
-  }
-
-  cadastrarFuncionario(payload: any): Observable<any> {
-    return this.http.post(`${this.BASE_URL}/funcionarios`, payload, { headers: this.getHeaders() });
   }
 }

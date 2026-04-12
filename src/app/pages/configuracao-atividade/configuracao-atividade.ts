@@ -1,57 +1,63 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms'; // <-- Adicionado ReactiveFormsModule
 import { Router } from '@angular/router';
 import { AtividadeService } from '../../core/services/api/atividade.service';
 
 @Component({
   selector: 'app-configuracao-atividade',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule], // <-- Importado aqui
   templateUrl: './configuracao-atividade.html',
   styleUrl: './configuracao-atividade.css'
 })
 export class ConfiguracaoAtividade implements OnInit {
 
   private router = inject(Router);
-  // 1. Injetando o service que vai falar com o Java
   private atividadeService = inject(AtividadeService);
+  private fb = inject(FormBuilder); // <-- FormBuilder injetado
 
+  // --- CONTROLES DA PÁGINA ---
   isDragging = false;
-  salvando = false; // Controle para evitar que o usuário clique 2x enquanto carrega
+  salvando = false;
+  exibirModal = false;
 
-  modalNovaAtividade = {
-    exibir: false,
-    nome: '',
-    data: '',
-    horarioInicio: '',
-    horarioFim: '',
-    tipo: '',
-    vagas: null,
-    descricao: '',
-    arquivoImagem: null as File | null,
-    imagemPreview: null as string | ArrayBuffer | null | undefined
-  };
+  // --- FORMULÁRIO REATIVO ---
+  formAtividade!: FormGroup;
 
-  ngOnInit(): void {}
+  // --- CONTROLES DE IMAGEM (Ficam fora do formGroup por ser arquivo) ---
+  arquivoImagem: File | null = null;
+  imagemPreview: string | ArrayBuffer | null | undefined = null;
 
+  ngOnInit(): void {
+    // Inicialização do formulário com as validações
+    this.formAtividade = this.fb.group({
+      nome: ['', Validators.required],
+      tipo: ['', Validators.required],
+      vagas: [null, [Validators.required, Validators.min(1)]],
+      data: ['', Validators.required],
+      horarioInicio: ['', Validators.required],
+      horarioFim: ['', Validators.required],
+      descricao: [''] // Descrição não é obrigatória
+    });
+  }
+
+  // Atalho para o HTML acessar os erros mais facilmente
+  get f() { return this.formAtividade.controls; }
+
+  // ==========================================
+  // CONTROLE DO MODAL
+  // ==========================================
   abrirModalNovaAtividade() {
-    this.modalNovaAtividade = {
-      exibir: true,
-      nome: '',
-      data: '',
-      horarioInicio: '',
-      horarioFim: '',
-      tipo: '',
-      vagas: null,
-      descricao: '',
-      arquivoImagem: null,
-      imagemPreview: null
-    };
+    this.exibirModal = true;
+    this.formAtividade.reset();
+    this.formAtividade.get('tipo')?.setValue(''); // Força o select a voltar pro placeholder
+    this.arquivoImagem = null;
+    this.imagemPreview = null;
   }
 
   fecharModalNovaAtividade() {
-    this.modalNovaAtividade.exibir = false;
+    this.exibirModal = false;
     this.salvando = false;
   }
 
@@ -92,48 +98,51 @@ export class ConfiguracaoAtividade implements OnInit {
       return;
     }
 
-    this.modalNovaAtividade.arquivoImagem = file;
+    this.arquivoImagem = file;
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      this.modalNovaAtividade.imagemPreview = e.target?.result;
+      this.imagemPreview = e.target?.result;
     };
     reader.readAsDataURL(file);
   }
 
   removerImagem(event: Event) {
     event.stopPropagation();
-    this.modalNovaAtividade.arquivoImagem = null;
-    this.modalNovaAtividade.imagemPreview = null;
+    this.arquivoImagem = null;
+    this.imagemPreview = null;
   }
 
   // ==========================================
   // SALVAR NO BACKEND
   // ==========================================
   salvarAtividade() {
-    if (!this.modalNovaAtividade.nome || !this.modalNovaAtividade.tipo || !this.modalNovaAtividade.data) {
-      alert('Preencha os campos obrigatórios (Nome, Data e Tipo).');
+    // 1. O formulário é válido? Se não for, mostra os erros vermelhos na tela
+    if (this.formAtividade.invalid) {
+      this.formAtividade.markAllAsTouched();
       return;
     }
 
     this.salvando = true;
-    const horarioFormatado = `${this.modalNovaAtividade.horarioInicio} às ${this.modalNovaAtividade.horarioFim}`;
+
+    // Extrai os dados validados
+    const formVals = this.formAtividade.value;
+    const horarioFormatado = `${formVals.horarioInicio} às ${formVals.horarioFim}`;
 
     const payload = {
-      nome: this.modalNovaAtividade.nome,
-      data: this.modalNovaAtividade.data,
+      nome: formVals.nome,
+      data: formVals.data,
       horario: horarioFormatado,
-      tipo: this.modalNovaAtividade.tipo,
-      vagas: this.modalNovaAtividade.vagas,
-      descricao: this.modalNovaAtividade.descricao,
-      imagem: '' // Começa vazio, vamos preencher com a URL que o Java vai devolver
+      tipo: formVals.tipo,
+      vagas: formVals.vagas,
+      descricao: formVals.descricao,
+      imagem: '' // Será preenchido com a URL
     };
 
-    // 2. Se o usuário arrastou uma imagem, envia pro /upload primeiro
-    if (this.modalNovaAtividade.arquivoImagem) {
-      this.atividadeService.uploadImagem(this.modalNovaAtividade.arquivoImagem).subscribe({
+    // 2. Se tem imagem, faz upload primeiro
+    if (this.arquivoImagem) {
+      this.atividadeService.uploadImagem(this.arquivoImagem).subscribe({
         next: (response) => {
-          // Pega a URL do Java e joga no payload
           payload.imagem = response.url;
           this.enviarPayloadFinal(payload);
         },
@@ -144,12 +153,12 @@ export class ConfiguracaoAtividade implements OnInit {
         }
       });
     } else {
-      // 3. Se não tem imagem, só cadastra direto
+      // 3. Se não tem imagem, manda direto
       this.enviarPayloadFinal(payload);
     }
   }
 
-  // 4. Função auxiliar que atira o JSON inteiro pro Java
+  // 4. Conclui o cadastro
   private enviarPayloadFinal(payload: any) {
     this.atividadeService.cadastrar(payload).subscribe({
       next: (res) => {

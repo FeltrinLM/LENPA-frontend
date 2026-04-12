@@ -30,46 +30,54 @@
     </div>
   </button>
 
-  <div class="modal-overlay" *ngIf="modalNovaAtividade.exibir" (click)="fecharModalNovaAtividade()">
+  <div class="modal-overlay" *ngIf="exibirModal" (click)="fecharModalNovaAtividade()">
     <div class="modal-confirmacao modal-cadastro" (click)="$event.stopPropagation()">
       <h2>Nova Atividade</h2>
       <p>Preencha os detalhes para abrir inscrições.</p>
 
-      <div class="form-dinamico">
+      <form class="form-dinamico" [formGroup]="formAtividade">
         <div class="grupo-inputs">
 
           <div class="campo-form">
             <label>Nome da Atividade</label>
-            <input type="text" class="input-modal" [(ngModel)]="modalNovaAtividade.nome" placeholder="Ex: Workshop de Botânica">
+            <input type="text" class="input-modal" formControlName="nome" placeholder="Ex: Workshop de Botânica">
+            <span class="mensagem-erro" *ngIf="f['nome'].invalid && f['nome'].touched">O nome é obrigatório.</span>
           </div>
 
           <div class="linha-inputs">
             <div class="campo-form" style="flex: 2;">
               <label>Tipo de Atividade</label>
-              <select class="input-modal select-permissao" [(ngModel)]="modalNovaAtividade.tipo">
+              <select class="input-modal select-permissao" formControlName="tipo">
                 <option value="" disabled selected>Selecione o tipo...</option>
                 <option value="EVENTO">Evento</option>
                 <option value="WORKSHOP">Workshop</option>
               </select>
+              <span class="mensagem-erro" *ngIf="f['tipo'].invalid && f['tipo'].touched">O tipo é obrigatório.</span>
             </div>
+
             <div class="campo-form" style="flex: 1;">
               <label>Vagas Limite</label>
-              <input type="number" class="input-modal" [(ngModel)]="modalNovaAtividade.vagas" placeholder="Ex: 40">
+              <input type="number" class="input-modal" formControlName="vagas" placeholder="Ex: 40">
+              <span class="mensagem-erro" *ngIf="f['vagas'].errors?.['required'] && f['vagas'].touched">Vagas obrigatórias.</span>
+              <span class="mensagem-erro" *ngIf="f['vagas'].errors?.['min'] && f['vagas'].touched">No mínimo 1 vaga.</span>
             </div>
           </div>
 
           <div class="linha-inputs">
             <div class="campo-form" style="flex: 2;">
               <label>Data</label>
-              <input type="date" class="input-modal" [(ngModel)]="modalNovaAtividade.data">
+              <input type="date" class="input-modal" formControlName="data">
+              <span class="mensagem-erro" *ngIf="f['data'].invalid && f['data'].touched">Data obrigatória.</span>
             </div>
             <div class="campo-form" style="flex: 1;">
               <label>Das</label>
-              <input type="time" class="input-modal" [(ngModel)]="modalNovaAtividade.horarioInicio">
+              <input type="time" class="input-modal" formControlName="horarioInicio">
+              <span class="mensagem-erro" *ngIf="f['horarioInicio'].invalid && f['horarioInicio'].touched">Início obrigatório.</span>
             </div>
             <div class="campo-form" style="flex: 1;">
               <label>Até</label>
-              <input type="time" class="input-modal" [(ngModel)]="modalNovaAtividade.horarioFim">
+              <input type="time" class="input-modal" formControlName="horarioFim">
+              <span class="mensagem-erro" *ngIf="f['horarioFim'].invalid && f['horarioFim'].touched">Fim obrigatório.</span>
             </div>
           </div>
 
@@ -85,13 +93,13 @@
 
               <input type="file" #fileInput hidden accept="image/*" (change)="aoSelecionarArquivo($event)">
 
-              <ng-container *ngIf="!modalNovaAtividade.imagemPreview">
+              <ng-container *ngIf="!imagemPreview">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="86 82 128 40 170 82" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><line x1="128" y1="152" x2="128" y2="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M216,152v56a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V152" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
                 <p>Clique ou arraste uma foto aqui</p>
               </ng-container>
 
-              <ng-container *ngIf="modalNovaAtividade.imagemPreview">
-                <img [src]="modalNovaAtividade.imagemPreview" class="imagem-preview">
+              <ng-container *ngIf="imagemPreview">
+                <img [src]="imagemPreview" class="imagem-preview">
                 <p class="remover-imagem" (click)="removerImagem($event)">Remover foto</p>
               </ng-container>
 
@@ -100,15 +108,18 @@
 
           <div class="campo-form">
             <label>Descrição</label>
-            <textarea class="input-modal textarea-modal" [(ngModel)]="modalNovaAtividade.descricao" rows="4" placeholder="Detalhes sobre a programação, palestrantes..."></textarea>
+            <textarea class="input-modal textarea-modal" formControlName="descricao" rows="4" placeholder="Detalhes sobre a programação, palestrantes..."></textarea>
           </div>
 
         </div>
-      </div>
+      </form>
 
       <div class="botoes-confirmacao">
-        <button class="btn-atencao-preenchido" (click)="fecharModalNovaAtividade()">Cancelar</button>
-        <button class="btn-secundario" (click)="salvarAtividade()">Salvar Atividade</button>
+        <button class="btn-secundario" (click)="fecharModalNovaAtividade()">Cancelar</button>
+
+        <button class="btn-primario" [disabled]="salvando" (click)="salvarAtividade()">
+          {{ salvando ? 'Salvando...' : 'Salvar Atividade' }}
+        </button>
       </div>
     </div>
   </div>

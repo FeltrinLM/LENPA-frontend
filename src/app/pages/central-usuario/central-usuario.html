@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <button class="btn-atencao-borda" (click)="abrirModalSair()">Sair</button>
+      <button class="btn-secundario" (click)="abrirModalSair()">Sair</button>
 
     </div>
   </div>
@@ -105,25 +105,55 @@
         </select>
       </div>
 
-      <div class="form-dinamico" *ngIf="modalNovoUsuario.nivelPermissao === 'Administrador' || modalNovoUsuario.nivelPermissao === 'Bolsista'">
-        <div class="grupo-inputs">
-          <input type="text" class="input-modal" [(ngModel)]="modalNovoUsuario.nome" placeholder="Nome da conta">
-          <input type="email" class="input-modal" [(ngModel)]="modalNovoUsuario.email" placeholder="E-mail">
-          <input type="password" class="input-modal" [(ngModel)]="modalNovoUsuario.senha" placeholder="Senha">
-          <input type="password" class="input-modal" [(ngModel)]="modalNovoUsuario.confirmarSenha" placeholder="Confirmar senha">
-        </div>
-      </div>
+      <form class="form-dinamico"
+            [formGroup]="formFuncionario"
+            *ngIf="modalNovoUsuario.nivelPermissao === 'Administrador' || modalNovoUsuario.nivelPermissao === 'Bolsista'">
 
-      <div class="form-dinamico" *ngIf="modalNovoUsuario.nivelPermissao === 'Visitante'">
         <div class="grupo-inputs">
-          <input type="text" class="input-modal" [(ngModel)]="modalNovoUsuario.nomeCompleto" placeholder="Nome Completo">
-          <input type="text" class="input-modal" [(ngModel)]="modalNovoUsuario.cidade" placeholder="Cidade que reside">
+          <div class="campo-form-reativo">
+            <input type="text" class="input-modal" formControlName="nome" placeholder="Nome da conta">
+            <span class="mensagem-erro" *ngIf="fFunc['nome'].invalid && fFunc['nome'].touched">O nome é obrigatório.</span>
+          </div>
+
+          <div class="campo-form-reativo">
+            <input type="email" class="input-modal" formControlName="email" placeholder="E-mail">
+            <span class="mensagem-erro" *ngIf="fFunc['email'].errors?.['required'] && fFunc['email'].touched">O e-mail é obrigatório.</span>
+            <span class="mensagem-erro" *ngIf="fFunc['email'].errors?.['email'] && fFunc['email'].touched">Formato de e-mail inválido.</span>
+          </div>
+
+          <div class="campo-form-reativo">
+            <input type="password" class="input-modal" formControlName="senha" placeholder="Senha">
+            <span class="mensagem-erro" *ngIf="fFunc['senha'].errors?.['required'] && fFunc['senha'].touched">A senha é obrigatória.</span>
+            <span class="mensagem-erro" *ngIf="fFunc['senha'].errors?.['minlength'] && fFunc['senha'].touched">A senha deve ter no mínimo 6 caracteres.</span>
+          </div>
+
+          <div class="campo-form-reativo">
+            <input type="password" class="input-modal" formControlName="confirmarSenha" placeholder="Confirmar senha">
+            <span class="mensagem-erro" *ngIf="formFuncionario.hasError('senhasDiferentes') && fFunc['confirmarSenha'].touched">As senhas não coincidem.</span>
+          </div>
         </div>
-      </div>
+      </form>
+
+      <form class="form-dinamico"
+            [formGroup]="formVisitante"
+            *ngIf="modalNovoUsuario.nivelPermissao === 'Visitante'">
+
+        <div class="grupo-inputs">
+          <div class="campo-form-reativo">
+            <input type="text" class="input-modal" formControlName="nomeCompleto" placeholder="Nome Completo">
+            <span class="mensagem-erro" *ngIf="fVis['nomeCompleto'].invalid && fVis['nomeCompleto'].touched">O nome completo é obrigatório.</span>
+          </div>
+
+          <div class="campo-form-reativo">
+            <input type="text" class="input-modal" formControlName="cidade" placeholder="Cidade que reside">
+            <span class="mensagem-erro" *ngIf="fVis['cidade'].invalid && fVis['cidade'].touched">A cidade é obrigatória.</span>
+          </div>
+        </div>
+      </form>
 
       <div class="botoes-confirmacao">
-        <button class="btn-atencao-preenchido" (click)="fecharModalNovoUsuario()">Cancelar</button>
-        <button class="btn-secundario" (click)="confirmarNovoUsuario()">Continuar</button>
+        <button class="btn-secundario" (click)="fecharModalNovoUsuario()">Cancelar</button>
+        <button class="btn-primario" (click)="confirmarNovoUsuario()">Continuar</button>
       </div>
     </div>
   </div>
@@ -134,7 +164,7 @@
       <p>{{ modal.mensagem }}</p>
       <div class="botoes-confirmacao">
         <button class="btn-secundario" (click)="fecharModal()">Voltar</button>
-        <button class="btn-atencao-preenchido" (click)="modal.acaoConfirmar()">{{ modal.textoConfirmar }}</button>
+        <button class="btn-primario" (click)="modal.acaoConfirmar()">{{ modal.textoConfirmar }}</button>
       </div>
     </div>
   </div>

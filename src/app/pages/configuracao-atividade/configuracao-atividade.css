@@ -240,7 +240,6 @@
   font-weight: normal;
 }
 
-/* Garantindo que o Select se comporte visualmente como o Input */
 select.input-modal {
   appearance: none;
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23006633%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
@@ -253,51 +252,6 @@ select.input-modal {
 .textarea-modal {
   resize: vertical;
   min-height: 250px;
-}
-
-/* ==========================================
-   BOTÕES DE AÇÃO
-   ========================================== */
-.botoes-confirmacao {
-  display: flex;
-  gap: 40px;
-  width: 100%;
-  margin-top: 30px;
-}
-
-button {
-  flex: 1;
-  padding: 30px 40px;
-  border-radius: 16px;
-  font-size: 45px;
-  font-weight: bold;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: all 0.2s ease;
-}
-
-.btn-secundario {
-  background-color: white;
-  color: #005A32;
-  border: 4px solid #005A32;
-}
-
-.btn-secundario:hover {
-  background-color: rgba(0, 90, 50, 0.1);
-  transform: translateY(-4px);
-}
-
-.btn-atencao-preenchido {
-  background-color: #F0A400;
-  color: white;
-  border: none;
-}
-
-.btn-atencao-preenchido:hover {
-  background-color: #c28400;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(240, 164, 0, 0.4);
 }
 
 /* ==========================================
@@ -319,7 +273,7 @@ button {
 }
 
 .dropzone.drag-over {
-  background-color: #dcfce7; /* Um verde um pouco mais escuro quando arrasta por cima */
+  background-color: #dcfce7;
   border-color: #004325;
 }
 
@@ -355,4 +309,14 @@ button {
 
 .remover-imagem:hover {
   color: #c28400 !important;
+}
+
+/* ==========================================
+   POSICIONAMENTO DOS BOTÕES (LAYOUT)
+   ========================================== */
+.botoes-confirmacao {
+  display: flex;
+  gap: 30px;      /* Aqui é a margem entre um e outro */
+  width: 100%;
+  margin-top: 40px;
 }

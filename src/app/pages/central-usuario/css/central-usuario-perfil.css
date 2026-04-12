@@ -1,0 +1,139 @@
+/* ==========================================
+   CAMPOS E INPUTS DO PERFIL (central-usuario-perfil.css)
+   ========================================== */
+.lista-credenciais {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.campo label {
+  font-family: monospace, sans-serif;
+  font-weight: bold;
+  color: #006633;
+  font-size: 40px;
+}
+
+.input-falso {
+  padding: 30px 40px;
+  border: 4px solid #006633;
+  border-radius: 16px;
+  background-color: #f0fdf4;
+  color: #004325;
+  font-family: sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-falso.modo-edicao {
+  background-color: white;
+  border: 4px dashed #006633;
+}
+
+.campo-edicao {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #004325;
+  font-family: sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  padding: 0;
+  margin-right: 40px;
+  border-bottom: 4px solid #eaf3ed;
+  transition: border-color 0.3s;
+}
+
+.campo-edicao:focus {
+  border-bottom-color: #a3e635;
+}
+
+/* ==========================================
+   FORMULÁRIO DE SENHA
+   ========================================== */
+.container-editar-senha {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background-color: white;
+  padding: 50px;
+  border-radius: 16px;
+  border: 4px dashed #006633;
+}
+
+.campo-senha-duplo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campo-senha-interno {
+  font-family: monospace, sans-serif;
+  font-size: 40px;
+  color: #555;
+  background-color: white;
+  outline: none;
+}
+
+.campo-senha-interno:focus {
+  border-color: #F0A400;
+}
+
+.mensagem-erro-senha {
+  color: #F0A400;
+  font-size: 35px;
+  font-weight: bold;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.acoes-edicao-senha {
+  display: flex;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+/* ==========================================
+   ÍCONES DE AÇÃO (SVGs)
+   ========================================== */
+.acoes-edicao {
+  display: flex;
+  gap: 30px;
+}
+
+.icone-acao svg {
+  width: 65px;
+  height: 65px;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icone-acao.lapis svg,
+.icone-acao.salvar svg {
+  color: #006633;
+}
+
+.icone-acao.lapis:hover svg,
+.icone-acao.salvar:hover svg {
+  transform: scale(1.15);
+  color: #a3e635;
+}
+
+.icone-acao.cancelar svg {
+  color: #F0A400;
+}
+
+.icone-acao.cancelar:hover svg {
+  transform: scale(1.15);
+  color: #c28400;
+}

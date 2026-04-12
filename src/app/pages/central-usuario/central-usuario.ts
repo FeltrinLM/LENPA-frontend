@@ -1,54 +1,75 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { AuthService, UsuarioLogado } from '../../core/services/auth/auth.service';
+import { FuncionarioService } from '../../core/services/api/funcionario.service';
+import { VisitanteService } from '../../core/services/api/visitante.service';
 
 @Component({
   selector: 'app-central-usuario',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './central-usuario.html',
-  styleUrl: './central-usuario.css',
+  styleUrls: [
+    './css/central-usuario-layout.css',
+    './css/central-usuario-perfil.css',
+    './css/central-usuario-modais.css'
+  ]
 })
 export class CentralUsuario implements OnInit {
 
   private authService = inject(AuthService);
+  private funcionarioService = inject(FuncionarioService);
+  private visitanteService = inject(VisitanteService);
   private router = inject(Router);
+  private fb = inject(FormBuilder);
 
   usuario: UsuarioLogado | null = null;
 
-  // --- EDIÇÃO DE PERFIL ---
+  // ==========================================
+  // FORMULÁRIOS REATIVOS (Inicialização Imediata)
+  // ==========================================
+
+  formFuncionario: FormGroup = this.fb.group({
+    nome: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    senha: ['', [Validators.required, Validators.minLength(6)]],
+    confirmarSenha: ['', Validators.required]
+  }, { validators: this.validarSenhasIguais });
+
+  formVisitante: FormGroup = this.fb.group({
+    nomeCompleto: ['', Validators.required],
+    cidade: ['', Validators.required]
+  });
+
+  // Validador com a tipagem correta exigida pelo Angular (AbstractControl)
+  private validarSenhasIguais(group: AbstractControl) {
+    const senha = group.get('senha')?.value;
+    const confirmarSenha = group.get('confirmarSenha')?.value;
+    return senha === confirmarSenha ? null : { senhasDiferentes: true };
+  }
+
+  // Atalhos blindados para o HTML
+  get fFunc() { return this.formFuncionario.controls; }
+  get fVis() { return this.formVisitante.controls; }
+
+  // --- CONTROLES VISUAIS ---
   editandoNome: boolean = false;
   nomeEditado: string = '';
-
   editandoEmail: boolean = false;
   emailEditado: string = '';
-
   editandoSenha: boolean = false;
   senhaAtual: string = '';
   novaSenha: string = '';
   erroSenha: string = '';
 
-  // --- MODAL DINÂMICO ---
-  modal = {
-    exibir: false,
-    titulo: '',
-    mensagem: '',
-    textoConfirmar: '',
-    acaoConfirmar: () => {}
-  };
+  modal = { exibir: false, titulo: '', mensagem: '', textoConfirmar: '', acaoConfirmar: () => {} };
 
-  // --- CADASTRO DE NOVO USUÁRIO ---
   modalNovoUsuario = {
     exibir: false,
-    nivelPermissao: '',
-    nome: '',
-    email: '',
-    senha: '',
-    confirmarSenha: '',
-    nomeCompleto: '',
-    cidade: ''
+    nivelPermissao: ''
   };
 
   ngOnInit() {
@@ -60,42 +81,24 @@ export class CentralUsuario implements OnInit {
   }
 
   // ==========================================
-  // ATUALIZAR NOME E EMAIL
+  // ATUALIZAR NOME, EMAIL E SENHA
   // ==========================================
-  editarNome() {
-    this.nomeEditado = this.usuario?.nome || '';
-    this.editandoNome = true;
-  }
-
+  editarNome() { this.nomeEditado = this.usuario?.nome || ''; this.editandoNome = true; }
   salvarNome() {
     if (!this.usuario) return;
     const dados = { nome: this.nomeEditado, email: this.usuario.email };
-
-    this.authService.atualizarPerfil(dados).subscribe({
-      next: () => {
-        this.usuario!.nome = this.nomeEditado;
-        this.editandoNome = false;
-        alert('Nome atualizado com sucesso!');
-      },
+    this.funcionarioService.atualizarPerfil(dados).subscribe({
+      next: () => { this.usuario!.nome = this.nomeEditado; this.editandoNome = false; alert('Nome atualizado com sucesso!'); },
       error: (err: any) => alert(err.error?.message || 'Erro ao atualizar nome.')
     });
   }
 
-  editarEmail() {
-    this.emailEditado = this.usuario?.email || '';
-    this.editandoEmail = true;
-  }
-
+  editarEmail() { this.emailEditado = this.usuario?.email || ''; this.editandoEmail = true; }
   salvarEmail() {
     if (!this.usuario) return;
     const dados = { nome: this.usuario.nome, email: this.emailEditado };
-
-    this.authService.atualizarPerfil(dados).subscribe({
-      next: () => {
-        this.usuario!.email = this.emailEditado;
-        this.editandoEmail = false;
-        alert('E-mail atualizado com sucesso!');
-      },
+    this.funcionarioService.atualizarPerfil(dados).subscribe({
+      next: () => { this.usuario!.email = this.emailEditado; this.editandoEmail = false; alert('E-mail atualizado com sucesso!'); },
       error: (err: any) => alert(err.error?.message || 'Erro ao atualizar e-mail.')
     });
   }
@@ -103,116 +106,88 @@ export class CentralUsuario implements OnInit {
   cancelarEdicao(campo: 'nome' | 'email' | 'senha') {
     if (campo === 'nome') this.editandoNome = false;
     if (campo === 'email') this.editandoEmail = false;
-    if (campo === 'senha') {
-      this.editandoSenha = false;
-      this.erroSenha = '';
-    }
+    if (campo === 'senha') { this.editandoSenha = false; this.erroSenha = ''; }
   }
 
-  // ==========================================
-  // TROCA DE SENHA
-  // ==========================================
-  editarSenha() {
-    this.editandoSenha = true;
-    this.senhaAtual = '';
-    this.novaSenha = '';
-    this.erroSenha = '';
-  }
-
+  editarSenha() { this.editandoSenha = true; this.senhaAtual = ''; this.novaSenha = ''; this.erroSenha = ''; }
   tentarSalvarSenha() {
     this.erroSenha = '';
     if (!this.senhaAtual) { this.erroSenha = 'Por favor, informe a senha atual.'; return; }
     if (!this.novaSenha) { this.erroSenha = 'A nova senha não pode ficar em branco.'; return; }
     if (this.senhaAtual === this.novaSenha) { this.erroSenha = 'A nova senha deve ser diferente da atual.'; return; }
-
-    this.abrirModal(
-      'Confirmar Alteração',
-      'Deseja realmente alterar a sua senha?',
-      'Sim, alterar',
-      () => this.executarTrocaSenha()
-    );
+    this.abrirModal('Confirmar Alteração', 'Deseja realmente alterar a sua senha?', 'Sim, alterar', () => this.executarTrocaSenha());
   }
-
   executarTrocaSenha() {
     const dados = { senhaAtual: this.senhaAtual, novaSenha: this.novaSenha };
-    this.authService.alterarSenha(dados).subscribe({
-      next: () => {
-        this.fecharModal();
-        this.editandoSenha = false;
-        alert('Senha alterada com sucesso!');
-      },
-      error: (err: any) => {
-        this.fecharModal();
-        this.erroSenha = err.error?.message || 'Erro ao alterar senha.';
-      }
+    this.funcionarioService.alterarSenha(dados).subscribe({
+      next: () => { this.fecharModal(); this.editandoSenha = false; alert('Senha alterada com sucesso!'); },
+      error: (err: any) => { this.fecharModal(); this.erroSenha = err.error?.message || 'Erro ao alterar senha.'; }
     });
   }
 
   // ==========================================
-  // CRIAR NOVO USUÁRIO (LÓGICA HIERÁRQUICA)
+  // CRIAR NOVO USUÁRIO
   // ==========================================
   abrirModalNovoUsuario() {
-    // Verificamos se o usuário atual é Bolsista (Ajustado para 'BOLSISTA')
     const eBolsista = this.usuario?.role === 'BOLSISTA';
+    this.modalNovoUsuario = { exibir: true, nivelPermissao: eBolsista ? 'Visitante' : '' };
 
-    this.modalNovoUsuario = {
-      exibir: true,
-      nivelPermissao: eBolsista ? 'Visitante' : '',
-      nome: '',
-      email: '',
-      senha: '',
-      confirmarSenha: '',
-      nomeCompleto: '',
-      cidade: ''
-    };
+    // Limpa os formulários ao abrir
+    this.formFuncionario.reset();
+    this.formVisitante.reset();
   }
 
   fecharModalNovoUsuario() { this.modalNovoUsuario.exibir = false; }
 
   confirmarNovoUsuario() {
     const nivel = this.modalNovoUsuario.nivelPermissao;
-    if (!nivel) { alert('Selecione um nível de permissão!'); return; }
 
     if (nivel === 'Administrador' || nivel === 'Bolsista') {
-      if (this.modalNovoUsuario.senha !== this.modalNovoUsuario.confirmarSenha) {
-        alert('As senhas não coincidem!');
+      if (this.formFuncionario.invalid) {
+        this.formFuncionario.markAllAsTouched();
         return;
       }
+      this.salvarFuncionario(nivel);
 
-      const payload = {
-        nome: this.modalNovoUsuario.nome,
-        email: this.modalNovoUsuario.email,
-        senha: this.modalNovoUsuario.senha,
-        nivelPermissao: nivel === 'Administrador' ? 'ADMINISTRADOR' : 'BOLSISTA'
-      };
-
-      this.authService.cadastrarFuncionario(payload).subscribe({
-        next: () => {
-          alert(`${nivel} cadastrado com sucesso!`);
-          this.fecharModalNovoUsuario();
-        },
-        error: (err: any) => alert(err.error?.message || 'Erro ao cadastrar funcionário.')
-      });
-    } else {
-      console.log('Dados do visitante:', this.modalNovoUsuario);
-      alert('Cadastro de visitante em processamento...');
-      this.fecharModalNovoUsuario();
+    } else if (nivel === 'Visitante') {
+      if (this.formVisitante.invalid) {
+        this.formVisitante.markAllAsTouched();
+        return;
+      }
+      this.salvarVisitante();
     }
+  }
+
+  private salvarFuncionario(nivel: string) {
+    const payload = {
+      nome: this.formFuncionario.value.nome,
+      email: this.formFuncionario.value.email,
+      senha: this.formFuncionario.value.senha,
+      nivelPermissao: nivel === 'Administrador' ? 'ADMINISTRADOR' : 'BOLSISTA'
+    };
+
+    this.funcionarioService.cadastrar(payload).subscribe({
+      next: () => { alert(`${nivel} cadastrado com sucesso!`); this.fecharModalNovoUsuario(); },
+      error: (err: any) => alert(err.error?.message || 'Erro ao cadastrar funcionário.')
+    });
+  }
+
+  private salvarVisitante() {
+    const payload = {
+      nome: this.formVisitante.value.nomeCompleto,
+      cidade: this.formVisitante.value.cidade
+    };
+
+    this.visitanteService.cadastrar(payload).subscribe({
+      next: () => { alert('Visitante cadastrado com sucesso!'); this.fecharModalNovoUsuario(); },
+      error: (err: any) => alert(err.error?.message || 'Erro ao cadastrar visitante.')
+    });
   }
 
   // ==========================================
   // LOGOUT E AUXILIARES
   // ==========================================
-  abrirModalSair() {
-    this.abrirModal('Deseja sair?', 'Você precisará fazer login novamente.', 'Sim, sair', () => {
-      this.authService.logout();
-      this.router.navigate(['/']);
-    });
-  }
-
-  abrirModal(titulo: string, mensagem: string, textoConfirmar: string, acao: () => void) {
-    this.modal = { exibir: true, titulo, mensagem, textoConfirmar, acaoConfirmar: acao };
-  }
-
+  abrirModalSair() { this.abrirModal('Deseja sair?', 'Você precisará fazer login novamente.', 'Sim, sair', () => { this.authService.logout(); this.router.navigate(['/']); }); }
+  abrirModal(titulo: string, mensagem: string, textoConfirmar: string, acao: () => void) { this.modal = { exibir: true, titulo, mensagem, textoConfirmar, acaoConfirmar: acao }; }
   fecharModal() { this.modal.exibir = false; }
 }
