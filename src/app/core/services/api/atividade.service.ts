@@ -7,24 +7,28 @@ import { Observable } from 'rxjs';
 })
 export class AtividadeService {
 
-  // Injetando apenas o HttpClient
   private http = inject(HttpClient);
-
-  // Confirme se a sua porta do Spring Boot é essa mesma
   private BASE_URL = 'http://localhost:8080/atividades';
 
-  // PASSO 1: Fazer o upload da imagem física
+  // 1. UPLOAD DA IMAGEM
   uploadImagem(file: File): Observable<{ url: string }> {
     const formData = new FormData();
     formData.append('arquivo', file);
-
-    // O Interceptor vai automaticamente interceptar esse POST e adicionar o Token!
     return this.http.post<{ url: string }>(`${this.BASE_URL}/upload`, formData);
   }
 
-  // PASSO 2: Enviar o JSON com os dados da atividade
+  // 2. CADASTRO DA ATIVIDADE
   cadastrar(payload: any): Observable<any> {
-    // Mesma coisa aqui, envio limpo e o Interceptor cuida da segurança
     return this.http.post(this.BASE_URL, payload);
+  }
+
+  // 3. LISTAGEM
+  listar(): Observable<any> {
+    return this.http.get(this.BASE_URL);
+  }
+
+  // 4. EXCLUSÃO
+  excluir(id: number): Observable<any> {
+    return this.http.delete(`${this.BASE_URL}/${id}`);
   }
 }
