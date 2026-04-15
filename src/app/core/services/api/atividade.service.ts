@@ -31,4 +31,9 @@ export class AtividadeService {
   excluir(id: number): Observable<any> {
     return this.http.delete(`${this.BASE_URL}/${id}`);
   }
+
+  // 5. ATUALIZAÇÃO DA ATIVIDADE
+  atualizar(payload: any): Observable<any> {
+    return this.http.put(this.BASE_URL, payload);
+  }
 }

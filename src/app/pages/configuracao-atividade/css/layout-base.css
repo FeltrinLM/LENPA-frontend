@@ -1,0 +1,62 @@
+/* ==========================================
+   ESTRUTURA PRINCIPAL (TRIPLICADA E CLEAN)
+   ========================================== */
+.pagina-central {
+  min-height: 100vh;
+  padding: 120px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f1f5f9; /* Fundo geral levemente cinza */
+}
+
+.cabecalho-pagina {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 4200px;
+  margin-bottom: 120px;
+}
+
+.titulo-pagina {
+  font-family: monospace, 'Courier New', Courier;
+  color: #005A32;
+  font-size: 126px;
+  margin: 0;
+  font-weight: 900;
+}
+
+.card-formulario {
+  background-color: white;
+  padding: 150px;
+  border-radius: 60px;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 4200px;
+  display: flex;
+  flex-direction: column;
+  gap: 90px;
+}
+
+.boas-vindas h2 {
+  color: #006633;
+  font-family: sans-serif;
+  font-size: 84px;
+  margin: 0 0 30px 0;
+}
+
+.boas-vindas p {
+  color: #64748b;
+  font-size: 54px;
+  margin: 0;
+}
+
+.placeholder-atividades p {
+  color: #94a3b8;
+  font-size: 60px;
+  font-style: italic;
+  text-align: center;
+  margin: 180px 0;
+}

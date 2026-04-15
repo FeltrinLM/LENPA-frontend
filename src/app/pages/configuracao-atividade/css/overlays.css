@@ -1,0 +1,266 @@
+/* ==========================================
+   BOTÃO FLUTUANTE (FAB)
+   ========================================== */
+.btn-flutuante-cadastrar {
+  position: fixed;
+  bottom: 150px;
+  right: 500px;
+  width: 240px;
+  height: 240px;
+  background-color: #005A32;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 30px 75px rgba(0, 90, 50, 0.4);
+  transition: width 0.3s ease, border-radius 0.3s ease, padding 0.3s ease;
+  z-index: 900;
+  flex: none;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.texto-fab {
+  font-family: monospace, sans-serif;
+  font-size: 54px;
+  font-weight: bold;
+  white-space: nowrap;
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+  margin-right: 0;
+  transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease, margin-right 0.3s ease;
+}
+
+.icone-fab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 96px;
+  height: 96px;
+}
+
+.icone-fab svg {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-flutuante-cadastrar:hover {
+  width: 720px;
+  border-radius: 120px;
+  padding: 0 75px;
+}
+
+.btn-flutuante-cadastrar:hover .texto-fab {
+  width: auto;
+  opacity: 1;
+  visibility: visible;
+  margin-right: 45px;
+}
+
+/* ==========================================
+   MODAIS DE CADASTRO E EXCLUSÃO
+   ========================================== */
+@keyframes overlayFadeIn {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to { opacity: 1; backdrop-filter: blur(15px); }
+}
+
+@keyframes modalPopIn {
+  from { opacity: 0; transform: scale(0.95) translateY(60px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayFadeIn 0.3s ease-out forwards;
+}
+
+.modal-confirmacao {
+  background-color: white;
+  padding: 120px;
+  border-radius: 60px;
+  box-shadow: 0 60px 180px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  text-align: center;
+  max-width: 2400px;
+  animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-cadastro {
+  width: 100%;
+  max-width: 2700px;
+  min-width: 1800px;
+}
+
+.modal-confirmacao h2 {
+  font-size: 108px;
+  color: #004325;
+  margin: 0;
+  font-family: sans-serif;
+  font-weight: 900;
+}
+
+.modal-confirmacao p {
+  font-size: 54px;
+  color: #666;
+  margin: 0 0 30px 0;
+  line-height: 1.4;
+}
+
+.form-dinamico {
+  width: 100%;
+}
+
+.grupo-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  width: 100%;
+}
+
+.linha-inputs {
+  display: flex;
+  gap: 60px;
+  width: 100%;
+}
+
+.campo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: left;
+}
+
+.campo-form label {
+  font-family: monospace, sans-serif;
+  font-weight: bold;
+  color: #006633;
+  font-size: 48px;
+  margin-left: 15px;
+}
+
+.input-modal {
+  width: 100%;
+  padding: 36px 48px;
+  border: 6px solid #006633;
+  border-radius: 30px;
+  background-color: #f0fdf4;
+  color: #004325;
+  font-family: sans-serif;
+  font-size: 48px;
+  font-weight: bold;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-modal:focus {
+  border-color: #005A32;
+  background-color: white;
+}
+
+.input-modal::placeholder {
+  color: #006633;
+  opacity: 0.4;
+  font-weight: normal;
+}
+
+select.input-modal {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23006633%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 45px top 50%;
+  background-size: 48px auto;
+  cursor: pointer;
+}
+
+.textarea-modal {
+  resize: vertical;
+  min-height: 360px;
+}
+
+.dropzone {
+  border: 6px dashed #006633;
+  border-radius: 30px;
+  background-color: #f0fdf4;
+  padding: 75px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 450px;
+}
+
+.dropzone.drag-over {
+  background-color: #dcfce7;
+  border-color: #004325;
+}
+
+.dropzone svg {
+  width: 144px;
+  height: 144px;
+  color: #006633;
+  margin-bottom: 30px;
+}
+
+.dropzone p {
+  color: #004325;
+  font-size: 48px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.imagem-preview {
+  max-width: 100%;
+  max-height: 540px;
+  border-radius: 24px;
+  object-fit: cover;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.remover-imagem {
+  color: #F0A400 !important;
+  font-size: 42px !important;
+  margin-top: 45px !important;
+  text-decoration: underline;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.remover-imagem:hover {
+  color: #c28400 !important;
+}
+
+.mensagem-erro {
+  color: #d32f2f;
+  font-size: 36px;
+  font-family: sans-serif;
+  margin-top: -15px;
+}
+
+.botoes-confirmacao {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  width: 100%;
+  margin-top: 60px;
+}
