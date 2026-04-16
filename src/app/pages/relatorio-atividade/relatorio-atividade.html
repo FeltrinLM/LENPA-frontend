@@ -3,7 +3,6 @@
   <h1 class="titulo-pagina">Relatórios</h1>
 
   <div class="card-formulario">
-
     <div class="linha-form">
       <div class="campo">
         <label>De (Data inicial)</label>
@@ -22,9 +21,51 @@
     </div>
 
     <div class="rodape-form">
-      <button class="btn-gerar" [disabled]="datasInvalidas" (click)="gerarRelatorio()">
+      <button class="btn-primario" style="flex: none; padding: 30px 100px;" [disabled]="datasInvalidas" (click)="gerarRelatorio()">
         Gerar Relatório
       </button>
+    </div>
+  </div>
+
+  <div class="resultados-relatorio" *ngIf="relatorioGerado">
+
+    <div class="bloco-resultado">
+      <h2>Resultados:</h2>
+      <p class="total-destaque">Total de visitantes em atividades: <strong>{{ totalVisitantesGeral }}</strong></p>
+    </div>
+
+    <div class="bloco-resultado">
+      <h2>Atividades realizadas:</h2>
+
+      <div class="lista-eventos-relatorio">
+        <div class="card-evento-relatorio" *ngFor="let evento of eventosRealizados">
+
+          <img [src]="evento.imagem" alt="Capa do evento" class="imagem-evento-relatorio">
+
+          <div class="info-evento-relatorio">
+            <h3>{{ evento.nome }}</h3>
+            <p>Visitantes: <strong>{{ evento.visitantes }}</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bloco-resultado bloco-graficos">
+      <h2>Distribuição dos visitantes:</h2>
+
+      <div class="container-grafico">
+        <h3>Localidade dos Visitantes</h3>
+
+        <div class="grafico-pizza" [style.background]="estiloGraficoPizza"></div>
+
+        <div class="legenda-grafico">
+          <div class="item-legenda" *ngFor="let dado of dadosCidades">
+            <span class="cor-legenda" [style.background]="dado.cor"></span>
+            <p>{{ dado.porcentagem }}% {{ dado.localidade }}</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>

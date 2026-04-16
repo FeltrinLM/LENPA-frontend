@@ -1,11 +1,17 @@
-/* 1. REGRA GLOBAL: Respeita a sidebar gigante */
+/* ==========================================
+   ESTRUTURA BASE E FILTROS
+   ========================================== */
 :host {
   display: block;
   width: calc(100% - 400px);
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-height: 100vh;
 }
 
-/* 2. CONTAINER DA PÁGINA */
 .pagina-relatorio {
+  width: 100%;
   min-height: 100vh;
   padding: 80px;
   box-sizing: border-box;
@@ -15,7 +21,46 @@
   background-color: #f8fafc;
 }
 
-/* 3. TÍTULO DA PÁGINA */
+.card-formulario {
+  background-color: white;
+  padding: 80px;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 2800px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin-bottom: 80px;
+}
+
+.linha-form { display: flex; gap: 40px; width: 100%; }
+.campo { display: flex; flex-direction: column; flex: 1; gap: 15px; }
+.campo label { font-family: monospace, sans-serif; font-weight: bold; color: #006633; font-size: 45px; }
+
+.input-lenpa {
+  padding: 30px 40px; border: 4px solid #006633; border-radius: 16px;
+  background-color: white; color: #333; font-family: sans-serif;
+  font-size: 40px; outline: none; transition: all 0.2s; height: auto;
+}
+.input-lenpa:focus { border-color: #a3e635; box-shadow: 0 0 0 8px rgba(163, 230, 53, 0.2); }
+
+.mensagem-aviso {
+  background-color: #fffbeb; color: #b37a00; border: 6px solid #F0A400;
+  padding: 30px 40px; border-radius: 16px; font-size: 36px; font-weight: bold;
+  display: flex; align-items: center; gap: 30px; animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rodape-form { display: flex; justify-content: center; margin-top: 40px; }
+
+/* ==========================================
+   TÍTULO DA PÁGINA
+   ========================================== */
 .titulo-pagina {
   font-family: monospace, 'Courier New', Courier;
   color: #005A32;
@@ -25,111 +70,149 @@
   font-weight: 900;
 }
 
-/* 4. CARD BRANCO (Igual ao de Agendamento) */
-.card-formulario {
+/* ==========================================
+   RESULTADOS DO RELATÓRIO
+   ========================================== */
+.resultados-relatorio {
+  width: 100%;
+  max-width: 2800px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.bloco-resultado {
   background-color: white;
-  padding: 80px;
   border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-
-  width: 100%;
-  max-width: 1800px; /* LARGURA GIGANTE */
-
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
+  padding: 80px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
 }
 
-/* Deixa os campos lado a lado em telas grandes */
-.linha-form {
-  display: flex;
-  gap: 40px;
-  width: 100%;
-}
-
-/* Cada campo individual (label + input) */
-.campo {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: 15px;
-}
-
-.campo label {
+.bloco-resultado h2 {
   font-family: monospace, sans-serif;
-  font-weight: bold;
-  color: #006633;
-  font-size: 36px;
+  color: #005A32;
+  font-size: 60px;
+  margin: 0 0 50px 0;
+  border-bottom: 4px solid #e2e8f0;
+  padding-bottom: 20px;
 }
 
-/* Inputs de data (Brancos com borda verde) */
-.input-lenpa {
-  padding: 30px 40px;
-  border: 4px solid #006633;
-  border-radius: 16px;
-  background-color: white;
+.total-destaque {
+  font-size: 70px;
   color: #333;
+  margin: 0;
   font-family: sans-serif;
-  font-size: 40px;
-  outline: none;
-  transition: all 0.2s;
-  height: auto;
 }
 
-.input-lenpa:focus {
-  border-color: #a3e635;
-  box-shadow: 0 0 0 8px rgba(163, 230, 53, 0.2);
+.total-destaque strong { color: #005A32; }
+
+/* ==========================================
+   LISTA DE EVENTOS E IMAGENS REAIS
+   ========================================== */
+.lista-eventos-relatorio {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
-/* ALERTA DE ERRO (#F0A400) */
-.mensagem-aviso {
-  background-color: #fffbeb; /* Um amarelo muito clarinho no fundo */
-  color: #b37a00; /* Tom mais escuro do mostarda para o texto ficar legível */
-  border: 6px solid #F0A400; /* A cor da paleta aplicada na borda */
-  padding: 30px 40px;
-  border-radius: 16px;
-  font-size: 36px;
-  font-family: sans-serif;
-  font-weight: bold;
+.card-evento-relatorio {
   display: flex;
   align-items: center;
-  gap: 30px;
-  animation: fadeIn 0.3s ease-in;
+  gap: 60px;
+  background-color: #f1f5f9;
+  border-radius: 24px;
+  padding: 40px;
+  border: 4px solid #e2e8f0;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Botão principal verde */
-.rodape-form {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
-
-.btn-gerar {
-  background-color: #006633;
-  color: white;
-  border: none;
-  padding: 30px 100px;
-  font-size: 48px;
-  font-weight: bold;
+.imagem-evento-relatorio {
+  width: 400px;
+  height: 250px;
+  object-fit: cover;
   border-radius: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-.btn-gerar:hover:not(:disabled) {
-  background-color: #004d26;
-  transform: translateY(-4px);
+.info-evento-relatorio h3 {
+  font-size: 55px;
+  color: #005A32;
+  margin: 0 0 20px 0;
+  font-family: monospace, sans-serif;
 }
 
-/* Visual do botão quando as datas estão erradas */
-.btn-gerar:disabled {
-  background-color: #cccccc;
-  color: #888888;
-  cursor: not-allowed;
-  transform: none;
+.info-evento-relatorio p {
+  font-size: 45px;
+  color: #475569;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.info-evento-relatorio p strong { color: #000; }
+
+/* ==========================================
+   GRÁFICOS
+   ========================================== */
+.bloco-graficos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container-grafico {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+}
+
+.container-grafico h3 {
+  font-size: 50px;
+  color: #005A32;
+  font-family: monospace, sans-serif;
+  margin: 0;
+}
+
+.grafico-pizza {
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+/* Legenda com 10 itens organizados em 5 colunas perfeitas */
+.legenda-grafico {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 30px 40px;
+  width: 100%;
+  margin-top: 50px;
+  background-color: #f8fafc;
+  padding: 40px;
+  border-radius: 20px;
+  border: 4px solid #e2e8f0;
+}
+
+.item-legenda {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cor-legenda {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.item-legenda p {
+  font-size: 38px;
+  color: #333;
+  margin: 0;
+  font-family: sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
 }

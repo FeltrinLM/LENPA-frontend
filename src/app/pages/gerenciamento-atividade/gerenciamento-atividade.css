@@ -1,27 +1,29 @@
-/* 1. REGRA GLOBAL: Respeita a sidebar gigante */
 :host {
   display: block;
-  /* Assumindo que sua sidebar tem uns 400px baseados nos códigos anteriores */
   width: calc(100% - 400px);
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-height: 100vh;
 }
 
 /* 2. CONTAINER DA PÁGINA */
 .pagina-gerenciamento {
+  width: 100%;
   min-height: 100vh;
-  padding: 80px; /* Mais respiro nas bordas da tela */
+  padding: 80px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #f8fafc;
 }
-
 /* 3. TÍTULO DA PÁGINA GIGANTE */
 .titulo-pagina {
   font-family: monospace, 'Courier New', Courier;
   color: #005A32;
-  font-size: 100px; /* Era 40px, agora grita na tela */
-  margin-bottom: 80px; /* Espaço gigante abaixo do título */
+  font-size: 100px;
+  margin-bottom: 80px;
   text-align: center;
   font-weight: 900;
 }
@@ -29,22 +31,22 @@
 /* 4. O CARD DO FORMULÁRIO */
 .card-formulario-condicional {
   background-color: white;
-  padding: 80px; /* Dobro de espaço interno */
-  border-radius: 24px; /* Cantos bem mais redondos */
+  padding: 80px;
+  border-radius: 24px;
   box-shadow: 0 20px 50px rgba(0,0,0,0.1);
 
   width: 100%;
-  max-width: 1800px; /* LARGURA GIGANTE (era 800px) */
+  max-width: 1800px;
 
   display: flex;
   flex-direction: column;
-  gap: 50px; /* Muito mais espaço entre as linhas do formulário */
+  gap: 50px;
 }
 
 /* Deixa os campos lado a lado em telas grandes */
 .linha-form {
   display: flex;
-  gap: 40px; /* Espaço maior entre os campos da mesma linha */
+  gap: 40px;
   width: 100%;
 }
 
@@ -53,34 +55,33 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 15px; /* Espaço entre a Label e o Input */
+  gap: 15px;
 }
 
 .campo label {
   font-family: monospace, sans-serif;
   font-weight: bold;
   color: #006633;
-  font-size: 36px; /* Textos de instrução gigantes */
+  font-size: 36px;
 }
 
 /* Padronização de Inputs e Selects GIGANTES */
 .input-lenpa {
-  padding: 30px 40px; /* Input super "gordinho" */
-  border: 4px solid #006633; /* Borda bem grossa */
+  padding: 30px 40px;
+  border: 4px solid #006633;
   border-radius: 16px;
   background-color: white;
   color: #333;
   font-family: sans-serif;
-  font-size: 40px; /* Letra de quem tá digitando gigante */
+  font-size: 40px;
   outline: none;
   transition: all 0.2s;
-  /* Garante que o select tenha a mesma altura que o input */
   height: auto;
 }
 
 .input-lenpa:focus {
   border-color: #a3e635;
-  box-shadow: 0 0 0 8px rgba(163, 230, 53, 0.2); /* Sombra de foco maior */
+  box-shadow: 0 0 0 8px rgba(163, 230, 53, 0.2);
 }
 
 /* Consertando a setinha do <select> para telas grandes */
@@ -99,7 +100,7 @@ select.input-lenpa {
   flex-direction: column;
   gap: 40px;
   padding-top: 40px;
-  border-top: 4px dashed #ddd; /* Linha divisória mais grossa */
+  border-top: 4px dashed #ddd;
 }
 
 /* Destaque visual para a área de cadastro de nova pessoa */
@@ -125,21 +126,4 @@ select.input-lenpa {
   display: flex;
   justify-content: center;
   margin-top: 40px;
-}
-
-.btn-cadastrar {
-  background-color: #006633;
-  color: white;
-  border: none;
-  padding: 30px 100px; /* Botão massivo */
-  font-size: 48px; /* Texto do botão gigante */
-  font-weight: bold;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
-}
-
-.btn-cadastrar:hover {
-  background-color: #004d26;
-  transform: translateY(-4px);
 }
