@@ -71,8 +71,12 @@
                   <input type="number" formControlName="vagas" class="input-linha">
                 </div>
                 <div class="campo-edicao-linha">
-                  <label>Horário / Local:</label>
-                  <input type="text" formControlName="horario" class="input-linha" placeholder="Ex: 14h às 16h - Lab">
+                  <label>Horário:</label>
+                  <input type="text" formControlName="horario" class="input-linha" placeholder="Ex: 14h às 16h">
+                </div>
+                <div class="campo-edicao-linha">
+                  <label>Local:</label>
+                  <input type="text" formControlName="local" class="input-linha" placeholder="Ex: UFSM Politécnico">
                 </div>
                 <div class="campo-edicao-linha">
                   <label>Data:</label>
@@ -117,6 +121,7 @@
 
       <form class="form-dinamico" [formGroup]="formAtividade">
         <div class="grupo-inputs">
+
           <div class="campo-form">
             <label>Nome da Atividade</label>
             <input type="text" class="input-modal" formControlName="nome" placeholder="Ex: Workshop de Botânica">
@@ -158,6 +163,12 @@
               <input type="time" class="input-modal" formControlName="horarioFim">
               <span class="mensagem-erro" *ngIf="f['horarioFim'].invalid && f['horarioFim'].touched">Fim obrigatório.</span>
             </div>
+          </div>
+
+          <div class="campo-form">
+            <label>Local da Atividade</label>
+            <input type="text" class="input-modal" formControlName="local" placeholder="Ex: Laboratório de Botânica - Sala 204">
+            <span class="mensagem-erro" *ngIf="f['local'].invalid && f['local'].touched">O local é obrigatório.</span>
           </div>
 
           <div class="campo-form">

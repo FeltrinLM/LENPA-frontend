@@ -53,6 +53,7 @@ export class ConfiguracaoAtividade implements OnInit {
       data: ['', Validators.required],
       horarioInicio: ['', Validators.required],
       horarioFim: ['', Validators.required],
+      local: ['', Validators.required], // <-- NOVO CAMPO ADICIONADO
       descricao: ['']
     });
 
@@ -65,7 +66,6 @@ export class ConfiguracaoAtividade implements OnInit {
     this.atividadeService.listar().subscribe({
       next: (res) => {
         this.atividadesCadastradas = res.content || [];
-
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Erro ao buscar atividades', err)
@@ -73,7 +73,7 @@ export class ConfiguracaoAtividade implements OnInit {
   }
 
   // ==========================================
-  // LÓGICA DE EDIÇÃO INLINE (NOVO!)
+  // LÓGICA DE EDIÇÃO INLINE
   // ==========================================
   iniciarEdicao(ativ: any) {
     this.atividadeEmEdicao = ativ.idAtividade;
@@ -85,7 +85,8 @@ export class ConfiguracaoAtividade implements OnInit {
       tipo: [ativ.tipo, Validators.required],
       vagas: [ativ.vagas, [Validators.required, Validators.min(1)]],
       data: [ativ.data, Validators.required],
-      horario: [ativ.horario, Validators.required], // Editaremos a string completa
+      horario: [ativ.horario, Validators.required],
+      local: [ativ.local, Validators.required], // <-- NOVO CAMPO ADICIONADO
       descricao: [ativ.descricao]
     });
 
@@ -152,7 +153,7 @@ export class ConfiguracaoAtividade implements OnInit {
   }
 
   // ==========================================
-  // MODAIS E CRIAÇÃO (IGUAL AO QUE JÁ TINHA)
+  // MODAIS E CRIAÇÃO
   // ==========================================
   abrirModalNovaAtividade() {
     this.exibirModal = true;
@@ -220,8 +221,14 @@ export class ConfiguracaoAtividade implements OnInit {
     const horarioFormatado = `${formVals.horarioInicio} às ${formVals.horarioFim}`;
 
     const payload = {
-      nome: formVals.nome, data: formVals.data, horario: horarioFormatado, tipo: formVals.tipo,
-      vagas: formVals.vagas, descricao: formVals.descricao, imagem: ''
+      nome: formVals.nome,
+      data: formVals.data,
+      horario: horarioFormatado,
+      local: formVals.local, // <-- NOVO CAMPO INCLUÍDO NO PAYLOAD
+      tipo: formVals.tipo,
+      vagas: formVals.vagas,
+      descricao: formVals.descricao,
+      imagem: ''
     };
 
     if (this.arquivoImagem) {
