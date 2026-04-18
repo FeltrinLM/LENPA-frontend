@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
+import { AtividadeService } from '../../core/services/api/atividade.service';
 
 @Component({
   selector: 'app-inicial',
@@ -11,17 +12,42 @@ import { AuthService } from '../../core/services/auth/auth.service';
   templateUrl: './inicial.html',
   styleUrl: './inicial.css',
 })
-export class Inicial {
+export class Inicial implements OnInit {
   exibirLogin: boolean = false;
 
-  // Removido o 'private' para o HTML poder acessar!
   authService = inject(AuthService);
   private router = inject(Router);
+  private atividadeService = inject(AtividadeService);
+  private cdr = inject(ChangeDetectorRef);
 
   email = '';
   senha = '';
   mensagemErro = '';
   carregando = false;
+
+  // Variável para guardar as atividades que vierem do Java
+  atividades: any[] = [];
+
+  ngOnInit() {
+    this.carregarAtividades();
+  }
+
+  carregarAtividades() {
+    this.atividadeService.listar().subscribe({
+      next: (res) => {
+        // Blindagem: Aceita tanto a paginação do Spring (res.content) quanto uma lista direta (Array)
+        this.atividades = res.content ? res.content : (Array.isArray(res) ? res : []);
+
+        console.log('✅ Atividades recebidas do Java:', this.atividades); // DEBUG
+
+        // Força o HTML a se desenhar novamente agora que os dados chegaram
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('❌ Erro ao conectar com a API de atividades:', err);
+      }
+    });
+  }
 
   abrirLogin() {
     this.exibirLogin = true;

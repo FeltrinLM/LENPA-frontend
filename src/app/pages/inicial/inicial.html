@@ -17,15 +17,73 @@
     </div>
   </div>
 
+  <div class="secao-atividades" *ngIf="atividades.length > 0">
+
+    <div class="card-atividade" *ngFor="let ativ of atividades">
+
+      <div class="card-img-container">
+        <img [src]="ativ.imagem ? (ativ.imagem.startsWith('http') ? ativ.imagem : 'http://localhost:8080/uploads/' + ativ.imagem) : '/assets/images/placeholder_background.jpg'" alt="Capa">
+      </div>
+
+      <div class="card-info-container">
+        <div class="fundo-blur" [style.backgroundImage]="'url(' + (ativ.imagem ? (ativ.imagem.startsWith('http') ? ativ.imagem : 'http://localhost:8080/uploads/' + ativ.imagem) : '') + ')'"></div>
+        <div class="conteudo-info">
+          <h3 class="titulo-atividade">{{ ativ.nome }}</h3>
+        </div>
+      </div>
+
+      <div class="card-hover-overlay">
+        <div class="fundo-blur-expandido" [style.backgroundImage]="'url(' + (ativ.imagem ? (ativ.imagem.startsWith('http') ? ativ.imagem : 'http://localhost:8080/uploads/' + ativ.imagem) : '') + ')'"></div>
+
+        <div class="conteudo-hover">
+
+          <div class="hover-header">
+            <h2 class="titulo-hover">{{ ativ.nome }}</h2>
+          </div>
+
+          <div class="hover-meta-grid">
+            <div class="meta-item">
+              <span class="meta-label">Vagas</span>
+              <span class="meta-value">{{ ativ.vagas ? ativ.vagas : '25' }} disponíveis</span>
+            </div>
+
+            <div class="meta-item">
+              <span class="meta-label">Local</span>
+              <span class="meta-value">{{ ativ.local || 'A definir' }}</span>
+            </div>
+
+            <div class="meta-item">
+              <span class="meta-label">Data e Horário</span>
+              <span class="meta-value">
+                {{ ativ.data || 'A definir' }} <ng-container *ngIf="ativ.horario">| {{ ativ.horario }}</ng-container>
+              </span>
+            </div>
+          </div>
+
+          <div class="hover-description" *ngIf="ativ.descricao">
+            <p>{{ ativ.descricao }}</p>
+          </div>
+
+          <div class="hover-footer">
+            <div style="width: 500px; display: flex;">
+              <button class="btn-primario">Agendar</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
   <footer class="footer-inicial">
     <p>LENPA © 2026 - Laboratório de Espécies Nativas e Práticas Ambientais</p>
   </footer>
 </div>
 
 <div class="modal-overlay" *ngIf="exibirLogin" (click)="fecharLogin()">
-
   <div class="modal-login" (click)="$event.stopPropagation()">
-
     <div class="modal-header">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
       <h2>Login</h2>
@@ -33,7 +91,6 @@
     <p class="modal-subtitulo">Login reservado a<br>Funcionários do LENPA</p>
 
     <form (ngSubmit)="fazerLogin()" style="width: 100%; display: flex; flex-direction: column; gap: 40px;">
-
       <div class="modal-inputs">
         <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" required>
         <input type="password" name="senha" [(ngModel)]="senha" placeholder="Senha" required minlength="6">
@@ -49,8 +106,6 @@
           {{ carregando ? 'Aguarde...' : 'Entrar' }}
         </button>
       </div>
-
     </form>
-
   </div>
 </div>
