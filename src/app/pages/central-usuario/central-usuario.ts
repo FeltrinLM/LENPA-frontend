@@ -190,4 +190,14 @@ export class CentralUsuario implements OnInit {
   abrirModalSair() { this.abrirModal('Deseja sair?', 'Você precisará fazer login novamente.', 'Sim, sair', () => { this.authService.logout(); this.router.navigate(['/']); }); }
   abrirModal(titulo: string, mensagem: string, textoConfirmar: string, acao: () => void) { this.modal = { exibir: true, titulo, mensagem, textoConfirmar, acaoConfirmar: acao }; }
   fecharModal() { this.modal.exibir = false; }
+
+  abrirGerenciamentoVisitantes() {
+    alert('Área de gerenciamento de visitantes em construção.');
+    // this.router.navigate(['/gerenciar-visitantes']);
+  }
+
+  abrirGerenciamentoFuncionarios() {
+    alert('Área de gerenciamento de funcionários em construção.');
+    // this.router.navigate(['/gerenciar-funcionarios']);
+  }
 }

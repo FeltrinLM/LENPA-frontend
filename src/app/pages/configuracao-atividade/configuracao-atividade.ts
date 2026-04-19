@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { Router } from '@angular/router';
 import { AtividadeService } from '../../core/services/api/atividade.service';
 
-
 @Component({
   selector: 'app-configuracao-atividade',
   standalone: true,
@@ -53,7 +52,7 @@ export class ConfiguracaoAtividade implements OnInit {
       data: ['', Validators.required],
       horarioInicio: ['', Validators.required],
       horarioFim: ['', Validators.required],
-      local: ['', Validators.required], // <-- NOVO CAMPO ADICIONADO
+      local: ['', Validators.required],
       descricao: ['']
     });
 
@@ -86,7 +85,7 @@ export class ConfiguracaoAtividade implements OnInit {
       vagas: [ativ.vagas, [Validators.required, Validators.min(1)]],
       data: [ativ.data, Validators.required],
       horario: [ativ.horario, Validators.required],
-      local: [ativ.local, Validators.required], // <-- NOVO CAMPO ADICIONADO
+      local: [ativ.local, Validators.required],
       descricao: [ativ.descricao]
     });
 
@@ -224,7 +223,7 @@ export class ConfiguracaoAtividade implements OnInit {
       nome: formVals.nome,
       data: formVals.data,
       horario: horarioFormatado,
-      local: formVals.local, // <-- NOVO CAMPO INCLUÍDO NO PAYLOAD
+      local: formVals.local,
       tipo: formVals.tipo,
       vagas: formVals.vagas,
       descricao: formVals.descricao,

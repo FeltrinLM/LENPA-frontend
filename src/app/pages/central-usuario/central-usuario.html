@@ -76,6 +76,14 @@
         </div>
       </div>
 
+      <div class="botoes-gerenciamento">
+        <button class="btn-gerenciar btn-visitantes" (click)="abrirGerenciamentoVisitantes()">
+          Gerenciar Visitantes
+        </button>
+        <button *ngIf="usuario?.role === 'ADMINISTRADOR'" class="btn-gerenciar btn-funcionarios" (click)="abrirGerenciamentoFuncionarios()">
+          Gerenciar Funcionários
+        </button>
+      </div>
       <button class="btn-secundario" (click)="abrirModalSair()">Sair</button>
 
     </div>
