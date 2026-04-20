@@ -28,6 +28,13 @@ export class Inicial implements OnInit {
   // Variável para guardar as atividades que vierem do Java
   atividades: any[] = [];
 
+  // --- MODAL DE AGENDAMENTO RÁPIDO ---
+  exibirModalAgendamento: boolean = false;
+  atividadeSelecionadaParaAgendamento: any = null;
+  emailAgendamento: string = '';
+  carregandoAgendamento: boolean = false;
+  mensagemSucessoAgendamento: string = '';
+
   ngOnInit() {
     this.carregarAtividades();
   }
@@ -35,12 +42,8 @@ export class Inicial implements OnInit {
   carregarAtividades() {
     this.atividadeService.listar().subscribe({
       next: (res) => {
-        // Blindagem: Aceita tanto a paginação do Spring (res.content) quanto uma lista direta (Array)
         this.atividades = res.content ? res.content : (Array.isArray(res) ? res : []);
-
-        console.log('✅ Atividades recebidas do Java:', this.atividades); // DEBUG
-
-        // Força o HTML a se desenhar novamente agora que os dados chegaram
+        console.log('✅ Atividades recebidas do Java:', this.atividades);
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -49,6 +52,9 @@ export class Inicial implements OnInit {
     });
   }
 
+  // ==========================================
+  // LÓGICA DO LOGIN
+  // ==========================================
   abrirLogin() {
     this.exibirLogin = true;
   }
@@ -77,5 +83,37 @@ export class Inicial implements OnInit {
         }
       }
     });
+  }
+
+  // ==========================================
+  // LÓGICA DO AGENDAMENTO
+  // ==========================================
+  abrirAgendamento(atividade: any) {
+    this.atividadeSelecionadaParaAgendamento = atividade;
+    this.exibirModalAgendamento = true;
+    this.emailAgendamento = '';
+    this.mensagemSucessoAgendamento = '';
+  }
+
+  fecharAgendamento() {
+    this.exibirModalAgendamento = false;
+    this.atividadeSelecionadaParaAgendamento = null;
+  }
+
+  enviarPedidoAgendamento() {
+    if (!this.emailAgendamento) return;
+
+    this.carregandoAgendamento = true;
+
+    // Simulação de envio para a API
+    setTimeout(() => {
+      this.carregandoAgendamento = false;
+      this.mensagemSucessoAgendamento = 'Pedido enviado! Nossa equipe entrará em contato.';
+
+      // Fecha o modal automaticamente após 3 segundos
+      setTimeout(() => {
+        this.fecharAgendamento();
+      }, 3000);
+    }, 1500);
   }
 }

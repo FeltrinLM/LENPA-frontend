@@ -66,7 +66,7 @@
 
           <div class="hover-footer">
             <div style="width: 500px; display: flex;">
-              <button class="btn-primario">Agendar</button>
+              <button class="btn-primario" (click)="abrirAgendamento(ativ)">Agendar</button>
             </div>
           </div>
 
@@ -107,5 +107,42 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="exibirModalAgendamento" (click)="fecharAgendamento()">
+  <div class="modal-agendamento-branco" (click)="$event.stopPropagation()">
+
+    <div class="modal-header-agendamento">
+      <h2>Reservar Vaga</h2>
+      <p class="atividade-destaque">
+        {{ atividadeSelecionadaParaAgendamento?.nome }}
+      </p>
+    </div>
+
+    <p class="modal-texto-instrucao" *ngIf="!mensagemSucessoAgendamento">
+      Informe seu e-mail abaixo. Um funcionário do laboratório entrará em contato para confirmar a sua inscrição e passar as instruções.
+    </p>
+
+    <div *ngIf="mensagemSucessoAgendamento" class="mensagem-sucesso-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="216 72.01 104 184 48 128.01" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+      <h2>{{ mensagemSucessoAgendamento }}</h2>
+    </div>
+
+    <form (ngSubmit)="enviarPedidoAgendamento()" class="form-agendamento" *ngIf="!mensagemSucessoAgendamento">
+
+      <div class="campo-agendamento">
+        <input type="email" name="emailAgendamento" [(ngModel)]="emailAgendamento" placeholder="Digite seu melhor e-mail..." required class="input-padrao-lenpa">
+      </div>
+
+      <div class="modal-botoes-padrao">
+        <button type="button" class="btn-secundario" (click)="fecharAgendamento()">Cancelar</button>
+        <button type="submit" class="btn-primario" [disabled]="carregandoAgendamento || !emailAgendamento">
+          {{ carregandoAgendamento ? 'Enviando...' : 'Enviar Pedido' }}
+        </button>
+      </div>
+
+    </form>
+
   </div>
 </div>

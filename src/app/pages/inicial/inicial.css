@@ -456,3 +456,114 @@
   align-items: flex-end;
   margin-top: 50px;
 }
+
+/* ==========================================
+   MODAL DE AGENDAMENTO (Design Branco Padrão)
+   ========================================== */
+.modal-agendamento-branco {
+  background-color: white;
+  padding: 100px 120px;
+  border-radius: 40px;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  text-align: center;
+  width: 100%;
+  max-width: 1600px;
+  animation: modalPopIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-header-agendamento {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.modal-header-agendamento h2 {
+  font-size: 100px;
+  color: #004325;
+  margin: 0;
+  font-family: sans-serif;
+  font-weight: 900;
+}
+
+.atividade-destaque {
+  font-size: 55px;
+  color: #006633;
+  margin: 0;
+  font-weight: bold;
+  font-family: monospace, sans-serif;
+}
+
+.modal-texto-instrucao {
+  font-size: 45px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+  max-width: 90%;
+}
+
+.form-agendamento {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.campo-agendamento {
+  width: 100%;
+}
+
+.input-padrao-lenpa {
+  width: 100%;
+  padding: 40px 45px;
+  border: 4px solid #006633;
+  border-radius: 16px;
+  background-color: white;
+  color: #333;
+  font-family: sans-serif;
+  font-size: 50px;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+.input-padrao-lenpa:focus {
+  border-color: #a3e635;
+  box-shadow: 0 0 0 10px rgba(163, 230, 53, 0.2);
+}
+
+.input-padrao-lenpa::placeholder {
+  color: #999;
+}
+
+.modal-botoes-padrao {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.mensagem-sucesso-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 60px 0;
+}
+
+.mensagem-sucesso-container svg {
+  width: 250px;
+  height: 250px;
+  color: #006633;
+}
+
+.mensagem-sucesso-container h2 {
+  color: #004325;
+  font-size: 70px;
+  margin: 0;
+  font-family: sans-serif;
+}

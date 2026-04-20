@@ -4,97 +4,160 @@
     <h1 class="titulo-pagina">Central do usuário</h1>
   </div>
 
-  <div class="card-formulario">
+  <div class="container-dashboard" [class.layout-duplo]="exibirVisitantes">
 
-    <div class="boas-vindas">
-      <h2>Bem-vindo, {{ usuario?.nome }}!</h2>
-      <p>Verifique as informações da sua conta no sistema LENPA.</p>
-    </div>
-
-    <div class="lista-credenciais">
-
-      <div class="campo">
-        <label>Nome da conta:</label>
-        <div class="input-falso" [class.modo-edicao]="editandoNome">
-          <ng-container *ngIf="!editandoNome">
-            <span>{{ usuario?.nome }}</span>
-            <span class="icone-acao lapis" (click)="editarNome()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
-          </ng-container>
-
-          <ng-container *ngIf="editandoNome">
-            <input type="text" class="campo-edicao" [(ngModel)]="nomeEditado" placeholder="Digite seu nome...">
-            <div class="acoes-edicao">
-              <span class="icone-acao salvar" (click)="salvarNome()"><ng-container *ngTemplateOutlet="svgSalvar"></ng-container></span>
-              <span class="icone-acao cancelar" (click)="cancelarEdicao('nome')"><ng-container *ngTemplateOutlet="svgCancelar"></ng-container></span>
-            </div>
-          </ng-container>
-        </div>
+    <div class="card-formulario">
+      <div class="boas-vindas">
+        <h2>Bem-vindo, {{ usuario?.nome }}!</h2>
+        <p>Verifique as informações da sua conta no sistema LENPA.</p>
       </div>
 
-      <div class="campo">
-        <label>E-mail:</label>
-        <div class="input-falso" [class.modo-edicao]="editandoEmail">
-          <ng-container *ngIf="!editandoEmail">
-            <span>{{ usuario?.email }}</span>
-            <span class="icone-acao lapis" (click)="editarEmail()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
-          </ng-container>
+      <div class="lista-credenciais">
+        <div class="campo">
+          <label>Nome da conta:</label>
+          <div class="input-falso" [class.modo-edicao]="editandoNome">
+            <ng-container *ngIf="!editandoNome">
+              <span>{{ usuario?.nome }}</span>
+              <span class="icone-acao lapis" (click)="editarNome()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
+            </ng-container>
 
-          <ng-container *ngIf="editandoEmail">
-            <input type="email" class="campo-edicao" [(ngModel)]="emailEditado" placeholder="Digite seu e-mail...">
-            <div class="acoes-edicao">
-              <span class="icone-acao salvar" (click)="salvarEmail()"><ng-container *ngTemplateOutlet="svgSalvar"></ng-container></span>
-              <span class="icone-acao cancelar" (click)="cancelarEdicao('email')"><ng-container *ngTemplateOutlet="svgCancelar"></ng-container></span>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-
-      <div class="campo">
-        <label>Senha:</label>
-        <div class="input-falso" *ngIf="!editandoSenha">
-          <span>********</span>
-          <span class="icone-acao lapis" (click)="editarSenha()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
-        </div>
-
-        <div class="container-editar-senha" *ngIf="editandoSenha">
-          <div class="campo-senha-duplo">
-            <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="senhaAtual" placeholder="Senha atual...">
-            <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="novaSenha" placeholder="Nova senha...">
-          </div>
-          <span class="mensagem-erro-senha" *ngIf="erroSenha">{{ erroSenha }}</span>
-          <div class="acoes-edicao-senha">
-            <button class="btn-secundario" (click)="cancelarEdicao('senha')">Cancelar</button>
-            <button class="btn-primario" (click)="tentarSalvarSenha()">Salvar Alteração</button>
+            <ng-container *ngIf="editandoNome">
+              <input type="text" class="campo-edicao" [(ngModel)]="nomeEditado" placeholder="Digite seu nome...">
+              <div class="acoes-edicao">
+                <span class="icone-acao salvar" (click)="salvarNome()"><ng-container *ngTemplateOutlet="svgSalvar"></ng-container></span>
+                <span class="icone-acao cancelar" (click)="cancelarEdicao('nome')"><ng-container *ngTemplateOutlet="svgCancelar"></ng-container></span>
+              </div>
+            </ng-container>
           </div>
         </div>
-      </div>
 
-      <div class="campo">
-        <label>Nível de permissão:</label>
-        <div class="input-falso">
-          <span>{{ usuario?.role }}</span>
+        <div class="campo">
+          <label>E-mail:</label>
+          <div class="input-falso" [class.modo-edicao]="editandoEmail">
+            <ng-container *ngIf="!editandoEmail">
+              <span>{{ usuario?.email }}</span>
+              <span class="icone-acao lapis" (click)="editarEmail()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
+            </ng-container>
+
+            <ng-container *ngIf="editandoEmail">
+              <input type="email" class="campo-edicao" [(ngModel)]="emailEditado" placeholder="Digite seu e-mail...">
+              <div class="acoes-edicao">
+                <span class="icone-acao salvar" (click)="salvarEmail()"><ng-container *ngTemplateOutlet="svgSalvar"></ng-container></span>
+                <span class="icone-acao cancelar" (click)="cancelarEdicao('email')"><ng-container *ngTemplateOutlet="svgCancelar"></ng-container></span>
+              </div>
+            </ng-container>
+          </div>
         </div>
-      </div>
 
-      <div class="botoes-gerenciamento">
-        <button class="btn-gerenciar btn-visitantes" (click)="abrirGerenciamentoVisitantes()">
-          Gerenciar Visitantes
-        </button>
-        <button *ngIf="usuario?.role === 'ADMINISTRADOR'" class="btn-gerenciar btn-funcionarios" (click)="abrirGerenciamentoFuncionarios()">
-          Gerenciar Funcionários
-        </button>
-      </div>
-      <button class="btn-secundario" (click)="abrirModalSair()">Sair</button>
+        <div class="campo">
+          <label>Senha:</label>
+          <div class="input-falso" *ngIf="!editandoSenha">
+            <span>********</span>
+            <span class="icone-acao lapis" (click)="editarSenha()"><ng-container *ngTemplateOutlet="svgLapis"></ng-container></span>
+          </div>
 
+          <div class="container-editar-senha" *ngIf="editandoSenha">
+            <div class="campo-senha-duplo">
+              <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="senhaAtual" placeholder="Senha atual...">
+              <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="novaSenha" placeholder="Nova senha...">
+            </div>
+            <span class="mensagem-erro-senha" *ngIf="erroSenha">{{ erroSenha }}</span>
+            <div class="acoes-edicao-senha">
+              <button class="btn-secundario" (click)="cancelarEdicao('senha')">Cancelar</button>
+              <button class="btn-primario" (click)="tentarSalvarSenha()">Salvar Alteração</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Nível de permissão:</label>
+          <div class="input-falso">
+            <span>{{ usuario?.role }}</span>
+          </div>
+        </div>
+
+        <div class="botoes-gerenciamento">
+          <button class="btn-gerenciar btn-visitantes" (click)="abrirGerenciamentoVisitantes()">
+            {{ exibirVisitantes ? 'Fechar Visitantes' : 'Gerenciar Visitantes' }}
+          </button>
+          <button *ngIf="usuario?.role === 'ADMINISTRADOR'" class="btn-gerenciar btn-funcionarios" (click)="abrirGerenciamentoFuncionarios()">
+            Gerenciar Funcionários
+          </button>
+        </div>
+
+        <button class="btn-secundario" (click)="abrirModalSair()">Sair</button>
+      </div>
     </div>
+
+    <div class="card-lista-gerenciamento" *ngIf="exibirVisitantes">
+
+      <div class="cabecalho-lista">
+        <h2>Visitantes Cadastrados</h2>
+        <span class="contador-badge">{{ visitantesFiltrados.length }}</span>
+      </div>
+
+      <div class="barra-pesquisa">
+        <input type="text"
+               [(ngModel)]="termoBuscaVisitante"
+               (input)="filtrarVisitantes()"
+               placeholder="Buscar por nome ou cidade..."
+               class="input-busca-lista">
+      </div>
+
+      <div class="conteudo-lista">
+        <div class="mensagem-lista" *ngIf="carregandoVisitantes">
+          Buscando visitantes...
+        </div>
+
+        <div class="mensagem-lista" *ngIf="!carregandoVisitantes && visitantesFiltrados.length === 0">
+          Nenhum visitante encontrado.
+        </div>
+
+        <div class="item-usuario" *ngFor="let vis of visitantesFiltrados">
+
+          <div class="acoes-esquerda">
+            <button class="btn-icone-excluir" title="Excluir Visitante">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="216" y1="56" x2="40" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="104" y1="104" x2="104" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="152" y1="104" x2="152" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M168,56V40a16,16,0,0,0-16-16H104A16,16,0,0,0,88,40V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+            </button>
+          </div>
+
+          <div class="info-usuario">
+
+            <div class="linha-editavel">
+              <input type="text" [(ngModel)]="vis.nome" (input)="vis._nomeModificado = true" class="input-editavel titulo-editavel" placeholder="Nome do visitante">
+              <button class="btn-icone-salvar" *ngIf="vis._nomeModificado" title="Salvar Nome" (click)="salvarVisitanteEditado(vis, 'nome')">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+              </button>
+            </div>
+
+            <div class="linha-editavel">
+              <input type="text" [(ngModel)]="vis.cidade" (input)="vis._cidadeModificada = true" class="input-editavel texto-editavel" placeholder="Cidade não informada">
+              <button class="btn-icone-salvar" *ngIf="vis._cidadeModificada" title="Salvar Cidade" (click)="salvarVisitanteEditado(vis, 'cidade')">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+              </button>
+            </div>
+
+          </div>
+
+            <div class="linha-editavel">
+              <input type="text" [(ngModel)]="vis.cidade" (input)="vis._cidadeModificada = true" class="input-editavel texto-editavel" placeholder="Cidade não informada">
+              <button class="btn-icone-salvar" *ngIf="vis._cidadeModificada" title="Salvar Cidade" (click)="salvarVisitanteEditado(vis, 'cidade')">
+                <ng-container *ngTemplateOutlet="svgSalvar"></ng-container>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div> <button class="btn-flutuante-cadastrar" (click)="abrirModalNovoUsuario()">
+  <span class="texto-fab">Cadastrar novo usuário</span>
+  <div class="icone-fab">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="136" x2="248" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="224" y1="112" x2="224" y2="160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="108" cy="100" r="60" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M24,200c20.55-24.45,49.56-40,84-40s63.45,15.55,84,40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
   </div>
-
-  <button class="btn-flutuante-cadastrar" (click)="abrirModalNovoUsuario()">
-    <span class="texto-fab">Cadastrar novo usuário</span>
-    <div class="icone-fab">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="136" x2="248" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="224" y1="112" x2="224" y2="160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="108" cy="100" r="60" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M24,200c20.55-24.45,49.56-40,84-40s63.45,15.55,84,40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
-    </div>
-  </button>
+</button>
 
   <div class="modal-overlay" *ngIf="modalNovoUsuario.exibir" (click)="fecharModalNovoUsuario()">
     <div class="modal-confirmacao modal-cadastro" (click)="$event.stopPropagation()">

@@ -29,9 +29,8 @@ export class CentralUsuario implements OnInit {
   usuario: UsuarioLogado | null = null;
 
   // ==========================================
-  // FORMULÁRIOS REATIVOS (Inicialização Imediata)
+  // FORMULÁRIOS REATIVOS
   // ==========================================
-
   formFuncionario: FormGroup = this.fb.group({
     nome: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
@@ -44,18 +43,16 @@ export class CentralUsuario implements OnInit {
     cidade: ['', Validators.required]
   });
 
-  // Validador com a tipagem correta exigida pelo Angular (AbstractControl)
   private validarSenhasIguais(group: AbstractControl) {
     const senha = group.get('senha')?.value;
     const confirmarSenha = group.get('confirmarSenha')?.value;
     return senha === confirmarSenha ? null : { senhasDiferentes: true };
   }
 
-  // Atalhos blindados para o HTML
   get fFunc() { return this.formFuncionario.controls; }
   get fVis() { return this.formVisitante.controls; }
 
-  // --- CONTROLES VISUAIS ---
+  // --- CONTROLES VISUAIS DO PERFIL ---
   editandoNome: boolean = false;
   nomeEditado: string = '';
   editandoEmail: boolean = false;
@@ -66,11 +63,14 @@ export class CentralUsuario implements OnInit {
   erroSenha: string = '';
 
   modal = { exibir: false, titulo: '', mensagem: '', textoConfirmar: '', acaoConfirmar: () => {} };
+  modalNovoUsuario = { exibir: false, nivelPermissao: '' };
 
-  modalNovoUsuario = {
-    exibir: false,
-    nivelPermissao: ''
-  };
+  // --- CONTROLES DE GERENCIAMENTO (NOVOS) ---
+  exibirVisitantes: boolean = false;
+  visitantes: any[] = [];
+  visitantesFiltrados: any[] = [];
+  termoBuscaVisitante: string = '';
+  carregandoVisitantes: boolean = false;
 
   ngOnInit() {
     if (!this.authService.isLoggedIn()) {
@@ -78,6 +78,52 @@ export class CentralUsuario implements OnInit {
       return;
     }
     this.usuario = this.authService.getDadosUsuario();
+  }
+
+  // ==========================================
+  // NAVEGAÇÃO E GERENCIAMENTO DE LISTAS
+  // ==========================================
+  abrirGerenciamentoVisitantes() {
+    this.exibirVisitantes = !this.exibirVisitantes;
+
+    if (this.exibirVisitantes) {
+      this.carregarVisitantes();
+    } else {
+      this.termoBuscaVisitante = '';
+    }
+  }
+
+  carregarVisitantes() {
+    this.carregandoVisitantes = true;
+    this.visitanteService.listar().subscribe({
+      next: (res: any) => {
+        this.visitantes = res.content ? res.content : (Array.isArray(res) ? res : []);
+        this.visitantesFiltrados = [...this.visitantes];
+        this.carregandoVisitantes = false;
+      },
+      error: (err: any) => {
+        console.error('Erro ao buscar visitantes:', err);
+        this.carregandoVisitantes = false;
+        alert('Erro ao carregar a lista de visitantes.');
+      }
+    });
+  }
+
+  filtrarVisitantes() {
+    const termo = this.termoBuscaVisitante.toLowerCase().trim();
+    if (!termo) {
+      this.visitantesFiltrados = [...this.visitantes];
+      return;
+    }
+
+    this.visitantesFiltrados = this.visitantes.filter(v =>
+      (v.nome && v.nome.toLowerCase().includes(termo)) ||
+      (v.cidade && v.cidade.toLowerCase().includes(termo))
+    );
+  }
+
+  abrirGerenciamentoFuncionarios() {
+    alert('Área de gerenciamento de funcionários em construção.');
   }
 
   // ==========================================
@@ -131,8 +177,6 @@ export class CentralUsuario implements OnInit {
   abrirModalNovoUsuario() {
     const eBolsista = this.usuario?.role === 'BOLSISTA';
     this.modalNovoUsuario = { exibir: true, nivelPermissao: eBolsista ? 'Visitante' : '' };
-
-    // Limpa os formulários ao abrir
     this.formFuncionario.reset();
     this.formVisitante.reset();
   }
@@ -141,19 +185,11 @@ export class CentralUsuario implements OnInit {
 
   confirmarNovoUsuario() {
     const nivel = this.modalNovoUsuario.nivelPermissao;
-
     if (nivel === 'Administrador' || nivel === 'Bolsista') {
-      if (this.formFuncionario.invalid) {
-        this.formFuncionario.markAllAsTouched();
-        return;
-      }
+      if (this.formFuncionario.invalid) { this.formFuncionario.markAllAsTouched(); return; }
       this.salvarFuncionario(nivel);
-
     } else if (nivel === 'Visitante') {
-      if (this.formVisitante.invalid) {
-        this.formVisitante.markAllAsTouched();
-        return;
-      }
+      if (this.formVisitante.invalid) { this.formVisitante.markAllAsTouched(); return; }
       this.salvarVisitante();
     }
   }
@@ -165,7 +201,6 @@ export class CentralUsuario implements OnInit {
       senha: this.formFuncionario.value.senha,
       nivelPermissao: nivel === 'Administrador' ? 'ADMINISTRADOR' : 'BOLSISTA'
     };
-
     this.funcionarioService.cadastrar(payload).subscribe({
       next: () => { alert(`${nivel} cadastrado com sucesso!`); this.fecharModalNovoUsuario(); },
       error: (err: any) => alert(err.error?.message || 'Erro ao cadastrar funcionário.')
@@ -175,29 +210,33 @@ export class CentralUsuario implements OnInit {
   private salvarVisitante() {
     const payload = {
       nome: this.formVisitante.value.nomeCompleto,
-      cidade: this.formVisitante.value.cidade
+      cidade: this.formVisitante.value.cidade,
+      tipo: 'INDIVIDUAL'
     };
-
     this.visitanteService.cadastrar(payload).subscribe({
-      next: () => { alert('Visitante cadastrado com sucesso!'); this.fecharModalNovoUsuario(); },
+      next: () => {
+        alert('Visitante cadastrado com sucesso!');
+        this.fecharModalNovoUsuario();
+
+        if (this.exibirVisitantes) {
+          this.carregarVisitantes();
+        }
+      },
       error: (err: any) => alert(err.error?.message || 'Erro ao cadastrar visitante.')
     });
   }
 
   // ==========================================
-  // LOGOUT E AUXILIARES
+  // SALVAR EDIÇÃO DO VISITANTE (NOVO)
   // ==========================================
+  salvarVisitanteEditado(vis: any, campo: string) {
+    alert(`O campo ${campo} foi atualizado com sucesso!`);
+
+    // Esconde o botão de confirmação referente ao campo que acabou de ser salvo
+    if (campo === 'nome') vis._nomeModificado = false;
+    if (campo === 'cidade') vis._cidadeModificada = false;
+  }
   abrirModalSair() { this.abrirModal('Deseja sair?', 'Você precisará fazer login novamente.', 'Sim, sair', () => { this.authService.logout(); this.router.navigate(['/']); }); }
   abrirModal(titulo: string, mensagem: string, textoConfirmar: string, acao: () => void) { this.modal = { exibir: true, titulo, mensagem, textoConfirmar, acaoConfirmar: acao }; }
   fecharModal() { this.modal.exibir = false; }
-
-  abrirGerenciamentoVisitantes() {
-    alert('Área de gerenciamento de visitantes em construção.');
-    // this.router.navigate(['/gerenciar-visitantes']);
-  }
-
-  abrirGerenciamentoFuncionarios() {
-    alert('Área de gerenciamento de funcionários em construção.');
-    // this.router.navigate(['/gerenciar-funcionarios']);
-  }
 }
