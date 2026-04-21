@@ -15,7 +15,9 @@ import { VisitanteService } from '../../core/services/api/visitante.service';
   styleUrls: [
     './css/central-usuario-layout.css',
     './css/central-usuario-perfil.css',
-    './css/central-usuario-modais.css'
+    './css/central-usuario-modais.css',
+    './css/central-usuario-card-visitantes.css',
+    './css/central-usuario-card-funcionarios.css'
   ]
 })
 export class CentralUsuario implements OnInit {
@@ -65,12 +67,21 @@ export class CentralUsuario implements OnInit {
   modal = { exibir: false, titulo: '', mensagem: '', textoConfirmar: '', acaoConfirmar: () => {} };
   modalNovoUsuario = { exibir: false, nivelPermissao: '' };
 
-  // --- CONTROLES DE GERENCIAMENTO (NOVOS) ---
+  // ==========================================
+  // CONTROLES DE GERENCIAMENTO (VISITANTES)
+  // ==========================================
   exibirVisitantes: boolean = false;
   visitantes: any[] = [];
   visitantesFiltrados: any[] = [];
   termoBuscaVisitante: string = '';
   carregandoVisitantes: boolean = false;
+
+  // ==========================================
+  // CONTROLES DE GERENCIAMENTO (FUNCIONÁRIOS)
+  // ==========================================
+  exibirFuncionarios: boolean = false;
+  funcionarios: any[] = [];
+  carregandoFuncionarios: boolean = false;
 
   ngOnInit() {
     if (!this.authService.isLoggedIn()) {
@@ -81,7 +92,7 @@ export class CentralUsuario implements OnInit {
   }
 
   // ==========================================
-  // NAVEGAÇÃO E GERENCIAMENTO DE LISTAS
+  // NAVEGAÇÃO E GERENCIAMENTO DE VISITANTES
   // ==========================================
   abrirGerenciamentoVisitantes() {
     this.exibirVisitantes = !this.exibirVisitantes;
@@ -122,9 +133,37 @@ export class CentralUsuario implements OnInit {
     );
   }
 
+  // ==========================================
+  // NAVEGAÇÃO E GERENCIAMENTO DE FUNCIONÁRIOS
+  // ==========================================
   abrirGerenciamentoFuncionarios() {
-    alert('Área de gerenciamento de funcionários em construção.');
+    this.exibirVisitantes = false; // Fecha a lista de visitantes se estiver aberta
+    this.exibirFuncionarios = !this.exibirFuncionarios;
+
+    if (this.exibirFuncionarios) {
+      this.carregarFuncionarios();
+    }
   }
+
+  carregarFuncionarios() {
+    this.carregandoFuncionarios = true;
+    this.funcionarioService.listar().subscribe({
+      next: (res: any) => {
+        let listaBruta = res.content ? res.content : (Array.isArray(res) ? res : []);
+
+        // Filtra a lista para NÃO incluir o usuário que está logado atualmente
+        this.funcionarios = listaBruta.filter((func: any) => func.email !== this.usuario?.email);
+
+        this.carregandoFuncionarios = false;
+      },
+      error: (err: any) => {
+        console.error('Erro ao buscar funcionários:', err);
+        this.carregandoFuncionarios = false;
+        alert('Erro ao carregar a lista de funcionários.');
+      }
+    });
+  }
+
 
   // ==========================================
   // ATUALIZAR NOME, EMAIL E SENHA
@@ -227,15 +266,15 @@ export class CentralUsuario implements OnInit {
   }
 
   // ==========================================
-  // SALVAR EDIÇÃO DO VISITANTE (NOVO)
+  // SALVAR EDIÇÃO DO VISITANTE
   // ==========================================
   salvarVisitanteEditado(vis: any, campo: string) {
     alert(`O campo ${campo} foi atualizado com sucesso!`);
 
-    // Esconde o botão de confirmação referente ao campo que acabou de ser salvo
     if (campo === 'nome') vis._nomeModificado = false;
     if (campo === 'cidade') vis._cidadeModificada = false;
   }
+
   abrirModalSair() { this.abrirModal('Deseja sair?', 'Você precisará fazer login novamente.', 'Sim, sair', () => { this.authService.logout(); this.router.navigate(['/']); }); }
   abrirModal(titulo: string, mensagem: string, textoConfirmar: string, acao: () => void) { this.modal = { exibir: true, titulo, mensagem, textoConfirmar, acaoConfirmar: acao }; }
   fecharModal() { this.modal.exibir = false; }

@@ -11,6 +11,10 @@ export class FuncionarioService {
   // Note que já deixei a URL base apontando para /funcionarios
   private readonly BASE_URL = 'http://localhost:8080/funcionarios';
 
+  listar(): Observable<any> {
+    return this.http.get(this.BASE_URL);
+  }
+
   atualizarPerfil(dados: {nome: string, email: string}): Observable<any> {
     return this.http.put(`${this.BASE_URL}/meu-perfil`, dados);
   }

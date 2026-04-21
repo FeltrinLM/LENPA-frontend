@@ -1,0 +1,179 @@
+/* ==========================================
+   CARD DE LISTA DE FUNCIONÁRIOS (DIREITA)
+   ========================================== */
+.card-funcionarios {
+  background-color: white;
+  padding: 80px;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  /* order: 3 já está definido no layout.css, mas a animação é exclusiva daqui */
+  animation: slideInDireita 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes slideInDireita {
+  from { opacity: 0; transform: translateX(100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ==========================================
+   CABEÇALHO DA LISTA
+   ========================================== */
+.card-funcionarios .cabecalho-lista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 4px solid #e2e8f0;
+  padding-bottom: 30px;
+}
+
+.card-funcionarios .cabecalho-lista h2 {
+  color: #074168; /* Azul dos funcionários, diferente do verde dos visitantes */
+  font-size: 60px;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.card-funcionarios .contador-badge {
+  background-color: #e0f2fe; /* Fundo azul claro */
+  color: #0369a1; /* Texto azul escuro */
+  font-size: 45px;
+  padding: 15px 40px;
+  border-radius: 50px;
+  font-weight: bold;
+  font-family: monospace, sans-serif;
+}
+
+/* ==========================================
+   BARRA DE PESQUISA (FUNCIONÁRIOS)
+   ========================================== */
+.card-funcionarios .barra-pesquisa {
+  width: 100%;
+}
+
+.card-funcionarios .input-busca-lista {
+  width: 100%;
+  padding: 30px 40px;
+  border: 4px solid #cbd5e1;
+  border-radius: 16px;
+  font-size: 45px;
+  color: #333;
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.card-funcionarios .input-busca-lista:focus {
+  border-color: #38bdf8; /* Borda azul ao focar */
+  box-shadow: 0 0 0 8px rgba(56, 189, 248, 0.2);
+}
+
+/* ==========================================
+   CONTEÚDO DA LISTA
+   ========================================== */
+.card-funcionarios .conteudo-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 800px;
+  overflow-y: auto;
+  padding-right: 20px;
+}
+
+.card-funcionarios .conteudo-lista::-webkit-scrollbar {
+  width: 12px;
+}
+.card-funcionarios .conteudo-lista::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+.card-funcionarios .conteudo-lista::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+.card-funcionarios .conteudo-lista::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.card-funcionarios .mensagem-lista {
+  text-align: center;
+  font-size: 45px;
+  color: #64748b;
+  padding: 80px 0;
+  font-family: sans-serif;
+}
+
+/* ==========================================
+   ITENS DA LISTA (FUNCIONÁRIOS)
+   ========================================== */
+.card-funcionarios .item-usuario {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+  background-color: #f8fafc;
+  border: 3px solid #e2e8f0;
+  border-radius: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-funcionarios .item-usuario:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  border-color: #cbd5e1;
+}
+
+.card-funcionarios .acoes-esquerda {
+  display: flex;
+  align-items: center;
+}
+
+.card-funcionarios .info-usuario {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+/* Estilos básicos de texto para a lista de leitura (não editável) */
+.card-funcionarios .texto-nome {
+  font-size: 50px;
+  color: #1e293b;
+  font-family: sans-serif;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card-funcionarios .texto-email {
+  font-size: 40px;
+  color: #64748b;
+  font-family: monospace, sans-serif;
+  margin: 0;
+}
+
+.card-funcionarios .texto-permissao {
+  font-size: 35px;
+  color: #0ea5e9;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* LIXEIRA AZUL (Se for permitir excluir funcionários) */
+.card-funcionarios .btn-icone-excluir svg {
+  width: 70px;
+  height: 70px;
+  color: #074168; /* Azul padrão */
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-funcionarios .btn-icone-excluir:hover svg {
+  color: #F0A400; /* Vermelho ao passar o mouse */
+  transform: scale(1.2);
+}

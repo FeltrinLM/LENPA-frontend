@@ -4,7 +4,9 @@
     <h1 class="titulo-pagina">Central do usuário</h1>
   </div>
 
-  <div class="container-dashboard" [class.layout-duplo]="exibirVisitantes">
+  <div class="container-dashboard"
+       [class.visitantes-aberto]="exibirVisitantes"
+       [class.funcionarios-aberto]="exibirFuncionarios">
 
     <div class="card-formulario">
       <div class="boas-vindas">
@@ -81,7 +83,7 @@
             {{ exibirVisitantes ? 'Fechar Visitantes' : 'Gerenciar Visitantes' }}
           </button>
           <button *ngIf="usuario?.role === 'ADMINISTRADOR'" class="btn-gerenciar btn-funcionarios" (click)="abrirGerenciamentoFuncionarios()">
-            Gerenciar Funcionários
+            {{ exibirFuncionarios ? 'Fechar Funcionários' : 'Gerenciar Funcionários' }}
           </button>
         </div>
 
@@ -89,7 +91,7 @@
       </div>
     </div>
 
-    <div class="card-lista-gerenciamento" *ngIf="exibirVisitantes">
+    <div class="card-lista-gerenciamento card-visitantes" *ngIf="exibirVisitantes">
 
       <div class="cabecalho-lista">
         <h2>Visitantes Cadastrados</h2>
@@ -122,7 +124,6 @@
           </div>
 
           <div class="info-usuario">
-
             <div class="linha-editavel">
               <input type="text" [(ngModel)]="vis.nome" (input)="vis._nomeModificado = true" class="input-editavel titulo-editavel" placeholder="Nome do visitante">
               <button class="btn-icone-salvar" *ngIf="vis._nomeModificado" title="Salvar Nome" (click)="salvarVisitanteEditado(vis, 'nome')">
@@ -136,28 +137,57 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
               </button>
             </div>
-
           </div>
 
-            <div class="linha-editavel">
-              <input type="text" [(ngModel)]="vis.cidade" (input)="vis._cidadeModificada = true" class="input-editavel texto-editavel" placeholder="Cidade não informada">
-              <button class="btn-icone-salvar" *ngIf="vis._cidadeModificada" title="Salvar Cidade" (click)="salvarVisitanteEditado(vis, 'cidade')">
-                <ng-container *ngTemplateOutlet="svgSalvar"></ng-container>
-              </button>
-            </div>
+        </div>
+      </div>
 
+    </div>
+
+    <div class="card-lista-gerenciamento card-funcionarios" *ngIf="exibirFuncionarios">
+      <div class="cabecalho-lista">
+        <h2>Funcionários Cadastrados</h2>
+        <span class="contador-badge">{{ funcionarios.length }}</span>
+      </div>
+
+      <div class="conteudo-lista">
+        <div class="mensagem-lista" *ngIf="carregandoFuncionarios">
+          Buscando funcionários...
+        </div>
+
+        <div class="mensagem-lista" *ngIf="!carregandoFuncionarios && funcionarios.length === 0">
+          Nenhum funcionário encontrado.
+        </div>
+
+        <div class="item-usuario" *ngFor="let func of funcionarios">
+
+          <div class="acoes-esquerda">
+            <button class="btn-icone-excluir" title="Excluir Funcionário" *ngIf="func.nivelPermissao !== 'ADMINISTRADOR'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="216" y1="56" x2="40" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="104" y1="104" x2="104" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="152" y1="104" x2="152" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M168,56V40a16,16,0,0,0-16-16H104A16,16,0,0,0,88,40V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+            </button>
           </div>
+
+          <div class="info-usuario">
+            <h3 class="texto-nome">{{ func.nome }}</h3>
+            <p class="texto-email">
+              {{ func.email }}
+              <span class="texto-permissao">[{{ func.nivelPermissao }}]</span>
+            </p>
+          </div>
+
         </div>
 
       </div>
     </div>
 
-  </div> <button class="btn-flutuante-cadastrar" (click)="abrirModalNovoUsuario()">
-  <span class="texto-fab">Cadastrar novo usuário</span>
-  <div class="icone-fab">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="136" x2="248" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="224" y1="112" x2="224" y2="160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="108" cy="100" r="60" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M24,200c20.55-24.45,49.56-40,84-40s63.45,15.55,84,40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
   </div>
-</button>
+
+  <button class="btn-flutuante-cadastrar" (click)="abrirModalNovoUsuario()">
+    <span class="texto-fab">Cadastrar novo usuário</span>
+    <div class="icone-fab">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="136" x2="248" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="224" y1="112" x2="224" y2="160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="108" cy="100" r="60" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M24,200c20.55-24.45,49.56-40,84-40s63.45,15.55,84,40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+    </div>
+  </button>
 
   <div class="modal-overlay" *ngIf="modalNovoUsuario.exibir" (click)="fecharModalNovoUsuario()">
     <div class="modal-confirmacao modal-cadastro" (click)="$event.stopPropagation()">

@@ -28,21 +28,32 @@
   font-weight: 900;
 }
 
+/* ==========================================
+   O MAESTRO DO LAYOUT (FLEXBOX)
+   ========================================== */
 .container-dashboard {
   display: flex;
   gap: 60px;
   width: 100%;
-  max-width: 1800px;
+  max-width: 1800px; /* Tamanho para apenas o card principal */
   transition: max-width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   align-items: flex-start;
+  justify-content: center; /* Mantém tudo centralizado */
 }
 
-.container-dashboard.layout-duplo {
+/* Expande o espaço se UM dos painéis laterais abrir */
+.container-dashboard.visitantes-aberto,
+.container-dashboard.funcionarios-aberto {
   max-width: 3600px;
 }
 
+/* Expande absurdamente se OS DOIS painéis abrirem juntos */
+.container-dashboard.visitantes-aberto.funcionarios-aberto {
+  max-width: 5000px;
+}
+
 /* ==========================================
-   CARD DE PERFIL (Empurrado para a Direita)
+   CARD PRINCIPAL (PERFIL)
    ========================================== */
 .card-formulario {
   background-color: white;
@@ -54,7 +65,9 @@
   display: flex;
   flex-direction: column;
   gap: 60px;
-  order: 2; /* CRÍTICO: Mantém o card de perfil sempre à direita no Flexbox */
+
+  /* A MÁGICA ESTÁ AQUI: */
+  order: 2; /* Garante que ficará SEMPRE no meio */
 }
 
 .boas-vindas h2 {
@@ -70,3 +83,15 @@
   margin: 0;
 }
 
+/* ==========================================
+   ORDENAÇÃO DOS CARDS LATERAIS
+   (A formatação visual deles fica em seus próprios arquivos,
+    mas o posicionamento na tela é ditado pelo layout)
+   ========================================== */
+.card-visitantes {
+  order: 1; /* Força a renderização na ESQUERDA do card principal */
+}
+
+.card-funcionarios {
+  order: 3; /* Força a renderização na DIREITA do card principal */
+}
