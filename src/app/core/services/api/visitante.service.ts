@@ -18,4 +18,8 @@ export class VisitanteService {
   listar(): Observable<any> {
     return this.http.get(this.BASE_URL);
   }
+
+  excluir(id: number): Observable<any> {
+    return this.http.delete(`${this.BASE_URL}/${id}`);
+  }
 }

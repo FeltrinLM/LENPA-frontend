@@ -133,6 +133,30 @@ export class CentralUsuario implements OnInit {
     );
   }
 
+  // --- ADICIONADO: Lógica de exclusão com pop-up (Visitantes) ---
+  confirmarExclusaoVisitante(vis: any) {
+    this.abrirModal(
+      'Atenção!',
+      `Deseja mesmo excluir o visitante ${vis.nome} do sistema?`,
+      'Sim, excluir',
+      () => this.executarExclusaoVisitante(vis.id) // ATENÇÃO: Verifique se o seu DTO usa 'id' ou 'idVisitante'
+    );
+  }
+
+  private executarExclusaoVisitante(id: number) {
+    this.visitanteService.excluir(id).subscribe({
+      next: () => {
+        this.fecharModal();
+        alert('Visitante excluído com sucesso!');
+        this.carregarVisitantes(); // Recarrega a lista para remover o card da tela
+      },
+      error: (err: any) => {
+        this.fecharModal();
+        alert(err.error?.message || 'Erro ao excluir o visitante.');
+      }
+    });
+  }
+
   // ==========================================
   // NAVEGAÇÃO E GERENCIAMENTO DE FUNCIONÁRIOS
   // ==========================================
@@ -164,6 +188,28 @@ export class CentralUsuario implements OnInit {
     });
   }
 
+  confirmarExclusaoFuncionario(func: any) {
+    this.abrirModal(
+      'Atenção!',
+      `Deseja mesmo excluir o ${func.nivelPermissao.toLowerCase()} ${func.nome} do sistema?`,
+      'Sim, excluir',
+      () => this.executarExclusaoFuncionario(func.idFuncionario)
+    );
+  }
+
+  private executarExclusaoFuncionario(id: number) {
+    this.funcionarioService.excluir(id).subscribe({
+      next: () => {
+        this.fecharModal();
+        alert('Funcionário excluído com sucesso!');
+        this.carregarFuncionarios();
+      },
+      error: (err: any) => {
+        this.fecharModal();
+        alert(err.error?.message || 'Erro ao excluir o funcionário.');
+      }
+    });
+  }
 
   // ==========================================
   // ATUALIZAR NOME, EMAIL E SENHA

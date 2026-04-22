@@ -26,4 +26,8 @@ export class FuncionarioService {
   cadastrar(payload: any): Observable<any> {
     return this.http.post(this.BASE_URL, payload);
   }
+
+  excluir(id: number): Observable<any> {
+    return this.http.delete(`${this.BASE_URL}/${id}`);
+  }
 }
