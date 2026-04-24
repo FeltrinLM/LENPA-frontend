@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -27,6 +27,7 @@ export class CentralUsuario implements OnInit {
   private visitanteService = inject(VisitanteService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
 
   usuario: UsuarioLogado | null = null;
 
@@ -111,10 +112,13 @@ export class CentralUsuario implements OnInit {
         this.visitantes = res.content ? res.content : (Array.isArray(res) ? res : []);
         this.visitantesFiltrados = [...this.visitantes];
         this.carregandoVisitantes = false;
+
+        this.cdr.detectChanges(); // <-- FORÇA O ANGULAR A ATUALIZAR A TELA AGORA
       },
       error: (err: any) => {
         console.error('Erro ao buscar visitantes:', err);
         this.carregandoVisitantes = false;
+        this.cdr.detectChanges(); // Garante que a tela saia do loading se der erro também
         alert('Erro ao carregar a lista de visitantes.');
       }
     });
@@ -133,7 +137,6 @@ export class CentralUsuario implements OnInit {
     );
   }
 
-  // --- ADICIONADO: Lógica de exclusão com pop-up (Visitantes) ---
   confirmarExclusaoVisitante(vis: any) {
     this.abrirModal(
       'Atenção!',
@@ -161,7 +164,6 @@ export class CentralUsuario implements OnInit {
   // NAVEGAÇÃO E GERENCIAMENTO DE FUNCIONÁRIOS
   // ==========================================
   abrirGerenciamentoFuncionarios() {
-    this.exibirVisitantes = false; // Fecha a lista de visitantes se estiver aberta
     this.exibirFuncionarios = !this.exibirFuncionarios;
 
     if (this.exibirFuncionarios) {
@@ -174,15 +176,15 @@ export class CentralUsuario implements OnInit {
     this.funcionarioService.listar().subscribe({
       next: (res: any) => {
         let listaBruta = res.content ? res.content : (Array.isArray(res) ? res : []);
-
-        // Filtra a lista para NÃO incluir o usuário que está logado atualmente
         this.funcionarios = listaBruta.filter((func: any) => func.email !== this.usuario?.email);
-
         this.carregandoFuncionarios = false;
+
+        this.cdr.detectChanges(); // <-- FORÇA O ANGULAR A ATUALIZAR A TELA AGORA
       },
       error: (err: any) => {
         console.error('Erro ao buscar funcionários:', err);
         this.carregandoFuncionarios = false;
+        this.cdr.detectChanges(); // Garante que a tela saia do loading se der erro também
         alert('Erro ao carregar a lista de funcionários.');
       }
     });
@@ -315,10 +317,26 @@ export class CentralUsuario implements OnInit {
   // SALVAR EDIÇÃO DO VISITANTE
   // ==========================================
   salvarVisitanteEditado(vis: any, campo: string) {
-    alert(`O campo ${campo} foi atualizado com sucesso!`);
+    // Monta o objeto de acordo com o que o Java espera em DadosAtualizacaoVisitante
+    const payload = {
+      id: vis.id,
+      nome: vis.nome,
+      cidade: vis.cidade,
+      tipo: vis.tipo // Envia o tipo atual junto
+    };
 
-    if (campo === 'nome') vis._nomeModificado = false;
-    if (campo === 'cidade') vis._cidadeModificada = false;
+    this.visitanteService.atualizar(payload).subscribe({
+      next: () => {
+        // Esconde o botão de salvar depois do sucesso
+        if (campo === 'nome') vis._nomeModificado = false;
+        if (campo === 'cidade') vis._cidadeModificada = false;
+
+        this.cdr.detectChanges(); // Atualiza a tela
+      },
+      error: (err: any) => {
+        alert(err.error?.message || `Erro ao atualizar ${campo} do visitante.`);
+      }
+    });
   }
 
   abrirModalSair() { this.abrirModal('Deseja sair?', 'Você precisará fazer login novamente.', 'Sim, sair', () => { this.authService.logout(); this.router.navigate(['/']); }); }
