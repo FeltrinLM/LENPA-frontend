@@ -21,13 +21,15 @@
     </div>
 
     <div class="rodape-form">
-      <button class="btn-primario" style="flex: none; padding: 30px 100px;" [disabled]="datasInvalidas" (click)="gerarRelatorio()">
-        Gerar Relatório
+      <button class="btn-primario" style="flex: none; padding: 30px 100px;"
+              [disabled]="datasInvalidas || carregando"
+              (click)="gerarRelatorio()">
+        {{ carregando ? 'Calculando...' : 'Gerar Relatório' }}
       </button>
     </div>
   </div>
 
-  <div class="resultados-relatorio" *ngIf="relatorioGerado">
+  <div class="resultados-relatorio" *ngIf="relatorioGerado && !carregando">
 
     <div class="bloco-resultado">
       <h2>Resultados:</h2>
@@ -38,6 +40,10 @@
       <h2>Atividades realizadas:</h2>
 
       <div class="lista-eventos-relatorio">
+        <div *ngIf="eventosRealizados.length === 0" style="font-size: 40px; color: #666; padding: 40px 0;">
+          Nenhum evento registrado neste período.
+        </div>
+
         <div class="card-evento-relatorio" *ngFor="let evento of eventosRealizados">
 
           <img [src]="evento.imagem" alt="Capa do evento" class="imagem-evento-relatorio">
@@ -50,7 +56,7 @@
       </div>
     </div>
 
-    <div class="bloco-resultado bloco-graficos">
+    <div class="bloco-resultado bloco-graficos" *ngIf="dadosCidades.length > 0">
       <h2>Distribuição dos visitantes:</h2>
 
       <div class="container-grafico">
@@ -61,7 +67,7 @@
         <div class="legenda-grafico">
           <div class="item-legenda" *ngFor="let dado of dadosCidades">
             <span class="cor-legenda" [style.background]="dado.cor"></span>
-            <p>{{ dado.porcentagem }}% {{ dado.localidade }}</p>
+            <p>{{ dado.porcentagem | number:'1.0-0' }}% {{ dado.localidade }} ({{ dado.visitantesAbsolutos }} pessoas)</p>
           </div>
         </div>
       </div>

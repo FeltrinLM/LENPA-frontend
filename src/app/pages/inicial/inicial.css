@@ -567,3 +567,20 @@
   margin: 0;
   font-family: sans-serif;
 }
+
+.icone-instagram {
+  position: absolute;
+  bottom: 80px; /* Distância do fundo do banner */
+  right: 80px;  /* Distância da lateral direita */
+  color: white; /* Deixa o SVG branquinho */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.icone-instagram svg {
+  width: 200px;
+  height: 200px;
+}
+
+.icone-instagram:hover {
+  transform: scale(1.1); /* Dá um zoomzinho ao passar o mouse */
+}
