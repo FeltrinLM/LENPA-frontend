@@ -125,7 +125,8 @@
     </div>
 
     <p class="modal-texto-instrucao" *ngIf="!mensagemSucessoAgendamento">
-      Informe seu e-mail abaixo. Um funcionário do laboratório entrará em contato para confirmar a sua inscrição e passar as instruções.
+      Preencha seus dados abaixo para garantir sua vaga.<br>
+      <span style="font-weight: bold; color: #1e5233;">Já nos visitou antes?</span> Basta digitar seu e-mail que preencheremos o resto para você!
     </p>
 
     <div *ngIf="mensagemSucessoAgendamento" class="mensagem-sucesso-container">
@@ -133,16 +134,42 @@
       <h2>{{ mensagemSucessoAgendamento }}</h2>
     </div>
 
-    <form (ngSubmit)="enviarPedidoAgendamento()" class="form-agendamento" *ngIf="!mensagemSucessoAgendamento">
+    <form (ngSubmit)="enviarPedidoAgendamento()" class="form-agendamento" *ngIf="!mensagemSucessoAgendamento" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
 
-      <div class="campo-agendamento">
-        <input type="email" name="emailAgendamento" [(ngModel)]="emailAgendamento" placeholder="Digite seu melhor e-mail..." required class="input-padrao-lenpa">
+      <div class="campo-agendamento" style="position: relative;">
+        <input type="email" name="emailAgendamento" [(ngModel)]="emailAgendamento" (blur)="buscarVisitantePorEmail()" placeholder="Seu melhor e-mail..." required class="input-padrao-lenpa">
+        <span *ngIf="buscandoEmail" style="color: #666; font-size: 12px; position: absolute; right: 10px; top: 12px;">Buscando...</span>
       </div>
 
-      <div class="modal-botoes-padrao">
+      <div class="campo-agendamento select-container">
+        <label class="label-flutuante">Você vai</label>
+        <select name="tipoAgendamento" [(ngModel)]="tipoAgendamento" class="input-padrao-lenpa select-lenpa">
+          <option value="INDIVIDUAL">Sozinho</option>
+          <option value="GRUPO">Com várias pessoas</option>
+        </select>
+      </div>
+
+      <div class="campo-agendamento slide-down" *ngIf="tipoAgendamento === 'GRUPO'">
+        <input type="number" name="quantidadeAgendamento" [(ngModel)]="quantidadeAgendamento" min="2" placeholder="Quantas pessoas vão junto com você?" class="input-padrao-lenpa">
+      </div>
+
+      <div class="campo-agendamento">
+        <input type="text" name="nomeAgendamento" [(ngModel)]="nomeAgendamento" placeholder="Nome Completo" required class="input-padrao-lenpa">
+      </div>
+
+
+      <div class="campo-agendamento">
+        <input type="text" name="cidadeAgendamento" [(ngModel)]="cidadeAgendamento" placeholder="Cidade onde mora" required class="input-padrao-lenpa">
+      </div>
+
+      <p *ngIf="mensagemErroAgendamento" style="color: #d32f2f; font-size: 14px; text-align: center; margin: 0;">
+        {{ mensagemErroAgendamento }}
+      </p>
+
+      <div class="modal-botoes-padrao" style="margin-top: 10px;">
         <button type="button" class="btn-secundario" (click)="fecharAgendamento()">Cancelar</button>
-        <button type="submit" class="btn-primario" [disabled]="carregandoAgendamento || !emailAgendamento">
-          {{ carregandoAgendamento ? 'Enviando...' : 'Enviar Pedido' }}
+        <button type="submit" class="btn-primario" [disabled]="carregandoAgendamento || !emailAgendamento || !nomeAgendamento || !cidadeAgendamento">
+          {{ carregandoAgendamento ? 'Confirmando...' : 'Confirmar Vaga' }}
         </button>
       </div>
 

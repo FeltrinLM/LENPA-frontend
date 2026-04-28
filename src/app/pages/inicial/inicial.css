@@ -381,14 +381,14 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 120px 150px; /* Padding generoso nas laterais */
+  padding: 120px 150px;
   box-sizing: border-box;
-  text-align: left; /* Alinhamento geral à esquerda */
+  text-align: left;
 }
 
 /* Cabeçalho do Hover */
 .hover-header {
-  border-bottom: 4px solid rgba(255, 255, 255, 0.15); /* Linha sutil para separar o título */
+  border-bottom: 4px solid rgba(255, 255, 255, 0.15);
   padding-bottom: 50px;
   margin-bottom: 60px;
 }
@@ -396,7 +396,7 @@
 .titulo-hover {
   color: white;
   font-family: monospace, 'Courier New', Courier;
-  font-size: 140px; /* Um pouco menor para caber em 1 linha ou quebrar bonito */
+  font-size: 140px;
   font-weight: 900;
   margin: 0;
   line-height: 1.1;
@@ -406,7 +406,7 @@
 /* Grid de Informações Meta */
 .hover-meta-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colunas de tamanhos iguais */
+  grid-template-columns: repeat(3, 1fr);
   gap: 60px;
   margin-bottom: 70px;
 }
@@ -418,7 +418,7 @@
 }
 
 .meta-label {
-  color: #02A34D; /* Verde claro do seu sistema para os rótulos */
+  color: #02A34D;
   font-family: 'Arial', sans-serif;
   font-size: 40px;
   font-weight: bold;
@@ -437,7 +437,7 @@
 
 /* Descrição e Botão */
 .hover-description {
-  flex: 1; /* Ocupa o espaço que sobrar no meio */
+  flex: 1;
 }
 
 .hover-description p {
@@ -446,13 +446,13 @@
   font-size: 55px;
   line-height: 1.6;
   margin: 0;
-  max-width: 90%; /* Evita que o texto encoste muito na borda direita */
+  max-width: 90%;
   text-shadow: 0 4px 10px rgba(0,0,0,0.8);
 }
 
 .hover-footer {
   display: flex;
-  justify-content: flex-end; /* Joga o botão para a direita */
+  justify-content: flex-end;
   align-items: flex-end;
   margin-top: 50px;
 }
@@ -510,9 +510,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 45px; /* Define o espaçamento vertical padrão e igual para todos */
 }
-
 .campo-agendamento {
   width: 100%;
 }
@@ -545,6 +544,7 @@
   justify-content: center;
   gap: 40px;
   width: 100%;
+  margin-top: 45px; /* Valor igualado ao gap dos campos */
 }
 
 .mensagem-sucesso-container {
@@ -570,9 +570,9 @@
 
 .icone-instagram {
   position: absolute;
-  bottom: 80px; /* Distância do fundo do banner */
-  right: 80px;  /* Distância da lateral direita */
-  color: white; /* Deixa o SVG branquinho */
+  bottom: 80px;
+  right: 80px;
+  color: white;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -582,5 +582,87 @@
 }
 
 .icone-instagram:hover {
-  transform: scale(1.1); /* Dá um zoomzinho ao passar o mouse */
+  transform: scale(1.1);
+}
+
+/* ==========================================
+   ESTILIZAÇÃO DO SELECT E LABELS (Isolado)
+   ========================================== */
+
+.select-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  /* Margens top e bottom foram removidas daqui */
+}
+
+
+
+.label-flutuante {
+  color: #006633;
+  font-size: 40px;
+  font-family: sans-serif;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.select-lenpa {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23006633' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 40px center;
+  background-size: 40px;
+  padding-right: 100px;
+}
+
+/* Animação para a quantidade */
+.slide-down {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* margin-bottom removido daqui */
+  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   ANIMAÇÃO DO "BUSCANDO..." E BOTÕES
+   ========================================== */
+
+.campo-agendamento span[style*="buscando"] {
+  display: none;
+}
+
+.campo-agendamento > span {
+  color: #006633 !important;
+  font-size: 35px !important;
+  right: 40px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-weight: bold;
+  font-family: sans-serif;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* Estilo para o botão bloqueado */
+.btn-primario:disabled {
+  background-color: #cccccc !important;
+  color: #888888 !important;
+  cursor: not-allowed;
+  box-shadow: none !important;
+  transform: none !important;
 }
