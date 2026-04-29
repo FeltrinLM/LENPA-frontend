@@ -8,11 +8,25 @@ import { Observable } from 'rxjs';
 export class AgendarService {
   private http = inject(HttpClient);
 
-  // A mesma rota que configuramos no @RequestMapping do Java
   private readonly BASE_URL = 'http://localhost:8080/agendamentos';
 
-  // Envia o DTO (payload) para o back-end realizar o agendamento
+  // 1. Criar novo agendamento
   agendar(payload: any): Observable<any> {
     return this.http.post(this.BASE_URL, payload);
+  }
+
+  // 2. Listar todos os agendamentos (Para o painel do funcionário)
+  listar(): Observable<any> {
+    return this.http.get(this.BASE_URL);
+  }
+
+  // 3. Fazer o Check-in (Confirmar Presença)
+  confirmarPresenca(idAgendamento: number): Observable<any> {
+    return this.http.put(`${this.BASE_URL}/${idAgendamento}/confirmar`, {});
+  }
+
+  // 4. Cancelar agendamento
+  cancelar(idAgendamento: number): Observable<any> {
+    return this.http.delete(`${this.BASE_URL}/${idAgendamento}`);
   }
 }

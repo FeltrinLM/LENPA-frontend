@@ -18,6 +18,7 @@
   align-items: center;
   background-color: #f8fafc;
 }
+
 /* 3. TÍTULO DA PÁGINA GIGANTE */
 .titulo-pagina {
   font-family: monospace, 'Courier New', Courier;
@@ -36,7 +37,7 @@
   box-shadow: 0 20px 50px rgba(0,0,0,0.1);
 
   width: 100%;
-  max-width: 1800px;
+  max-width: 1800px; /* <-- LARGURA REFERÊNCIA */
 
   display: flex;
   flex-direction: column;
@@ -127,3 +128,181 @@ select.input-lenpa {
   justify-content: center;
   margin-top: 40px;
 }
+
+/* ==========================================
+   NOVA SEÇÃO DE CARDS DE GERENCIAMENTO
+   ========================================== */
+.titulo-secao-cards {
+  /* Copiado exatamente do .titulo-pagina */
+  font-family: monospace, 'Courier New', Courier;
+  color: #005A32;
+  font-size: 100px;
+  text-align: center;
+  font-weight: 900;
+
+  /* Ajuste de espaçamento */
+  margin-top: 120px;
+  margin-bottom: 80px;
+}
+
+.grid-cards-atividades {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-bottom: 100px;
+
+  /* Deixa os cards alinhados perfeitamente com o formulário de cima */
+  width: 100%;
+  max-width: 1800px;
+}
+
+/* O NOVO CARD HORIZONTAL (Estrutura Base) */
+.card-atividade-horizontal {
+  position: relative; /* Necessário para o overlay funcionar */
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 350px;
+  border-radius: 40px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.card-atividade-horizontal .card-img-container {
+  flex: 0 0 35%;
+  height: 100%;
+}
+
+.card-atividade-horizontal .card-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-atividade-horizontal .card-info-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.card-atividade-horizontal .fundo-blur {
+  position: absolute;
+  top: -20px; left: -20px; right: -20px; bottom: -20px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(15px) brightness(0.35);
+  z-index: 1;
+}
+
+.card-atividade-horizontal .conteudo-info {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.titulo-atividade-horizontal {
+  color: white;
+  font-family: monospace, 'Courier New', Courier;
+  font-size: 70px;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1.3;
+  text-shadow: 0 6px 15px rgba(0,0,0,0.6);
+}
+
+/* ==========================================
+   EFEITO MÁGICO DE HOVER NO CARD HORIZONTAL
+   ========================================== */
+.card-atividade-horizontal .card-hover-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+  z-index: 10;
+}
+
+.card-atividade-horizontal:hover {
+  height: 420px; /* Dá uma leve expandida elegante igual ao inicial */
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.45);
+  transform: translateY(-5px);
+  z-index: 20;
+}
+
+.card-atividade-horizontal:hover .card-hover-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.card-atividade-horizontal .fundo-blur-expandido {
+  position: absolute;
+  top: -60px; left: -60px; right: -60px; bottom: -60px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(25px) brightness(0.25); /* Fica mais escuro no hover para focar no texto */
+  z-index: 1;
+}
+
+.card-atividade-horizontal .conteudo-hover {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row; /* Fica um do lado do outro */
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 80px;
+  box-sizing: border-box;
+}
+
+.card-atividade-horizontal .textos-hover {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.card-atividade-horizontal .titulo-hover {
+  color: white;
+  font-family: monospace, 'Courier New', Courier;
+  font-size: 90px;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1.1;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.9);
+}
+
+.card-atividade-horizontal .subtitulo-hover {
+  color: rgba(255, 255, 255, 0.85);
+  font-family: sans-serif;
+  font-size: 45px;
+  margin: 0;
+}
+
+.card-atividade-horizontal .card-admin-seta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-atividade-horizontal .card-admin-seta svg {
+  width: 120px;
+  height: 120px;
+  color: #a3e635; /* Verde limão do LENPA dando contraste */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-atividade-horizontal:hover .card-admin-seta svg {
+  transform: translateX(30px); /* A seta desliza apontando pro clique */
+}
+
+

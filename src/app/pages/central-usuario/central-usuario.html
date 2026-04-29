@@ -4,9 +4,7 @@
     <h1 class="titulo-pagina">Central do usuário</h1>
   </div>
 
-  <div class="container-dashboard"
-       [class.visitantes-aberto]="exibirVisitantes"
-       [class.funcionarios-aberto]="exibirFuncionarios">
+  <div class="container-dashboard" [class.funcionarios-aberto]="exibirFuncionarios">
 
     <div class="card-formulario">
       <div class="boas-vindas">
@@ -79,9 +77,6 @@
         </div>
 
         <div class="botoes-gerenciamento">
-          <button class="btn-gerenciar btn-visitantes" (click)="abrirGerenciamentoVisitantes()">
-            {{ exibirVisitantes ? 'Fechar Visitantes' : 'Gerenciar Visitantes' }}
-          </button>
           <button *ngIf="usuario?.role === 'ADMINISTRADOR'" class="btn-gerenciar btn-funcionarios" (click)="abrirGerenciamentoFuncionarios()">
             {{ exibirFuncionarios ? 'Fechar Funcionários' : 'Gerenciar Funcionários' }}
           </button>
@@ -89,59 +84,6 @@
 
         <button class="btn-secundario" (click)="abrirModalSair()">Sair</button>
       </div>
-    </div>
-
-    <div class="card-lista-gerenciamento card-visitantes" *ngIf="exibirVisitantes">
-
-      <div class="cabecalho-lista">
-        <h2>Visitantes Cadastrados</h2>
-        <span class="contador-badge">{{ visitantesFiltrados.length }}</span>
-      </div>
-
-      <div class="barra-pesquisa">
-        <input type="text"
-               [(ngModel)]="termoBuscaVisitante"
-               (input)="filtrarVisitantes()"
-               placeholder="Buscar por nome ou cidade..."
-               class="input-busca-lista">
-      </div>
-
-      <div class="conteudo-lista">
-        <div class="mensagem-lista" *ngIf="carregandoVisitantes">
-          Buscando visitantes...
-        </div>
-
-        <div class="mensagem-lista" *ngIf="!carregandoVisitantes && visitantesFiltrados.length === 0">
-          Nenhum visitante encontrado.
-        </div>
-
-        <div class="item-usuario" *ngFor="let vis of visitantesFiltrados">
-
-          <div class="acoes-esquerda">
-            <button class="btn-icone-excluir" title="Excluir Visitante" (click)="confirmarExclusaoVisitante(vis)">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="216" y1="56" x2="40" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="104" y1="104" x2="104" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="152" y1="104" x2="152" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M168,56V40a16,16,0,0,0-16-16H104A16,16,0,0,0,88,40V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
-            </button>
-          </div>
-
-          <div class="info-usuario">
-            <div class="linha-editavel">
-              <input type="text" [(ngModel)]="vis.nome" (input)="vis._nomeModificado = true" class="input-editavel titulo-editavel" placeholder="Nome do visitante">
-              <button class="btn-icone-salvar" *ngIf="vis._nomeModificado" title="Salvar Nome" (click)="salvarVisitanteEditado(vis, 'nome')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
-              </button>
-            </div>
-
-            <div class="linha-editavel">
-              <input type="text" [(ngModel)]="vis.cidade" (input)="vis._cidadeModificada = true" class="input-editavel texto-editavel" placeholder="Cidade não informada">
-              <button class="btn-icone-salvar" *ngIf="vis._cidadeModificada" title="Salvar Cidade" (click)="salvarVisitanteEditado(vis, 'cidade')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="40 144 96 200 224 72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
     </div>
 
     <div class="card-lista-gerenciamento card-funcionarios" *ngIf="exibirFuncionarios">
@@ -182,7 +124,7 @@
 
   </div>
 
-  <button class="btn-flutuante-cadastrar" (click)="abrirModalNovoUsuario()">
+  <button class="btn-flutuante-cadastrar" (click)="abrirModalNovoUsuario()" *ngIf="usuario?.role === 'ADMINISTRADOR'">
     <span class="texto-fab">Cadastrar novo usuário</span>
     <div class="icone-fab">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="136" x2="248" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="224" y1="112" x2="224" y2="160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="108" cy="100" r="60" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M24,200c20.55-24.45,49.56-40,84-40s63.45,15.55,84,40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
@@ -193,16 +135,14 @@
     <div class="modal-confirmacao modal-cadastro" (click)="$event.stopPropagation()">
       <h2>Novo Usuário</h2>
 
-      <p *ngIf="usuario?.role !== 'BOLSISTA'">Selecione o nível e preencha os dados abaixo.</p>
-      <p *ngIf="usuario?.role === 'BOLSISTA'">Preencha os dados do visitante para o cadastro.</p>
+      <p>Selecione o nível e preencha os dados abaixo.</p>
 
-      <div class="campo-cadastro" *ngIf="usuario?.role !== 'BOLSISTA'">
+      <div class="campo-cadastro">
         <label>Nível de Permissão:</label>
         <select class="select-permissao" [(ngModel)]="modalNovoUsuario.nivelPermissao">
           <option value="" disabled selected>Escolha uma opção...</option>
           <option value="Administrador">Administrador</option>
           <option value="Bolsista">Bolsista</option>
-          <option value="Visitante">Visitante</option>
         </select>
       </div>
 
@@ -231,23 +171,6 @@
           <div class="campo-form-reativo">
             <input type="password" class="input-modal" formControlName="confirmarSenha" placeholder="Confirmar senha">
             <span class="mensagem-erro" *ngIf="formFuncionario.hasError('senhasDiferentes') && fFunc['confirmarSenha'].touched">As senhas não coincidem.</span>
-          </div>
-        </div>
-      </form>
-
-      <form class="form-dinamico"
-            [formGroup]="formVisitante"
-            *ngIf="modalNovoUsuario.nivelPermissao === 'Visitante'">
-
-        <div class="grupo-inputs">
-          <div class="campo-form-reativo">
-            <input type="text" class="input-modal" formControlName="nomeCompleto" placeholder="Nome Completo">
-            <span class="mensagem-erro" *ngIf="fVis['nomeCompleto'].invalid && fVis['nomeCompleto'].touched">O nome completo é obrigatório.</span>
-          </div>
-
-          <div class="campo-form-reativo">
-            <input type="text" class="input-modal" formControlName="cidade" placeholder="Cidade que reside">
-            <span class="mensagem-erro" *ngIf="fVis['cidade'].invalid && fVis['cidade'].touched">A cidade é obrigatória.</span>
           </div>
         </div>
       </form>

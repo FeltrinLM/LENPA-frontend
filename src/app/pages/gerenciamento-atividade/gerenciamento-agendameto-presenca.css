@@ -1,0 +1,175 @@
+/* ==========================================
+   NOVA VISÃO: PAINEL DE LISTA (TOGGLE)
+   ========================================== */
+
+.container-visao-padrao, .container-visao-lista {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Botão de Voltar */
+.btn-voltar-painel {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: none;
+  border: none;
+  color: #006633;
+  font-family: sans-serif;
+  font-size: 45px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 40px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.btn-voltar-painel svg {
+  width: 100px;
+  height: 100px;
+}
+
+.btn-voltar-painel:hover {
+  background-color: #e6f4ea;
+  transform: translateX(-5px);
+}
+
+/* Cabeçalho Bonito da Lista */
+.header-painel-lista {
+  width: 80%; /* <-- Largura aumentada para respirar */
+  max-width: none; /* <-- Trava removida */
+  height: 250px;
+  border-radius: 30px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 50px 80px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  margin-bottom: 60px;
+}
+
+.header-img-bg {
+  position: absolute;
+  top: -20px; left: -20px; right: -20px; bottom: -20px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px) brightness(0.4);
+  z-index: 1;
+}
+
+.header-texto {
+  position: relative;
+  z-index: 2;
+}
+
+.header-texto h2 {
+  color: white;
+  font-family: monospace, sans-serif;
+  font-size: 80px;
+  margin: 0 0 10px 0;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+}
+
+.header-texto p {
+  color: #a3e635;
+  font-family: sans-serif;
+  font-size: 40px;
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Tabela e Card Branco */
+.card-tabela {
+  background-color: white;
+  width: 80%; /* <-- Largura aumentada para respirar */
+  max-width: none; /* <-- Trava removida */
+  border-radius: 24px;
+  padding: 40px 60px; /* <-- Espaço interno otimizado */
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+
+.tabela-lenpa {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: sans-serif;
+  table-layout: auto; /* <-- Permite que a tabela distribua o espaço sozinha */
+}
+
+.tabela-lenpa th {
+  text-align: left;
+  font-size: 40px;
+  color: #666;
+  padding-bottom: 30px;
+  border-bottom: 4px solid #eee;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.tabela-lenpa td {
+  font-size: 45px;
+  color: #333;
+  padding: 40px 20px;
+  border-bottom: 2px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.td-destaque {
+  font-weight: bold;
+  color: #004325 !important;
+  min-width: 400px; /* <-- Evita que o nome fique esmagado e quebre linha */
+}
+
+/* Badges e Botões da Tabela */
+.badge-status {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #fff3cd;
+  color: #856404;
+  border-radius: 50px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.badge-status.confirmado {
+  background-color: #d4edda;
+  color: #155724;
+}
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+  color: #999;
+}
+
+.empty-state svg {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 30px;
+  color: #ccc;
+}
+
+.empty-state h3 {
+  font-size: 50px;
+  margin: 0 0 15px 0;
+  color: #666;
+}
+
+.empty-state p {
+  font-size: 40px;
+  margin: 0;
+}
+
+.texto-carregando {
+  text-align: center;
+  font-size: 40px;
+  color: #006633;
+  font-family: sans-serif;
+  margin: 100px 0;
+}

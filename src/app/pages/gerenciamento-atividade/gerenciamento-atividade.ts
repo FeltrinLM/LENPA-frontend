@@ -1,61 +1,186 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import { AtividadeService } from '../../core/services/api/atividade.service';
+import { VisitanteService } from '../../core/services/api/visitante.service';
+import { AgendarService } from '../../core/services/api/agendar.service';
 
 @Component({
   selector: 'app-gerenciamento-atividade',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './gerenciamento-atividade.html',
-  styleUrl: './gerenciamento-atividade.css'
+  styleUrls: [
+    './gerenciamento-atividade.css',
+    './gerenciamento-agendameto-presenca.css'
+  ]
 })
-export class GerenciamentoAtividade {
+export class GerenciamentoAtividade implements OnInit {
 
-  // 🔴 INTEGRAÇÃO API: Esta lista de eventos ativos virá do backend (ex: GET /api/eventos/ativos)
-  eventosDisponiveis = [
-    { id: 1, nome: 'Exposição de espécies de abelhas nativas' },
-    { id: 2, nome: 'Exposição de flores originarias do RS' }
-  ];
+  private atividadeService = inject(AtividadeService);
+  private visitanteService = inject(VisitanteService);
+  private agendarService = inject(AgendarService);
+  private cdr = inject(ChangeDetectorRef);
 
-  // 🔴 INTEGRAÇÃO API: Esta lista virá do backend (ex: GET /api/pessoas)
-  pessoasCadastradas = [
-    { id: 1, nome: 'Maria Clara' },
-    { id: 2, nome: 'Lucas Mendes' },
-    { id: 3, nome: 'Miguel Martins' }
-  ];
+  eventosDisponiveis: any[] = [];
+  pessoasCadastradas: any[] = [];
 
-  // O "Cérebro" do nosso formulário condicional
+  // Variáveis para a nova visão de Lista/Check-in
+  eventoSelecionadoParaGerenciar: any = null;
+  listaAgendamentos: any[] = [];
+  carregandoLista: boolean = false;
+
   formCadastro = {
-    eventoSelecionado: '',       // <-- NOVO CAMPO AQUI
+    eventoSelecionado: '',
     acao: 'agendar',
     tipoVisitante: 'individual',
-
-    pessoaSelecionada: '',
-    novaPessoa: { nome: '', cidade: '' },
-
-    instituicao: { nome: '', quantidade: null, local: '' },
-    responsavelSelecionado: '',
-    novoResponsavel: { nome: '', cidade: '' }
+    visitante: { nome: '', cidade: '' },
+    instituicao: { nome: '', quantidade: null as number | null, local: '' },
+    responsavel: { nome: '', cidade: '' }
   };
 
-  // 🔴 INTEGRAÇÃO API: Método disparado ao clicar no botão
+  ngOnInit() {
+    this.carregarDadosIniciais();
+  }
+
+  carregarDadosIniciais() {
+    this.atividadeService.listar().subscribe({
+      next: (res: any) => {
+        this.eventosDisponiveis = res.content ? res.content : (Array.isArray(res) ? res : []);
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => console.error('Erro ao carregar atividades', err)
+    });
+
+    this.visitanteService.listar().subscribe({
+      next: (res: any) => {
+        this.pessoasCadastradas = res.content ? res.content : (Array.isArray(res) ? res : []);
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => console.error('Erro ao carregar visitantes', err)
+    });
+  }
+
+  getImagemUrl(imagem: string | null | undefined): string {
+    if (!imagem) return '/assets/images/placeholder_background.jpg';
+    if (imagem.startsWith('http')) return imagem;
+    return 'http://localhost:8080/uploads/' + imagem;
+  }
+
   salvarCadastro() {
-    // Trava de segurança no frontend:
     if (!this.formCadastro.eventoSelecionado) {
-      alert("Por favor, selecione uma atividade antes de continuar!");
+      alert("Por favor, selecione uma atividade.");
       return;
     }
 
-    console.log("Dados prontos para enviar pro Java:", this.formCadastro);
+    if (this.formCadastro.acao === 'confirmar') {
+      alert("Para confirmar a presença, abra a lista da atividade lá embaixo!");
+      return;
+    }
+
+    let nomeFinal = '';
+    let cidadeFinal = '';
+    let quantidadeFinal = 1;
 
     if (this.formCadastro.tipoVisitante === 'individual') {
-      if (this.formCadastro.pessoaSelecionada === 'novo') {
-        alert(`Evento ID: ${this.formCadastro.eventoSelecionado} | Criando nova pessoa: ${this.formCadastro.novaPessoa.nome} e agendando!`);
-      } else {
-        alert(`Evento ID: ${this.formCadastro.eventoSelecionado} | Agendando pessoa ID: ${this.formCadastro.pessoaSelecionada}`);
-      }
+      nomeFinal = this.formCadastro.visitante.nome;
+      cidadeFinal = this.formCadastro.visitante.cidade;
     } else {
-      alert(`Evento ID: ${this.formCadastro.eventoSelecionado} | Cadastrando instituição/grupo: ${this.formCadastro.instituicao.nome}`);
+      nomeFinal = this.formCadastro.instituicao.nome;
+      if (this.formCadastro.responsavel.nome) {
+        nomeFinal += ' (Resp: ' + this.formCadastro.responsavel.nome + ')';
+      }
+      cidadeFinal = this.formCadastro.instituicao.local || this.formCadastro.responsavel.cidade;
+      quantidadeFinal = this.formCadastro.instituicao.quantidade || 2;
+    }
+
+    if (!nomeFinal || !cidadeFinal) {
+      alert("Preencha os campos obrigatórios.");
+      return;
+    }
+
+    const payload = {
+      idAtividade: this.formCadastro.eventoSelecionado,
+      nomeVisitante: nomeFinal,
+      emailVisitante: null,
+      cidadeVisitante: cidadeFinal,
+      quantidade: quantidadeFinal
+    };
+
+    this.agendarService.agendar(payload).subscribe({
+      next: () => {
+        alert('Agendamento registrado!');
+        this.formCadastro.visitante = { nome: '', cidade: '' };
+        this.formCadastro.instituicao = { nome: '', quantidade: null, local: '' };
+        this.formCadastro.responsavel = { nome: '', cidade: '' };
+      },
+      error: (err: any) => alert('Erro: ' + (err.error?.message || 'Falha no agendamento.'))
+    });
+  }
+
+  // ==========================================
+  // LÓGICA DO NOVO PAINEL DE LISTA
+  // ==========================================
+
+  abrirGerenciamentoAtividade(evento: any) {
+    this.eventoSelecionadoParaGerenciar = evento;
+    this.carregarListaAgendamentos(evento.idAtividade || evento.id);
+  }
+
+  fecharGerenciamento() {
+    this.eventoSelecionadoParaGerenciar = null;
+    this.listaAgendamentos = [];
+  }
+
+  carregarListaAgendamentos(idAtividade: number) {
+    this.carregandoLista = true;
+    this.agendarService.listar().subscribe({
+      next: (res: any) => {
+        const todosAgendamentos = res.content ? res.content : (Array.isArray(res) ? res : []);
+
+        // FILTRA E MAPEIA A CIDADE PARA APARECER CORRETAMENTE (cidadeDisplay)
+        this.listaAgendamentos = todosAgendamentos
+          .filter((a: any) => a.idAtividade === idAtividade)
+          .map((a: any) => {
+            return {
+              ...a,
+              cidadeDisplay: a.cidadeVisitante || a.cidade || 'Não informada'
+            };
+          });
+
+        this.carregandoLista = false;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('Erro ao buscar lista', err);
+        this.carregandoLista = false;
+      }
+    });
+  }
+
+  fazerCheckIn(agendamento: any) {
+    if (agendamento.presencaConfirmada) return;
+
+    const id = agendamento.idAgendamento || agendamento.id;
+    this.agendarService.confirmarPresenca(id).subscribe({
+      next: () => {
+        agendamento.presencaConfirmada = true;
+        this.cdr.detectChanges();
+      },
+      error: () => alert('Erro ao confirmar presença.')
+    });
+  }
+
+  cancelarAgendamento(agendamento: any) {
+    if (confirm(`Tem certeza que deseja cancelar a vaga de ${agendamento.nomeVisitante}?`)) {
+      const id = agendamento.idAgendamento || agendamento.id;
+      this.agendarService.cancelar(id).subscribe({
+        next: () => {
+          this.carregarListaAgendamentos(this.eventoSelecionadoParaGerenciar.idAtividade || this.eventoSelecionadoParaGerenciar.id);
+        },
+        error: () => alert('Erro ao cancelar agendamento.')
+      });
     }
   }
 }

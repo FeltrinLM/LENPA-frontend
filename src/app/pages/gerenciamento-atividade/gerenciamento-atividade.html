@@ -1,109 +1,194 @@
 <div class="pagina-gerenciamento">
 
-  <h1 class="titulo-pagina">Agendamento e Presença</h1>
+  <div class="container-visao-padrao animacao-surgir" *ngIf="!eventoSelecionadoParaGerenciar">
 
-  <div class="card-formulario-condicional">
+    <h1 class="titulo-pagina">Agendamento Manual</h1>
 
-    <div class="linha-form">
-      <div class="campo" style="flex: 1;">
-        <label>Qual atividade?</label>
-        <select [(ngModel)]="formCadastro.eventoSelecionado" class="input-lenpa">
-          <option value="" disabled selected>Selecione a atividade no sistema...</option>
+    <div class="card-formulario-condicional">
 
-          <option *ngFor="let evento of eventosDisponiveis" [value]="evento.id">
-            {{ evento.nome }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <hr style="border: 0; border-top: 4px dashed #ddd; margin: 10px 0; width: 100%;">
-
-    <div class="linha-form">
-      <div class="campo">
-        <label>Ação</label>
-        <select [(ngModel)]="formCadastro.acao" class="input-lenpa">
-          <option value="agendar">Agendar</option>
-          <option value="confirmar">Confirmar Presença</option>
-        </select>
-      </div>
-
-      <div class="campo">
-        <label>Tipo de Visitante</label>
-        <select [(ngModel)]="formCadastro.tipoVisitante" class="input-lenpa">
-          <option value="individual">Individual</option>
-          <option value="instituicao">Instituição/Grupo</option>
-        </select>
-      </div>
-    </div>
-
-    <div *ngIf="formCadastro.tipoVisitante === 'individual'" class="bloco-condicional">
-      <div class="campo">
-        <label>Selecionar Visitante</label>
-        <select [(ngModel)]="formCadastro.pessoaSelecionada" class="input-lenpa">
-          <option value="" disabled selected>Escolha uma opção...</option>
-          <option value="novo">➕ Sem conta (Cadastrar Novo)</option>
-          <option *ngFor="let p of pessoasCadastradas" [value]="p.id">{{ p.nome }}</option>
-        </select>
-      </div>
-
-      <div *ngIf="formCadastro.pessoaSelecionada === 'novo'" class="linha-form animacao-surgir">
-        <div class="campo">
-          <label>Nome do Visitante</label>
-          <input type="text" [(ngModel)]="formCadastro.novaPessoa.nome" class="input-lenpa" placeholder="Nome completo">
-        </div>
-        <div class="campo">
-          <label>Cidade em que reside</label>
-          <input type="text" [(ngModel)]="formCadastro.novaPessoa.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
-        </div>
-      </div>
-    </div>
-
-    <div *ngIf="formCadastro.tipoVisitante === 'instituicao'" class="bloco-condicional">
       <div class="linha-form">
-        <div class="campo">
-          <label>Nome da instituição/grupo</label>
-          <input type="text" [(ngModel)]="formCadastro.instituicao.nome" class="input-lenpa" placeholder="Ex: Escola Estadual ou Grupo de Escoteiros">
+        <div class="campo" style="flex: 1;">
+          <label>Qual atividade?</label>
+          <select [(ngModel)]="formCadastro.eventoSelecionado" class="input-lenpa">
+            <option value="" disabled selected>Selecione a atividade no sistema...</option>
+            <option *ngFor="let evento of eventosDisponiveis" [value]="evento.idAtividade || evento.id">
+              {{ evento.nome }}
+            </option>
+          </select>
         </div>
       </div>
+
+      <hr style="border: 0; border-top: 4px dashed #ddd; margin: 10px 0; width: 100%;">
 
       <div class="linha-form">
         <div class="campo">
-          <label>Quantidade de Pessoas</label>
-          <input type="number" [(ngModel)]="formCadastro.instituicao.quantidade" class="input-lenpa" placeholder="Ex: 40">
+          <label>Ação</label>
+          <select [(ngModel)]="formCadastro.acao" class="input-lenpa">
+            <option value="agendar">Agendar</option>
+            <option value="confirmar">Confirmar Presença</option>
+          </select>
         </div>
         <div class="campo">
-          <label>Cidade</label>
-          <input type="text" [(ngModel)]="formCadastro.instituicao.local" class="input-lenpa" placeholder="Ex: Santa Maria">
+          <label>Tipo de Visitante</label>
+          <select [(ngModel)]="formCadastro.tipoVisitante" class="input-lenpa">
+            <option value="individual">Individual</option>
+            <option value="instituicao">Instituição/Grupo</option>
+          </select>
         </div>
       </div>
 
-      <div class="campo destaque-responsavel">
-        <label>Responsável pela Instituição/Grupo</label>
-        <select [(ngModel)]="formCadastro.responsavelSelecionado" class="input-lenpa">
-          <option value="" disabled selected>Selecione o responsável...</option>
-          <option value="novo">➕ Sem conta (Cadastrar Responsável)</option>
-          <option *ngFor="let p of pessoasCadastradas" [value]="p.id">{{ p.nome }}</option>
-        </select>
+      <div *ngIf="formCadastro.tipoVisitante === 'individual'" class="bloco-condicional animacao-surgir">
+        <div class="linha-form">
+          <div class="campo">
+            <label>Nome do Visitante</label>
+            <input type="text" [(ngModel)]="formCadastro.visitante.nome" class="input-lenpa" placeholder="Nome completo">
+          </div>
+          <div class="campo">
+            <label>Cidade em que reside</label>
+            <input type="text" [(ngModel)]="formCadastro.visitante.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
+          </div>
+        </div>
       </div>
 
-      <div *ngIf="formCadastro.responsavelSelecionado === 'novo'" class="linha-form animacao-surgir caixa-nova-pessoa">
-        <div class="campo">
-          <label>Nome do Responsável</label>
-          <input type="text" [(ngModel)]="formCadastro.novoResponsavel.nome" class="input-lenpa" placeholder="Nome do professor ou líder">
+      <div *ngIf="formCadastro.tipoVisitante === 'instituicao'" class="bloco-condicional animacao-surgir">
+        <div class="linha-form">
+          <div class="campo">
+            <label>Nome da instituição/grupo</label>
+            <input type="text" [(ngModel)]="formCadastro.instituicao.nome" class="input-lenpa" placeholder="Ex: Escola Estadual">
+          </div>
         </div>
-        <div class="campo">
-          <label>Cidade do Responsável</label>
-          <input type="text" [(ngModel)]="formCadastro.novoResponsavel.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
+        <div class="linha-form">
+          <div class="campo">
+            <label>Quantidade de Pessoas</label>
+            <input type="number" [(ngModel)]="formCadastro.instituicao.quantidade" class="input-lenpa" placeholder="Ex: 40">
+          </div>
+          <div class="campo">
+            <label>Cidade da Instituição</label>
+            <input type="text" [(ngModel)]="formCadastro.instituicao.local" class="input-lenpa" placeholder="Ex: Santa Maria">
+          </div>
+        </div>
+        <div class="linha-form caixa-nova-pessoa">
+          <div class="campo">
+            <label>Nome do Responsável</label>
+            <input type="text" [(ngModel)]="formCadastro.responsavel.nome" class="input-lenpa" placeholder="Nome do líder">
+          </div>
+          <div class="campo">
+            <label>Cidade do Responsável</label>
+            <input type="text" [(ngModel)]="formCadastro.responsavel.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
+          </div>
+        </div>
+      </div>
+
+      <div class="rodape-form">
+        <button class="btn-primario" style="flex: none; padding: 30px 100px;" (click)="salvarCadastro()">
+          {{ formCadastro.acao === 'agendar' ? 'Registrar Agendamento' : 'Confirmar Presença' }}
+        </button>
+      </div>
+    </div>
+
+    <h2 class="titulo-secao-cards">Gerenciamento de<br>Agendamentos e Presenças</h2>
+
+    <p *ngIf="eventosDisponiveis.length === 0" style="text-align: center; font-size: 40px; color: #888; font-family: sans-serif;">
+      Nenhuma atividade carregada do servidor...
+    </p>
+
+    <div class="grid-cards-atividades" *ngIf="eventosDisponiveis.length > 0">
+      <div class="card-atividade-horizontal" *ngFor="let evento of eventosDisponiveis" (click)="abrirGerenciamentoAtividade(evento)">
+        <div class="card-img-container">
+          <img [src]="getImagemUrl(evento.imagem)" alt="Capa">
+        </div>
+        <div class="card-info-container">
+          <div class="fundo-blur" [style.backgroundImage]="'url(' + getImagemUrl(evento.imagem) + ')'"></div>
+          <div class="conteudo-info">
+            <h3 class="titulo-atividade-horizontal">{{ evento.nome }}</h3>
+          </div>
+        </div>
+        <div class="card-hover-overlay">
+          <div class="fundo-blur-expandido" [style.backgroundImage]="'url(' + getImagemUrl(evento.imagem) + ')'"></div>
+          <div class="conteudo-hover">
+            <div class="textos-hover">
+              <h2 class="titulo-hover">{{ evento.nome }}</h2>
+              <p class="subtitulo-hover">Visualizar lista de visitantes, vagas e check-in</p>
+            </div>
+            <div class="card-admin-seta">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="96 48 176 128 96 208" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="rodape-form">
-      <button class="btn-primario" style="flex: none; padding: 30px 100px;" (click)="salvarCadastro()">
-        {{ formCadastro.acao === 'agendar' ? 'Registrar Agendamento' : 'Confirmar Presença' }}
-      </button>
+  </div> <div class="container-visao-lista animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar">
+
+  <button class="btn-voltar-painel" (click)="fecharGerenciamento()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="160 208 80 128 160 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+    Voltar para o Painel Inicial
+  </button>
+
+  <div class="header-painel-lista">
+    <div class="header-img-bg" [style.backgroundImage]="'url(' + getImagemUrl(eventoSelecionadoParaGerenciar.imagem) + ')'"></div>
+    <div class="header-texto">
+      <h2>{{ eventoSelecionadoParaGerenciar.nome }}</h2>
+      <p>Controle de Acesso e Check-in</p>
+    </div>
+  </div>
+
+  <div class="card-tabela">
+    <h3 *ngIf="carregandoLista" class="texto-carregando">Buscando lista no servidor...</h3>
+
+    <table class="tabela-lenpa" *ngIf="!carregandoLista && listaAgendamentos.length > 0">
+      <thead>
+      <tr>
+        <th style="width: 40%;">Nome do Visitante / Grupo</th>
+        <th style="width: 25%;">Cidade</th>
+        <th style="text-align: center; width: 5%;">Qtd</th>
+        <th style="text-align: center; width: 10%;">Status</th>
+        <th style="text-align: right; width: 20%;">Ação</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let ag of listaAgendamentos">
+        <td class="td-destaque">{{ ag.nomeVisitante }}</td>
+        <td>{{ ag.cidadeDisplay }}</td>
+        <td style="text-align: center; font-weight: bold;">{{ ag.quantidade || 1 }}</td>
+        <td style="text-align: center;">
+              <span class="badge-status" [ngClass]="{'confirmado': ag.presencaConfirmada || ag.status === 'CONFIRMADO'}">
+                {{ (ag.presencaConfirmada || ag.status === 'CONFIRMADO') ? 'PRESENTE' : 'PENDENTE' }}
+              </span>
+        </td>
+        <td style="text-align: right; display: flex; justify-content: flex-end; gap: 15px;">
+
+          <button class="btn-primario"
+                  style="flex: none; padding: 20px 30px; font-size: 30px;"
+                  *ngIf="!ag.presencaConfirmada && ag.status !== 'CONFIRMADO'"
+                  (click)="fazerCheckIn(ag)">
+            Confirmar Presença
+          </button>
+
+          <button class="btn-primario"
+                  style="flex: none; padding: 20px 30px; font-size: 30px;"
+                  *ngIf="ag.presencaConfirmada || ag.status === 'CONFIRMADO'"
+                  disabled>
+            ✓ Liberado
+          </button>
+
+          <button class="btn-secundario"
+                  style="flex: none; padding: 20px 30px; font-size: 30px;"
+                  (click)="cancelarAgendamento(ag)">
+            Excluir Agendamento
+          </button>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="empty-state" *ngIf="!carregandoLista && listaAgendamentos.length === 0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="128" y1="80" x2="128" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="128" cy="172" r="12"/></svg>
+      <h3>Ninguém agendado ainda</h3>
+      <p>Quando visitantes se registrarem, eles aparecerão nesta lista.</p>
     </div>
 
   </div>
-</div>
+
+</div> </div>
