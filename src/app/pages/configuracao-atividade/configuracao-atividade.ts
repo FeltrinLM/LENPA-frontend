@@ -4,10 +4,15 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { Router } from '@angular/router';
 import { AtividadeService } from '../../core/services/api/atividade.service';
 
+// IMPORTANDO OS COMPONENTES
+import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
+import { BotaoFlutuanteComponent } from '../../shared/components/botao-flutuante/botao-flutuante.component';
+
 @Component({
   selector: 'app-configuracao-atividade',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  // ADICIONADO AQUI
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, BotaoPadraoComponent, BotaoFlutuanteComponent],
   templateUrl: './configuracao-atividade.html',
   styleUrls: [
     './css/card-atividade.css',
@@ -39,7 +44,7 @@ export class ConfiguracaoAtividade implements OnInit {
   excluindo = false;
 
   // --- EDIÇÃO INLINE (O PROTÓTIPO) ---
-  atividadeEmEdicao: number | null = null; // Guarda o ID de quem está sendo editado
+  atividadeEmEdicao: number | null = null;
   formEdicao!: FormGroup;
   arquivoImagemEdicao: File | null = null;
   imagemPreviewEdicao: string | ArrayBuffer | null | undefined = null;
@@ -77,7 +82,6 @@ export class ConfiguracaoAtividade implements OnInit {
   iniciarEdicao(ativ: any) {
     this.atividadeEmEdicao = ativ.idAtividade;
 
-    // Inicia o formulário já preenchido com os dados antigos
     this.formEdicao = this.fb.group({
       idAtividade: [ativ.idAtividade],
       nome: [ativ.nome, Validators.required],
@@ -115,11 +119,9 @@ export class ConfiguracaoAtividade implements OnInit {
     this.salvando = true;
     const payload = this.formEdicao.value;
 
-    // O backend espera a URL. Se não mudou, pegamos a antiga da lista.
     const ativAntiga = this.atividadesCadastradas.find(a => a.idAtividade === payload.idAtividade);
     payload.imagem = ativAntiga.imagem;
 
-    // Se escolheu foto nova, faz upload primeiro
     if (this.arquivoImagemEdicao) {
       this.atividadeService.uploadImagem(this.arquivoImagemEdicao).subscribe({
         next: (res) => {
@@ -132,7 +134,7 @@ export class ConfiguracaoAtividade implements OnInit {
         }
       });
     } else {
-      this.enviarEdicaoFinal(payload); // Sem foto nova, só salva os textos
+      this.enviarEdicaoFinal(payload);
     }
   }
 

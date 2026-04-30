@@ -70,7 +70,7 @@
 
           <div class="hover-footer">
             <div style="width: 500px; display: flex;">
-              <button class="btn-primario" (click)="abrirAgendamento(ativ)">Agendar</button>
+              <app-botao-padrao tipo="primario" (acaoClique)="abrirAgendamento(ativ)">Agendar</app-botao-padrao>
             </div>
           </div>
 
@@ -104,11 +104,12 @@
         {{ mensagemErro }}
       </p>
 
-      <div class="modal-botoes">
-        <button type="button" class="btn-voltar" (click)="fecharLogin()">Voltar</button>
-        <button type="submit" class="btn-entrar" [disabled]="carregando">
+      <div class="modal-botoes" style="display: flex; gap: 15px;">
+        <app-botao-padrao tipo="secundario" (acaoClique)="fecharLogin()">Voltar</app-botao-padrao>
+
+        <app-botao-padrao tipo="primario" [desabilitado]="carregando" (acaoClique)="fazerLogin()">
           {{ carregando ? 'Aguarde...' : 'Entrar' }}
-        </button>
+        </app-botao-padrao>
       </div>
     </form>
   </div>
@@ -166,11 +167,12 @@
         {{ mensagemErroAgendamento }}
       </p>
 
-      <div class="modal-botoes-padrao" style="margin-top: 10px;">
-        <button type="button" class="btn-secundario" (click)="fecharAgendamento()">Cancelar</button>
-        <button type="submit" class="btn-primario" [disabled]="carregandoAgendamento || !emailAgendamento || !nomeAgendamento || !cidadeAgendamento">
+      <div class="modal-botoes-padrao" style="margin-top: 10px; display: flex; gap: 15px;">
+        <app-botao-padrao tipo="secundario" (acaoClique)="fecharAgendamento()">Cancelar</app-botao-padrao>
+
+        <app-botao-padrao tipo="primario" [desabilitado]="carregandoAgendamento || !emailAgendamento || !nomeAgendamento || !cidadeAgendamento" (acaoClique)="enviarPedidoAgendamento()">
           {{ carregandoAgendamento ? 'Confirmando...' : 'Confirmar Vaga' }}
-        </button>
+        </app-botao-padrao>
       </div>
 
     </form>

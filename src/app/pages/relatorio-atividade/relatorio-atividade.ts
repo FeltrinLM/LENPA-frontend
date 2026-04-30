@@ -3,10 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RelatorioService } from '../../core/services/api/relatorio.service';
 
+// IMPORTANDO O COMPONENTE PADRÃO DE BOTÕES
+import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
+
 @Component({
   selector: 'app-relatorio-atividade',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  // ADICIONADO AQUI
+  imports: [CommonModule, FormsModule, BotaoPadraoComponent],
   templateUrl: './relatorio-atividade.html',
   styleUrls: ['./relatorio-atividade.css']
 })

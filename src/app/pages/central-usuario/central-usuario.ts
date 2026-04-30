@@ -6,10 +6,15 @@ import { Router } from '@angular/router';
 import { AuthService, UsuarioLogado } from '../../core/services/auth/auth.service';
 import { FuncionarioService } from '../../core/services/api/funcionario.service';
 
+// IMPORTANDO OS COMPONENTES COMPARTILHADOS
+import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
+import { BotaoFlutuanteComponent } from '../../shared/components/botao-flutuante/botao-flutuante.component';
+
 @Component({
   selector: 'app-central-usuario',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  // ADICIONADOS AQUI
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, BotaoPadraoComponent, BotaoFlutuanteComponent],
   templateUrl: './central-usuario.html',
   styleUrls: [
     './css/central-usuario-layout.css',
@@ -90,7 +95,6 @@ export class CentralUsuario implements OnInit {
     this.funcionarioService.listar().subscribe({
       next: (res: any) => {
         let listaBruta = res.content ? res.content : (Array.isArray(res) ? res : []);
-        // Remove o próprio usuário logado da lista para ele não se excluir por engano
         this.funcionarios = listaBruta.filter((func: any) => func.email !== this.usuario?.email);
         this.carregandoFuncionarios = false;
 
@@ -211,7 +215,6 @@ export class CentralUsuario implements OnInit {
         alert(`${nivel} cadastrado com sucesso!`);
         this.fecharModalNovoUsuario();
 
-        // Atualiza a lista caso a tela de funcionários esteja aberta
         if (this.exibirFuncionarios) {
           this.carregarFuncionarios();
         }

@@ -4,14 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { AtividadeService } from '../../core/services/api/atividade.service';
-// IMPORTANTE: Você vai precisar importar os serviços do Visitante e do Agendamento!
 import { VisitanteService } from '../../core/services/api/visitante.service';
 import { AgendarService } from '../../core/services/api/agendar.service';
+
+// IMPORTANDO O COMPONENTE PADRÃO DE BOTÕES
+import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
 
 @Component({
   selector: 'app-inicial',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  // ADICIONADO AQUI
+  imports: [CommonModule, FormsModule, BotaoPadraoComponent],
   templateUrl: './inicial.html',
   styleUrl: './inicial.css',
 })
@@ -21,7 +24,6 @@ export class Inicial implements OnInit {
   authService = inject(AuthService);
   private router = inject(Router);
   private atividadeService = inject(AtividadeService);
-  // Injetando os novos serviços
   private visitanteService = inject(VisitanteService);
   private agendarService = inject(AgendarService);
   private cdr = inject(ChangeDetectorRef);
@@ -107,7 +109,6 @@ export class Inicial implements OnInit {
     this.atividadeSelecionadaParaAgendamento = atividade;
     this.exibirModalAgendamento = true;
 
-    // Limpa o formulário sempre que abrir o modal
     this.emailAgendamento = '';
     this.nomeAgendamento = '';
     this.cidadeAgendamento = '';
@@ -123,7 +124,6 @@ export class Inicial implements OnInit {
     this.atividadeSelecionadaParaAgendamento = null;
   }
 
-  // Função disparada quando o usuário tira o mouse/foco do campo de e-mail (blur)
   buscarVisitantePorEmail() {
     if (!this.emailAgendamento || !this.emailAgendamento.includes('@')) return;
 
@@ -132,7 +132,6 @@ export class Inicial implements OnInit {
     this.visitanteService.buscarPorEmail(this.emailAgendamento).subscribe({
       next: (visitante: any) => {
         this.buscandoEmail = false;
-        // Se achou, preenche magicamente os campos na tela!
         if (visitante) {
           this.nomeAgendamento = visitante.nome;
           this.cidadeAgendamento = visitante.cidade;
@@ -141,14 +140,12 @@ export class Inicial implements OnInit {
       },
       error: (err: any) => {
         this.buscandoEmail = false;
-        // Erro 404 significa apenas que o visitante é novo, então não fazemos nada e deixamos ele digitar
         console.log('Novo visitante. Precisará preencher os dados.');
       }
     });
   }
 
   enviarPedidoAgendamento() {
-    // Validação básica do Front-end
     if (!this.nomeAgendamento || !this.emailAgendamento || !this.cidadeAgendamento) {
       this.mensagemErroAgendamento = 'Por favor, preencha todos os campos obrigatórios.';
       return;
@@ -157,23 +154,19 @@ export class Inicial implements OnInit {
     this.carregandoAgendamento = true;
     this.mensagemErroAgendamento = '';
 
-    // Montando o DTO que o Java (DadosCadastroAgendamento) está esperando
     const payload = {
       idAtividade: this.atividadeSelecionadaParaAgendamento.idAtividade,
       nomeVisitante: this.nomeAgendamento,
       emailVisitante: this.emailAgendamento,
       cidadeVisitante: this.cidadeAgendamento,
-      // Se for individual, manda 1. Se for grupo, manda o que o cara digitou.
       quantidade: this.tipoAgendamento === 'INDIVIDUAL' ? 1 : this.quantidadeAgendamento
     };
 
-    // Chamando a API real de Agendamento
     this.agendarService.agendar(payload).subscribe({
       next: (response: any) => {
         this.carregandoAgendamento = false;
         this.mensagemSucessoAgendamento = 'Reserva confirmada! Um e-mail com os detalhes foi enviado.';
 
-        // Recarrega as atividades por trás para atualizar as vagas restantes na tela inicial
         this.carregarAtividades();
 
         setTimeout(() => {
@@ -182,7 +175,6 @@ export class Inicial implements OnInit {
       },
       error: (err: any) => {
         this.carregandoAgendamento = false;
-        // Captura aquela mensagem de "Capacidade máxima excedida" que fizemos no Java
         this.mensagemErroAgendamento = err.error?.message || 'Ocorreu um erro ao tentar agendar. Tente novamente.';
       }
     });

@@ -6,10 +6,13 @@ import { AtividadeService } from '../../core/services/api/atividade.service';
 import { VisitanteService } from '../../core/services/api/visitante.service';
 import { AgendarService } from '../../core/services/api/agendar.service';
 
+// IMPORTANDO APENAS O BOTÃO PADRÃO
+import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
+
 @Component({
   selector: 'app-gerenciamento-atividade',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BotaoPadraoComponent],
   templateUrl: './gerenciamento-atividade.html',
   styleUrls: [
     './gerenciamento-atividade.css',
@@ -26,7 +29,6 @@ export class GerenciamentoAtividade implements OnInit {
   eventosDisponiveis: any[] = [];
   pessoasCadastradas: any[] = [];
 
-  // Variáveis para a nova visão de Lista/Check-in
   eventoSelecionadoParaGerenciar: any = null;
   listaAgendamentos: any[] = [];
   carregandoLista: boolean = false;
@@ -119,10 +121,6 @@ export class GerenciamentoAtividade implements OnInit {
     });
   }
 
-  // ==========================================
-  // LÓGICA DO NOVO PAINEL DE LISTA
-  // ==========================================
-
   abrirGerenciamentoAtividade(evento: any) {
     this.eventoSelecionadoParaGerenciar = evento;
     this.carregarListaAgendamentos(evento.idAtividade || evento.id);
@@ -139,7 +137,6 @@ export class GerenciamentoAtividade implements OnInit {
       next: (res: any) => {
         const todosAgendamentos = res.content ? res.content : (Array.isArray(res) ? res : []);
 
-        // FILTRA E MAPEIA A CIDADE PARA APARECER CORRETAMENTE (cidadeDisplay)
         this.listaAgendamentos = todosAgendamentos
           .filter((a: any) => a.idAtividade === idAtividade)
           .map((a: any) => {

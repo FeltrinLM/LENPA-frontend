@@ -63,8 +63,8 @@
             </div>
             <span class="mensagem-erro-senha" *ngIf="erroSenha">{{ erroSenha }}</span>
             <div class="acoes-edicao-senha">
-              <button class="btn-secundario" (click)="cancelarEdicao('senha')">Cancelar</button>
-              <button class="btn-primario" (click)="tentarSalvarSenha()">Salvar Alteração</button>
+              <app-botao-padrao tipo="secundario" (acaoClique)="cancelarEdicao('senha')">Cancelar</app-botao-padrao>
+              <app-botao-padrao tipo="primario" (acaoClique)="tentarSalvarSenha()">Salvar Alteração</app-botao-padrao>
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@
           </button>
         </div>
 
-        <button class="btn-secundario" (click)="abrirModalSair()">Sair</button>
+        <app-botao-padrao tipo="secundario" (acaoClique)="abrirModalSair()">Sair</app-botao-padrao>
       </div>
     </div>
 
@@ -124,12 +124,12 @@
 
   </div>
 
-  <button class="btn-flutuante-cadastrar" (click)="abrirModalNovoUsuario()" *ngIf="usuario?.role === 'ADMINISTRADOR'">
-    <span class="texto-fab">Cadastrar novo usuário</span>
-    <div class="icone-fab">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="136" x2="248" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="224" y1="112" x2="224" y2="160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="108" cy="100" r="60" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M24,200c20.55-24.45,49.56-40,84-40s63.45,15.55,84,40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
-    </div>
-  </button>
+  <app-botao-flutuante
+    *ngIf="usuario?.role === 'ADMINISTRADOR'"
+    textoBase="Cadastrar novo usuário"
+    (acaoClique)="abrirModalNovoUsuario()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="200" y1="136" x2="248" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="224" y1="112" x2="224" y2="160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="108" cy="100" r="60" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M24,200c20.55-24.45,49.56-40,84-40s63.45,15.55,84,40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+  </app-botao-flutuante>
 
   <div class="modal-overlay" *ngIf="modalNovoUsuario.exibir" (click)="fecharModalNovoUsuario()">
     <div class="modal-confirmacao modal-cadastro" (click)="$event.stopPropagation()">
@@ -176,8 +176,8 @@
       </form>
 
       <div class="botoes-confirmacao">
-        <button class="btn-secundario" (click)="fecharModalNovoUsuario()">Cancelar</button>
-        <button class="btn-primario" (click)="confirmarNovoUsuario()">Continuar</button>
+        <app-botao-padrao tipo="secundario" (acaoClique)="fecharModalNovoUsuario()">Cancelar</app-botao-padrao>
+        <app-botao-padrao tipo="primario" (acaoClique)="confirmarNovoUsuario()">Continuar</app-botao-padrao>
       </div>
     </div>
   </div>
@@ -187,8 +187,8 @@
       <h2>{{ modal.titulo }}</h2>
       <p>{{ modal.mensagem }}</p>
       <div class="botoes-confirmacao">
-        <button class="btn-secundario" (click)="fecharModal()">Voltar</button>
-        <button class="btn-primario" (click)="modal.acaoConfirmar()">{{ modal.textoConfirmar }}</button>
+        <app-botao-padrao tipo="secundario" (acaoClique)="fecharModal()">Voltar</app-botao-padrao>
+        <app-botao-padrao tipo="primario" (acaoClique)="modal.acaoConfirmar()">{{ modal.textoConfirmar }}</app-botao-padrao>
       </div>
     </div>
   </div>

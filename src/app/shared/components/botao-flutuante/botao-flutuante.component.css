@@ -1,0 +1,63 @@
+/* ==========================================
+   BOTÃO FLUTUANTE (FAB) - BLINDADO E COM AS MARGENS GIGANTES
+   ========================================== */
+.btn-flutuante-cadastrar {
+  position: fixed;
+  bottom: 150px;   /* Restaurado: Longe do fundo */
+  right: 500px;    /* Restaurado: Longe da sidebar! */
+  height: 65px;
+  min-width: 65px;
+  background-color: #005A32;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 90, 50, 0.4);
+  transition: all 0.3s ease;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.texto-fab {
+  font-family: monospace, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  white-space: nowrap;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden; /* Mantém o texto sob controle */
+  transition: max-width 0.3s ease, opacity 0.3s ease, margin-right 0.3s ease;
+}
+
+.icone-fab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0; /* A REGRA MÁGICA: Impede o ícone de ser esmagado! */
+}
+
+::ng-deep .icone-fab svg {
+  width: 30px !important;
+  height: 30px !important;
+  display: block;
+}
+
+/* --- ESTADO HOVER (QUANDO PASSA O MOUSE) --- */
+.btn-flutuante-cadastrar:hover {
+  padding: 0 25px;
+  background-color: #004d2b;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0, 90, 50, 0.5);
+}
+
+.btn-flutuante-cadastrar:hover .texto-fab {
+  max-width: 300px;
+  opacity: 1;
+  margin-right: 12px;
+}

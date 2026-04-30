@@ -2,7 +2,7 @@
 
   <div class="container-visao-padrao animacao-surgir" *ngIf="!eventoSelecionadoParaGerenciar">
 
-    <h1 class="titulo-pagina">Agendamento Manual</h1>
+    <h1 class="titulo-pagina">Agendamento e Presença</h1>
 
     <div class="card-formulario-condicional">
 
@@ -80,9 +80,9 @@
       </div>
 
       <div class="rodape-form">
-        <button class="btn-primario" style="flex: none; padding: 30px 100px;" (click)="salvarCadastro()">
+        <app-botao-padrao tipo="primario" (acaoClique)="salvarCadastro()">
           {{ formCadastro.acao === 'agendar' ? 'Registrar Agendamento' : 'Confirmar Presença' }}
-        </button>
+        </app-botao-padrao>
       </div>
     </div>
 
@@ -93,6 +93,7 @@
     </p>
 
     <div class="grid-cards-atividades" *ngIf="eventosDisponiveis.length > 0">
+
       <div class="card-atividade-horizontal" *ngFor="let evento of eventosDisponiveis" (click)="abrirGerenciamentoAtividade(evento)">
         <div class="card-img-container">
           <img [src]="getImagemUrl(evento.imagem)" alt="Capa">
@@ -116,79 +117,80 @@
           </div>
         </div>
       </div>
-    </div>
 
-  </div> <div class="container-visao-lista animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar">
-
-  <button class="btn-voltar-painel" (click)="fecharGerenciamento()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="160 208 80 128 160 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
-    Voltar para o Painel Inicial
-  </button>
-
-  <div class="header-painel-lista">
-    <div class="header-img-bg" [style.backgroundImage]="'url(' + getImagemUrl(eventoSelecionadoParaGerenciar.imagem) + ')'"></div>
-    <div class="header-texto">
-      <h2>{{ eventoSelecionadoParaGerenciar.nome }}</h2>
-      <p>Controle de Acesso e Check-in</p>
-    </div>
-  </div>
-
-  <div class="card-tabela">
-    <h3 *ngIf="carregandoLista" class="texto-carregando">Buscando lista no servidor...</h3>
-
-    <table class="tabela-lenpa" *ngIf="!carregandoLista && listaAgendamentos.length > 0">
-      <thead>
-      <tr>
-        <th style="width: 40%;">Nome do Visitante / Grupo</th>
-        <th style="width: 25%;">Cidade</th>
-        <th style="text-align: center; width: 5%;">Qtd</th>
-        <th style="text-align: center; width: 10%;">Status</th>
-        <th style="text-align: right; width: 20%;">Ação</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let ag of listaAgendamentos">
-        <td class="td-destaque">{{ ag.nomeVisitante }}</td>
-        <td>{{ ag.cidadeDisplay }}</td>
-        <td style="text-align: center; font-weight: bold;">{{ ag.quantidade || 1 }}</td>
-        <td style="text-align: center;">
-              <span class="badge-status" [ngClass]="{'confirmado': ag.presencaConfirmada || ag.status === 'CONFIRMADO'}">
-                {{ (ag.presencaConfirmada || ag.status === 'CONFIRMADO') ? 'PRESENTE' : 'PENDENTE' }}
-              </span>
-        </td>
-        <td style="text-align: right; display: flex; justify-content: flex-end; gap: 15px;">
-
-          <button class="btn-primario"
-                  style="flex: none; padding: 20px 30px; font-size: 30px;"
-                  *ngIf="!ag.presencaConfirmada && ag.status !== 'CONFIRMADO'"
-                  (click)="fazerCheckIn(ag)">
-            Confirmar Presença
-          </button>
-
-          <button class="btn-primario"
-                  style="flex: none; padding: 20px 30px; font-size: 30px;"
-                  *ngIf="ag.presencaConfirmada || ag.status === 'CONFIRMADO'"
-                  disabled>
-            ✓ Liberado
-          </button>
-
-          <button class="btn-secundario"
-                  style="flex: none; padding: 20px 30px; font-size: 30px;"
-                  (click)="cancelarAgendamento(ag)">
-            Excluir Agendamento
-          </button>
-
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-    <div class="empty-state" *ngIf="!carregandoLista && listaAgendamentos.length === 0">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="128" y1="80" x2="128" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="128" cy="172" r="12"/></svg>
-      <h3>Ninguém agendado ainda</h3>
-      <p>Quando visitantes se registrarem, eles aparecerão nesta lista.</p>
     </div>
 
   </div>
 
-</div> </div>
+  <div class="container-visao-lista animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar">
+
+    <button class="btn-voltar-painel" (click)="fecharGerenciamento()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="160 208 80 128 160 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+      Voltar para o Painel Inicial
+    </button>
+
+    <div class="header-painel-lista">
+      <div class="header-img-bg" [style.backgroundImage]="'url(' + getImagemUrl(eventoSelecionadoParaGerenciar.imagem) + ')'"></div>
+      <div class="header-texto">
+        <h2>{{ eventoSelecionadoParaGerenciar.nome }}</h2>
+        <p>Controle de Acesso e Check-in</p>
+      </div>
+    </div>
+
+    <div class="card-tabela">
+      <h3 *ngIf="carregandoLista" class="texto-carregando">Buscando lista no servidor...</h3>
+
+      <table class="tabela-lenpa" *ngIf="!carregandoLista && listaAgendamentos.length > 0">
+        <thead>
+        <tr>
+          <th style="width: 40%;">Nome do Visitante / Grupo</th>
+          <th style="width: 25%;">Cidade</th>
+          <th style="text-align: center; width: 5%;">Qtd</th>
+          <th style="text-align: center; width: 10%;">Status</th>
+          <th style="text-align: right; width: 20%;">Ação</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let ag of listaAgendamentos">
+          <td class="td-destaque">{{ ag.nomeVisitante }}</td>
+          <td>{{ ag.cidadeDisplay }}</td>
+          <td style="text-align: center; font-weight: bold;">{{ ag.quantidade || 1 }}</td>
+          <td style="text-align: center;">
+                <span class="badge-status" [ngClass]="{'confirmado': ag.presencaConfirmada || ag.status === 'CONFIRMADO'}">
+                  {{ (ag.presencaConfirmada || ag.status === 'CONFIRMADO') ? 'PRESENTE' : 'PENDENTE' }}
+                </span>
+          </td>
+          <td style="text-align: right; display: flex; justify-content: flex-end; gap: 15px;">
+
+            <ng-container *ngIf="!ag.presencaConfirmada && ag.status !== 'CONFIRMADO'">
+              <app-botao-padrao tipo="primario" (acaoClique)="fazerCheckIn(ag)">
+                Confirmar Presença
+              </app-botao-padrao>
+            </ng-container>
+
+            <ng-container *ngIf="ag.presencaConfirmada || ag.status === 'CONFIRMADO'">
+              <app-botao-padrao tipo="primario" [desabilitado]="true">
+                ✓ Liberado
+              </app-botao-padrao>
+            </ng-container>
+
+            <app-botao-padrao tipo="secundario" (acaoClique)="cancelarAgendamento(ag)">
+              Excluir Agendamento
+            </app-botao-padrao>
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="empty-state" *ngIf="!carregandoLista && listaAgendamentos.length === 0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="128" y1="80" x2="128" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="128" cy="172" r="12"/></svg>
+        <h3>Ninguém agendado ainda</h3>
+        <p>Quando visitantes se registrarem, eles aparecerão nesta lista.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

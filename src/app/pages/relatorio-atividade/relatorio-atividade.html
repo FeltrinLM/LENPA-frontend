@@ -21,11 +21,12 @@
     </div>
 
     <div class="rodape-form">
-      <button class="btn-primario" style="flex: none; padding: 30px 100px;"
-              [disabled]="datasInvalidas || carregando"
-              (click)="gerarRelatorio()">
+      <app-botao-padrao tipo="primario"
+                        style="flex: none;"
+                        [desabilitado]="datasInvalidas || carregando"
+                        (acaoClique)="gerarRelatorio()">
         {{ carregando ? 'Calculando...' : 'Gerar Relatório' }}
-      </button>
+      </app-botao-padrao>
     </div>
   </div>
 

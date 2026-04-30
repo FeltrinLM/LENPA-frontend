@@ -1,0 +1,9 @@
+<button
+  [class.btn-primario]="tipo === 'primario'"
+  [class.btn-secundario]="tipo === 'secundario'"
+  [disabled]="desabilitado"
+  (click)="aoClicar($event)">
+
+  <ng-content></ng-content>
+
+</button>
