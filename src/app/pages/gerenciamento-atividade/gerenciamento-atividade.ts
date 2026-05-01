@@ -6,13 +6,14 @@ import { AtividadeService } from '../../core/services/api/atividade.service';
 import { VisitanteService } from '../../core/services/api/visitante.service';
 import { AgendarService } from '../../core/services/api/agendar.service';
 
-// IMPORTANDO APENAS O BOTÃO PADRÃO
+// IMPORTANDO OS COMPONENTES
 import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
+import { IconeComponent } from '../../shared/components/icone/icone.component'; // <-- IMPORT ADICIONADO AQUI
 
 @Component({
   selector: 'app-gerenciamento-atividade',
   standalone: true,
-  imports: [CommonModule, FormsModule, BotaoPadraoComponent],
+  imports: [CommonModule, FormsModule, BotaoPadraoComponent, IconeComponent], // <-- ADICIONADO NO ARRAY DE IMPORTS
   templateUrl: './gerenciamento-atividade.html',
   styleUrls: [
     './gerenciamento-atividade.css',

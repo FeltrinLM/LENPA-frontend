@@ -3,10 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
 
+// IMPORTANDO O SEU NOVO COMPONENTE DE ÍCONES
+import { IconeComponent } from '../../shared/components/icone/icone.component';
+
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  // ADICIONADO AQUI
+  imports: [CommonModule, RouterLink, RouterLinkActive, IconeComponent],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })

@@ -32,13 +32,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-width: 0; /* Impede que quebre o layout se a tela espremer */
+  min-width: 0;
 }
 
 .input-falso span {
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Coloca "..." se o email for gigante */
+  text-overflow: ellipsis;
 }
 
 .input-falso.modo-edicao {
@@ -114,7 +114,7 @@
 }
 
 /* ==========================================
-   ÍCONES DE AÇÃO (SVGs)
+   ÍCONES DE AÇÃO (Refatorado para Componente)
    ========================================== */
 .acoes-edicao {
   display: flex;
@@ -122,35 +122,29 @@
   flex-shrink: 0;
 }
 
-.icone-acao svg {
-  width: 65px;
-  height: 65px;
-  cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
+
+/* Cores do Lápis e Salvar */
+.icone-acao.lapis ::ng-deep .icone-wrapper,
+.icone-acao.salvar ::ng-deep .icone-wrapper {
+  color: #006633 !important;
 }
 
-.icone-acao.lapis svg,
-.icone-acao.salvar svg {
-  color: #006633;
+.icone-acao.lapis:hover ::ng-deep .icone-wrapper,
+.icone-acao.salvar:hover ::ng-deep .icone-wrapper {
+  color: #a3e635 !important;
 }
 
-.icone-acao.lapis:hover svg,
-.icone-acao.salvar:hover svg {
-  transform: scale(1.15);
-  color: #a3e635;
+/* Cores do Cancelar */
+.icone-acao.cancelar ::ng-deep .icone-wrapper {
+  color: #F0A400 !important;
 }
 
-.icone-acao.cancelar svg {
-  color: #F0A400;
-}
-
-.icone-acao.cancelar:hover svg {
-  transform: scale(1.15);
-  color: #c28400;
+.icone-acao.cancelar:hover ::ng-deep .icone-wrapper {
+  color: #c28400 !important;
 }
 
 /* ==========================================
-   BOTÕES DE GERENCIAMENTO (Cores Exclusivas)
+   BOTÕES DE GERENCIAMENTO
    ========================================== */
 .botoes-gerenciamento {
   display: flex;
@@ -173,18 +167,6 @@
   background-color: #ffffff;
 }
 
-.btn-visitantes {
-  color: #02A34D;
-  border: 4px solid #02A34D;
-}
-
-.btn-visitantes:hover {
-  background-color: #02A34D;
-  color: #ffffff;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(17, 175, 10, 0.3);
-}
-
 .btn-funcionarios {
   color: #074168;
   border: 4px solid #074168;
@@ -196,4 +178,3 @@
   transform: translateY(-4px);
   box-shadow: 0 15px 30px rgba(6, 28, 162, 0.3);
 }
-

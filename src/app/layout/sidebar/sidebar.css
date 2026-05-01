@@ -1,4 +1,6 @@
-/* Removemos o height: 100% do :host, não é mais necessário */
+/* ==========================================
+   BARRA LATERAL (SIDEBAR)
+   ========================================== */
 
 body {
   margin: 0;
@@ -10,19 +12,18 @@ body {
   top: 0;
   right: 0;
   z-index: 1000;
-  width: 400px;
+  width: 140px;
   height: 100vh;
   background-color: #006334;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Isso aqui garante que, se tiverem 5 ícones ou 4 ícones, o espaço entre eles será igual e proporcional */
   justify-content: space-evenly;
   overflow-y: auto;
 }
 
-/* O resto continua IGUAL: */
+/* --- Container do Ícone + Texto --- */
 .icon-wrapper {
   position: relative;
   display: flex;
@@ -31,21 +32,21 @@ body {
   cursor: pointer;
 }
 
-.icon-wrapper svg {
-  width: 200px;
-  height: 200px;
-  color: white;
+/* --- Configuração Padrão do Ícone na Sidebar --- */
+.icon-wrapper app-icone {
+  color: white; /* Cor base: Branca */
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
+/* --- Configuração do Texto Escondido --- */
 .icon-text {
   position: absolute;
-  bottom: -40px;
+  bottom: -5px;
   left: 50%;
   transform: translateX(-50%);
   color: white;
-  font-size: 50px;
-  width: 350px;
+  font-size: 15px;
+  width: 100px;
   text-align: center;
   line-height: 1.1;
   opacity: 0;
@@ -53,7 +54,26 @@ body {
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
 
-.icon-wrapper:hover svg {
+/* ==========================================
+   ANIMAÇÕES E ESTADOS (HOVER / ATIVO)
+   ========================================== */
+
+/* --- CONFIGURAÇÃO DO ÍCONE --- */
+.icon-wrapper app-icone {
+  display: block;
+}
+
+/* O ::ng-deep atravessa a parede do componente e pinta o SVG direto! */
+.icon-wrapper ::ng-deep svg {
+  color: white;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================
+   ANIMAÇÕES E ESTADOS
+   ========================================== */
+
+.icon-wrapper:hover ::ng-deep svg {
   transform: translateY(-20px);
 }
 
@@ -63,6 +83,7 @@ body {
   transform: translate(-50%, 30px);
 }
 
-.icon-wrapper.ativo svg {
-  color: #A6CD29;
+/* Quando a rota atual for igual ao link (Página Ativa) o SVG fica Verde */
+.icon-wrapper.ativo ::ng-deep svg {
+  color: #A6CD29 !important;
 }

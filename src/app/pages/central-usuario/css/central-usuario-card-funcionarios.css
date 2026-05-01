@@ -11,7 +11,6 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
-  /* order: 3 já está definido no layout.css, mas a animação é exclusiva daqui */
   animation: slideInDireita 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
@@ -32,15 +31,15 @@
 }
 
 .card-funcionarios .cabecalho-lista h2 {
-  color: #074168; /* Azul dos funcionários, diferente do verde dos visitantes */
+  color: #074168;
   font-size: 60px;
   margin: 0;
   font-family: sans-serif;
 }
 
 .card-funcionarios .contador-badge {
-  background-color: #e0f2fe; /* Fundo azul claro */
-  color: #0369a1; /* Texto azul escuro */
+  background-color: #e0f2fe;
+  color: #0369a1;
   font-size: 45px;
   padding: 15px 40px;
   border-radius: 50px;
@@ -68,7 +67,7 @@
 }
 
 .card-funcionarios .input-busca-lista:focus {
-  border-color: #38bdf8; /* Borda azul ao focar */
+  border-color: #38bdf8;
   box-shadow: 0 0 0 8px rgba(56, 189, 248, 0.2);
 }
 
@@ -139,7 +138,6 @@
   flex: 1;
 }
 
-/* Estilos básicos de texto para a lista de leitura (não editável) */
 .card-funcionarios .texto-nome {
   font-size: 50px;
   color: #1e293b;
@@ -165,15 +163,19 @@
   margin: 0;
 }
 
-/* LIXEIRA AZUL (Se for permitir excluir funcionários) */
-.card-funcionarios .btn-icone-excluir svg {
-  width: 70px;
-  height: 70px;
-  color: #074168; /* Azul padrão */
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* ==========================================
+   LIXEIRA AZUL (Estilização via ng-deep)
+   ========================================== */
+
+.card-funcionarios .btn-icone-excluir {
+  background-color: transparent; /* Tira o fundo cinza/branco padrão */
+  border: none;                  /* Tira a borda quadrada */
+
+}
+.card-funcionarios .btn-icone-excluir ::ng-deep .icone-wrapper {
+  color: #074168 !important; /* Força a cor ignorando o padrão do componente */
 }
 
-.card-funcionarios .btn-icone-excluir:hover svg {
-  color: #F0A400; /* Vermelho ao passar o mouse */
-  transform: scale(1.2);
+.card-funcionarios .btn-icone-excluir:hover ::ng-deep .icone-wrapper {
+  color: #F0A400 !important;
 }

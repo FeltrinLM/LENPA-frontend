@@ -158,7 +158,7 @@ select.input-lenpa {
 
 /* O NOVO CARD HORIZONTAL (Estrutura Base) */
 .card-atividade-horizontal {
-  position: relative; /* Necessário para o overlay funcionar */
+  position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -231,7 +231,7 @@ select.input-lenpa {
 }
 
 .card-atividade-horizontal:hover {
-  height: 420px; /* Dá uma leve expandida elegante igual ao inicial */
+  height: 420px;
   box-shadow: 0 35px 80px rgba(0, 0, 0, 0.45);
   transform: translateY(-5px);
   z-index: 20;
@@ -247,7 +247,7 @@ select.input-lenpa {
   top: -60px; left: -60px; right: -60px; bottom: -60px;
   background-size: cover;
   background-position: center;
-  filter: blur(25px) brightness(0.25); /* Fica mais escuro no hover para focar no texto */
+  filter: blur(25px) brightness(0.25);
   z-index: 1;
 }
 
@@ -257,7 +257,7 @@ select.input-lenpa {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: row; /* Fica um do lado do outro */
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding: 60px 80px;
@@ -288,21 +288,22 @@ select.input-lenpa {
   margin: 0;
 }
 
+/* ==========================================
+   ÍCONE SETA DO CARD (Refatorado para Componente)
+   ========================================== */
 .card-atividade-horizontal .card-admin-seta {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.card-atividade-horizontal .card-admin-seta svg {
-  width: 120px;
-  height: 120px;
-  color: #a3e635; /* Verde limão do LENPA dando contraste */
+/* Injeta tamanho, cor limão e a transição do card */
+.card-atividade-horizontal .card-admin-seta ::ng-deep .icone-wrapper {
+  color: #a3e635 !important;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card-atividade-horizontal:hover .card-admin-seta svg {
-  transform: translateX(30px); /* A seta desliza apontando pro clique */
+/* Força a seta a deslizar para a direita no hover, cancelando o scale() padrão */
+.card-atividade-horizontal:hover .card-admin-seta ::ng-deep .icone-wrapper {
+  transform: translateX(30px) !important;
 }
-
-

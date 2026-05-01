@@ -112,7 +112,7 @@
               <p class="subtitulo-hover">Visualizar lista de visitantes, vagas e check-in</p>
             </div>
             <div class="card-admin-seta">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="96 48 176 128 96 208" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+              <app-icone nome="seta-direita"></app-icone>
             </div>
           </div>
         </div>
@@ -125,7 +125,7 @@
   <div class="container-visao-lista animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar">
 
     <button class="btn-voltar-painel" (click)="fecharGerenciamento()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><polyline points="160 208 80 128 160 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+      <app-icone nome="seta-esquerda"></app-icone>
       Voltar para o Painel Inicial
     </button>
 
@@ -184,7 +184,7 @@
       </table>
 
       <div class="empty-state" *ngIf="!carregandoLista && listaAgendamentos.length === 0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="128" y1="80" x2="128" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="128" cy="172" r="12"/></svg>
+        <app-icone nome="alerta"></app-icone>
         <h3>Ninguém agendado ainda</h3>
         <p>Quando visitantes se registrarem, eles aparecerão nesta lista.</p>
       </div>

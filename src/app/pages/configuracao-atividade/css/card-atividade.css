@@ -58,33 +58,27 @@
   gap: 60px;
 }
 
+/* ==========================================
+   ÍCONES DE AÇÃO DO CARD (Refatorado)
+   ========================================== */
 .icone-item {
-  width: 120px;
-  height: 120px;
-  color: #005A32;
-  cursor: pointer;
-  background-color: transparent;
-  transition: transform 0.2s ease, color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.icone-item svg {
-  width: 100%;
-  height: 100%;
+/* Injeta o tamanho de 120px e a cor base verde escuro */
+.icone-item ::ng-deep .icone-wrapper {
+  color: #005A32 !important;
 }
 
-.icone-item:hover {
-  transform: scale(1.15);
-  color: #A6CD29;
+/* Hover genérico (Engrenagem fica verde clara) */
+.icone-item:hover ::ng-deep .icone-wrapper {
+  color: #A6CD29 !important;
 }
 
-.icone-item.icone-excluir {
-  color: #005A32;
-}
-
-.icone-item.icone-excluir:hover {
+/* Hover específico da Lixeira (Laranja) */
+.icone-item.icone-excluir:hover ::ng-deep .icone-wrapper {
   color: #F0A400 !important;
 }
 

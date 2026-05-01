@@ -9,12 +9,13 @@ import { FuncionarioService } from '../../core/services/api/funcionario.service'
 // IMPORTANDO OS COMPONENTES COMPARTILHADOS
 import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
 import { BotaoFlutuanteComponent } from '../../shared/components/botao-flutuante/botao-flutuante.component';
+import { IconeComponent } from '../../shared/components/icone/icone.component';
 
 @Component({
   selector: 'app-central-usuario',
   standalone: true,
-  // ADICIONADOS AQUI
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, BotaoPadraoComponent, BotaoFlutuanteComponent],
+  // O ICONE FOI ADICIONADO AQUI
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, BotaoPadraoComponent, BotaoFlutuanteComponent, IconeComponent],
   templateUrl: './central-usuario.html',
   styleUrls: [
     './css/central-usuario-layout.css',

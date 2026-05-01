@@ -1,0 +1,24 @@
+.icone-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff; /* Garante que todos sejam brancos por padrão */
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  height: 60px;
+  width: 60px;
+}
+
+/* O SVG pega 100% do tamanho da div wrapper e herda a cor */
+.icone-wrapper svg {
+  width: 100%;
+  height: 100%;
+  color: inherit; /* O SVG vai respeitar a cor do wrapper */
+}
+
+/* O efeitinho de hover universal para todos os ícones */
+.icone-wrapper:hover {
+  transform: scale(1.15) translateY(-2px); /* Cresce um pouco e sobe */
+  /* Se quiser que ele mude de cor no hover, basta adicionar aqui: */
+  /* color: #a3e635; */
+}

@@ -7,12 +7,13 @@ import { AtividadeService } from '../../core/services/api/atividade.service';
 // IMPORTANDO OS COMPONENTES
 import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
 import { BotaoFlutuanteComponent } from '../../shared/components/botao-flutuante/botao-flutuante.component';
+import { IconeComponent } from '../../shared/components/icone/icone.component'; // <-- IMPORT ADICIONADO AQUI
 
 @Component({
   selector: 'app-configuracao-atividade',
   standalone: true,
-  // ADICIONADO AQUI
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, BotaoPadraoComponent, BotaoFlutuanteComponent],
+  // ADICIONADO AQUI NO ARRAY DE IMPORTS
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, BotaoPadraoComponent, BotaoFlutuanteComponent, IconeComponent],
   templateUrl: './configuracao-atividade.html',
   styleUrls: [
     './css/card-atividade.css',

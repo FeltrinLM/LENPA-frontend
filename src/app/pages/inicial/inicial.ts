@@ -7,14 +7,15 @@ import { AtividadeService } from '../../core/services/api/atividade.service';
 import { VisitanteService } from '../../core/services/api/visitante.service';
 import { AgendarService } from '../../core/services/api/agendar.service';
 
-// IMPORTANDO O COMPONENTE PADRÃO DE BOTÕES
+// IMPORTANDO OS COMPONENTES
 import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
+import { IconeComponent } from '../../shared/components/icone/icone.component'; // <-- IMPORT ADICIONADO AQUI
 
 @Component({
   selector: 'app-inicial',
   standalone: true,
-  // ADICIONADO AQUI
-  imports: [CommonModule, FormsModule, BotaoPadraoComponent],
+  // ADICIONADO AQUI NO ARRAY DE IMPORTS
+  imports: [CommonModule, FormsModule, BotaoPadraoComponent, IconeComponent],
   templateUrl: './inicial.html',
   styleUrl: './inicial.css',
 })
