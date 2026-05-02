@@ -1,6 +1,6 @@
 :host {
   display: block;
-  width: calc(100% - 400px);
+  width: calc(100% - 133px); /* Reduzido de 400px */
   position: absolute;
   left: 0;
   top: 0;
@@ -11,7 +11,7 @@
 .pagina-gerenciamento {
   width: 100%;
   min-height: 100vh;
-  padding: 80px;
+  padding: 26px; /* Reduzido de 80px */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -23,8 +23,8 @@
 .titulo-pagina {
   font-family: monospace, 'Courier New', Courier;
   color: #005A32;
-  font-size: 100px;
-  margin-bottom: 80px;
+  font-size: 33px; /* Reduzido de 100px */
+  margin-bottom: 26px; /* Reduzido de 80px */
   text-align: center;
   font-weight: 900;
 }
@@ -32,22 +32,22 @@
 /* 4. O CARD DO FORMULÁRIO */
 .card-formulario-condicional {
   background-color: white;
-  padding: 80px;
-  border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  padding: 26px; /* Reduzido de 80px */
+  border-radius: 8px; /* Reduzido de 24px */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
 
   width: 100%;
-  max-width: 1800px; /* <-- LARGURA REFERÊNCIA */
+  max-width: 600px; /* Reduzido de 1800px */
 
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 16px; /* Reduzido de 50px */
 }
 
 /* Deixa os campos lado a lado em telas grandes */
 .linha-form {
   display: flex;
-  gap: 40px;
+  gap: 13px; /* Reduzido de 40px */
   width: 100%;
 }
 
@@ -56,25 +56,25 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 15px;
+  gap: 5px; /* Reduzido de 15px */
 }
 
 .campo label {
   font-family: monospace, sans-serif;
   font-weight: bold;
   color: #006633;
-  font-size: 36px;
+  font-size: 12px; /* Reduzido de 36px */
 }
 
 /* Padronização de Inputs e Selects GIGANTES */
 .input-lenpa {
-  padding: 30px 40px;
-  border: 4px solid #006633;
-  border-radius: 16px;
+  padding: 10px 13px; /* Reduzido de 30px 40px */
+  border: 1px solid #006633; /* Reduzido de 4px */
+  border-radius: 5px; /* Reduzido de 16px */
   background-color: white;
   color: #333;
   font-family: sans-serif;
-  font-size: 40px;
+  font-size: 13px; /* Reduzido de 40px */
   outline: none;
   transition: all 0.2s;
   height: auto;
@@ -82,34 +82,34 @@
 
 .input-lenpa:focus {
   border-color: #a3e635;
-  box-shadow: 0 0 0 8px rgba(163, 230, 53, 0.2);
+  box-shadow: 0 0 0 2px rgba(163, 230, 53, 0.2); /* Reduzido */
 }
 
 /* Consertando a setinha do <select> para telas grandes */
 select.input-lenpa {
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23006633' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23006633' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 30px center;
-  background-size: 40px;
-  padding-right: 80px;
+  background-position: right 10px center; /* Reduzido */
+  background-size: 13px; /* Reduzido */
+  padding-right: 26px; /* Reduzido */
 }
 
 /* Blocos que aparecem/somem */
 .bloco-condicional {
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  padding-top: 40px;
-  border-top: 4px dashed #ddd;
+  gap: 13px; /* Reduzido de 40px */
+  padding-top: 13px; /* Reduzido de 40px */
+  border-top: 1px dashed #ddd; /* Reduzido */
 }
 
 /* Destaque visual para a área de cadastro de nova pessoa */
 .caixa-nova-pessoa {
   background-color: #f0fdf4;
-  padding: 40px;
-  border-radius: 16px;
-  border: 3px solid #bbf7d0;
+  padding: 13px; /* Reduzido de 40px */
+  border-radius: 5px; /* Reduzido de 16px */
+  border: 1px solid #bbf7d0; /* Reduzido */
 }
 
 /* Animação suave */
@@ -118,7 +118,7 @@ select.input-lenpa {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
+  from { opacity: 0; transform: translateY(-6px); } /* Reduzido */
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -126,184 +126,78 @@ select.input-lenpa {
 .rodape-form {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 13px; /* Reduzido de 40px */
 }
 
 /* ==========================================
    NOVA SEÇÃO DE CARDS DE GERENCIAMENTO
    ========================================== */
 .titulo-secao-cards {
-  /* Copiado exatamente do .titulo-pagina */
   font-family: monospace, 'Courier New', Courier;
   color: #005A32;
-  font-size: 100px;
+  font-size: 33px; /* Reduzido de 100px */
   text-align: center;
   font-weight: 900;
-
-  /* Ajuste de espaçamento */
-  margin-top: 120px;
-  margin-bottom: 80px;
+  margin-top: 40px; /* Reduzido de 120px */
+  margin-bottom: 26px; /* Reduzido de 80px */
 }
 
 .grid-cards-atividades {
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  margin-bottom: 100px;
-
-  /* Deixa os cards alinhados perfeitamente com o formulário de cima */
+  gap: 13px; /* Reduzido de 40px */
+  margin-bottom: 33px; /* Reduzido de 100px */
   width: 100%;
-  max-width: 1800px;
-}
-
-/* O NOVO CARD HORIZONTAL (Estrutura Base) */
-.card-atividade-horizontal {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 350px;
-  border-radius: 40px;
-  overflow: hidden;
-  background-color: #fff;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, transform 0.4s ease;
-}
-
-.card-atividade-horizontal .card-img-container {
-  flex: 0 0 35%;
-  height: 100%;
-}
-
-.card-atividade-horizontal .card-img-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.card-atividade-horizontal .card-info-container {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-}
-
-.card-atividade-horizontal .fundo-blur {
-  position: absolute;
-  top: -20px; left: -20px; right: -20px; bottom: -20px;
-  background-size: cover;
-  background-position: center;
-  filter: blur(15px) brightness(0.35);
-  z-index: 1;
-}
-
-.card-atividade-horizontal .conteudo-info {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-}
-
-.titulo-atividade-horizontal {
-  color: white;
-  font-family: monospace, 'Courier New', Courier;
-  font-size: 70px;
-  font-weight: 900;
-  margin: 0;
-  line-height: 1.3;
-  text-shadow: 0 6px 15px rgba(0,0,0,0.6);
+  max-width: 600px; /* Reduzido de 1800px */
 }
 
 /* ==========================================
-   EFEITO MÁGICO DE HOVER NO CARD HORIZONTAL
+   CONTEÚDO INJETADO NO HOVER DO CARD
    ========================================== */
-.card-atividade-horizontal .card-hover-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
-  z-index: 10;
-}
 
-.card-atividade-horizontal:hover {
-  height: 420px;
-  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.45);
-  transform: translateY(-5px);
-  z-index: 20;
-}
-
-.card-atividade-horizontal:hover .card-hover-overlay {
-  opacity: 1;
-  visibility: visible;
-}
-
-.card-atividade-horizontal .fundo-blur-expandido {
-  position: absolute;
-  top: -60px; left: -60px; right: -60px; bottom: -60px;
-  background-size: cover;
-  background-position: center;
-  filter: blur(25px) brightness(0.25);
-  z-index: 1;
-}
-
-.card-atividade-horizontal .conteudo-hover {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 60px 80px;
-  box-sizing: border-box;
-}
-
-.card-atividade-horizontal .textos-hover {
+.textos-hover {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 6px; /* Reduzido de 20px */
   text-align: left;
 }
 
-.card-atividade-horizontal .titulo-hover {
+.titulo-hover {
   color: white;
   font-family: monospace, 'Courier New', Courier;
-  font-size: 90px;
+  font-size: 30px; /* Reduzido de 90px */
   font-weight: 900;
   margin: 0;
   line-height: 1.1;
-  text-shadow: 0 10px 30px rgba(0,0,0,0.9);
+  text-shadow: 0 3px 10px rgba(0,0,0,0.9); /* Reduzido */
 }
 
-.card-atividade-horizontal .subtitulo-hover {
+.subtitulo-hover {
   color: rgba(255, 255, 255, 0.85);
   font-family: sans-serif;
-  font-size: 45px;
+  font-size: 15px; /* Reduzido de 45px */
   margin: 0;
 }
 
 /* ==========================================
-   ÍCONE SETA DO CARD (Refatorado para Componente)
+   ÍCONE SETA DO CARD
    ========================================== */
-.card-atividade-horizontal .card-admin-seta {
+.card-admin-seta {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Injeta tamanho, cor limão e a transição do card */
-.card-atividade-horizontal .card-admin-seta ::ng-deep .icone-wrapper {
+/* Injeta a cor e transição. Adicionei width/height proporcionais */
+:host .card-admin-seta ::ng-deep .icone-wrapper {
   color: #a3e635 !important;
+  width: 40px !important;
+  height: 40px !important;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Força a seta a deslizar para a direita no hover, cancelando o scale() padrão */
-.card-atividade-horizontal:hover .card-admin-seta ::ng-deep .icone-wrapper {
-  transform: translateX(30px) !important;
+/* Para a animação acontecer quando o CARD for hoverizado (não apenas o ícone).
+   A âncora de hover passa a ser o app-card-atividade-layout. */
+app-card-atividade-layout:hover .card-admin-seta ::ng-deep .icone-wrapper {
+  transform: translateX(10px) !important; /* Reduzido de 30px */
 }

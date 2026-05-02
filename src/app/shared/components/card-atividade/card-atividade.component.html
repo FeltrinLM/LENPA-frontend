@@ -1,0 +1,22 @@
+<div class="card-atividade" [ngClass]="modo === 'horizontal' ? 'modo-horizontal' : 'modo-vertical'">
+
+  <div class="card-img-container">
+    <img [src]="urlImagem" [alt]="titulo">
+  </div>
+
+  <div class="card-info-container">
+    <div class="fundo-blur" [style.backgroundImage]="'url(' + urlImagem + ')'"></div>
+    <div class="conteudo-info">
+      <h3 class="titulo-atividade">{{ titulo }}</h3>
+    </div>
+  </div>
+
+  <div class="card-hover-overlay">
+    <div class="fundo-blur-expandido" [style.backgroundImage]="'url(' + urlImagem + ')'"></div>
+
+    <div class="conteudo-hover">
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+</div>

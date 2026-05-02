@@ -9,13 +9,14 @@ import { AgendarService } from '../../core/services/api/agendar.service';
 
 // IMPORTANDO OS COMPONENTES
 import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
-import { IconeComponent } from '../../shared/components/icone/icone.component'; // <-- IMPORT ADICIONADO AQUI
+import { IconeComponent } from '../../shared/components/icone/icone.component';
+import { CardAtividadeLayoutComponent } from '../../shared/components/card-atividade/card-atividade.component'; // <-- NOVO IMPORT AQUI
 
 @Component({
   selector: 'app-inicial',
   standalone: true,
   // ADICIONADO AQUI NO ARRAY DE IMPORTS
-  imports: [CommonModule, FormsModule, BotaoPadraoComponent, IconeComponent],
+  imports: [CommonModule, FormsModule, BotaoPadraoComponent, IconeComponent, CardAtividadeLayoutComponent],
   templateUrl: './inicial.html',
   styleUrl: './inicial.css',
 })

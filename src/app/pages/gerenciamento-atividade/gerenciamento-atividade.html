@@ -94,29 +94,22 @@
 
     <div class="grid-cards-atividades" *ngIf="eventosDisponiveis.length > 0">
 
-      <div class="card-atividade-horizontal" *ngFor="let evento of eventosDisponiveis" (click)="abrirGerenciamentoAtividade(evento)">
-        <div class="card-img-container">
-          <img [src]="getImagemUrl(evento.imagem)" alt="Capa">
+      <app-card-atividade-layout
+        *ngFor="let evento of eventosDisponiveis"
+        modo="horizontal"
+        [imagemRaw]="evento.imagem"
+        [titulo]="evento.nome"
+        (click)="abrirGerenciamentoAtividade(evento)">
+
+        <div class="textos-hover">
+          <h2 class="titulo-hover">{{ evento.nome }}</h2>
+          <p class="subtitulo-hover">Visualizar lista de visitantes, vagas e check-in</p>
         </div>
-        <div class="card-info-container">
-          <div class="fundo-blur" [style.backgroundImage]="'url(' + getImagemUrl(evento.imagem) + ')'"></div>
-          <div class="conteudo-info">
-            <h3 class="titulo-atividade-horizontal">{{ evento.nome }}</h3>
-          </div>
+        <div class="card-admin-seta">
+          <app-icone nome="seta-direita"></app-icone>
         </div>
-        <div class="card-hover-overlay">
-          <div class="fundo-blur-expandido" [style.backgroundImage]="'url(' + getImagemUrl(evento.imagem) + ')'"></div>
-          <div class="conteudo-hover">
-            <div class="textos-hover">
-              <h2 class="titulo-hover">{{ evento.nome }}</h2>
-              <p class="subtitulo-hover">Visualizar lista de visitantes, vagas e check-in</p>
-            </div>
-            <div class="card-admin-seta">
-              <app-icone nome="seta-direita"></app-icone>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      </app-card-atividade-layout>
 
     </div>
 
@@ -130,7 +123,7 @@
     </button>
 
     <div class="header-painel-lista">
-      <div class="header-img-bg" [style.backgroundImage]="'url(' + getImagemUrl(eventoSelecionadoParaGerenciar.imagem) + ')'"></div>
+      <div class="header-img-bg" [style.backgroundImage]="'url(' + (eventoSelecionadoParaGerenciar.imagem ? (eventoSelecionadoParaGerenciar.imagem.startsWith('http') ? eventoSelecionadoParaGerenciar.imagem : 'http://localhost:8080/uploads/' + eventoSelecionadoParaGerenciar.imagem) : '/assets/images/placeholder_background.jpg') + ')'"></div>
       <div class="header-texto">
         <h2>{{ eventoSelecionadoParaGerenciar.nome }}</h2>
         <p>Controle de Acesso e Check-in</p>

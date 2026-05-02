@@ -8,12 +8,14 @@ import { AgendarService } from '../../core/services/api/agendar.service';
 
 // IMPORTANDO OS COMPONENTES
 import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
-import { IconeComponent } from '../../shared/components/icone/icone.component'; // <-- IMPORT ADICIONADO AQUI
+import { IconeComponent } from '../../shared/components/icone/icone.component';
+import { CardAtividadeLayoutComponent } from '../../shared/components/card-atividade/card-atividade.component'; // <-- NOVO IMPORT AQUI
 
 @Component({
   selector: 'app-gerenciamento-atividade',
   standalone: true,
-  imports: [CommonModule, FormsModule, BotaoPadraoComponent, IconeComponent], // <-- ADICIONADO NO ARRAY DE IMPORTS
+  // ADICIONADO AQUI NO ARRAY DE IMPORTS
+  imports: [CommonModule, FormsModule, BotaoPadraoComponent, IconeComponent, CardAtividadeLayoutComponent],
   templateUrl: './gerenciamento-atividade.html',
   styleUrls: [
     './gerenciamento-atividade.css',
@@ -65,11 +67,8 @@ export class GerenciamentoAtividade implements OnInit {
     });
   }
 
-  getImagemUrl(imagem: string | null | undefined): string {
-    if (!imagem) return '/assets/images/placeholder_background.jpg';
-    if (imagem.startsWith('http')) return imagem;
-    return 'http://localhost:8080/uploads/' + imagem;
-  }
+  // A FUNÇÃO getImagemUrl FOI REMOVIDA DAQUI!
+  // O CardAtividadeLayoutComponent agora cuida disso nativamente.
 
   salvarCadastro() {
     if (!this.formCadastro.eventoSelecionado) {

@@ -25,61 +25,45 @@
 
   <div class="secao-atividades" *ngIf="atividades.length > 0">
 
-    <div class="card-atividade" *ngFor="let ativ of atividades">
+    <app-card-atividade-layout
+      *ngFor="let ativ of atividades"
+      [imagemRaw]="ativ.imagem"
+      [titulo]="ativ.nome">
 
-      <div class="card-img-container">
-        <img [src]="ativ.imagem ? (ativ.imagem.startsWith('http') ? ativ.imagem : 'http://localhost:8080/uploads/' + ativ.imagem) : '/assets/images/placeholder_background.jpg'" alt="Capa">
+      <div class="hover-header">
+        <h2 class="titulo-hover">{{ ativ.nome }}</h2>
       </div>
 
-      <div class="card-info-container">
-        <div class="fundo-blur" [style.backgroundImage]="'url(' + (ativ.imagem ? (ativ.imagem.startsWith('http') ? ativ.imagem : 'http://localhost:8080/uploads/' + ativ.imagem) : '') + ')'"></div>
-        <div class="conteudo-info">
-          <h3 class="titulo-atividade">{{ ativ.nome }}</h3>
+      <div class="hover-meta-grid">
+        <div class="meta-item">
+          <span class="meta-label">Vagas</span>
+          <span class="meta-value">{{ ativ.vagas ? ativ.vagas : '25' }} disponíveis</span>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-label">Local</span>
+          <span class="meta-value">{{ ativ.local || 'A definir' }}</span>
+        </div>
+
+        <div class="meta-item">
+          <span class="meta-label">Data e Horário</span>
+          <span class="meta-value">
+            {{ ativ.data || 'A definir' }} <ng-container *ngIf="ativ.horario">| {{ ativ.horario }}</ng-container>
+          </span>
         </div>
       </div>
 
-      <div class="card-hover-overlay">
-        <div class="fundo-blur-expandido" [style.backgroundImage]="'url(' + (ativ.imagem ? (ativ.imagem.startsWith('http') ? ativ.imagem : 'http://localhost:8080/uploads/' + ativ.imagem) : '') + ')'"></div>
+      <div class="hover-description" *ngIf="ativ.descricao">
+        <p>{{ ativ.descricao }}</p>
+      </div>
 
-        <div class="conteudo-hover">
-
-          <div class="hover-header">
-            <h2 class="titulo-hover">{{ ativ.nome }}</h2>
-          </div>
-
-          <div class="hover-meta-grid">
-            <div class="meta-item">
-              <span class="meta-label">Vagas</span>
-              <span class="meta-value">{{ ativ.vagas ? ativ.vagas : '25' }} disponíveis</span>
-            </div>
-
-            <div class="meta-item">
-              <span class="meta-label">Local</span>
-              <span class="meta-value">{{ ativ.local || 'A definir' }}</span>
-            </div>
-
-            <div class="meta-item">
-              <span class="meta-label">Data e Horário</span>
-              <span class="meta-value">
-                {{ ativ.data || 'A definir' }} <ng-container *ngIf="ativ.horario">| {{ ativ.horario }}</ng-container>
-              </span>
-            </div>
-          </div>
-
-          <div class="hover-description" *ngIf="ativ.descricao">
-            <p>{{ ativ.descricao }}</p>
-          </div>
-
-          <div class="hover-footer">
-            <div style="width: 500px; display: flex;">
-              <app-botao-padrao tipo="primario" (acaoClique)="abrirAgendamento(ativ)">Agendar</app-botao-padrao>
-            </div>
-          </div>
-
+      <div class="hover-footer">
+        <div style="width: 500px; display: flex;">
+          <app-botao-padrao tipo="primario" (acaoClique)="abrirAgendamento(ativ)">Agendar</app-botao-padrao>
         </div>
       </div>
 
-    </div>
+    </app-card-atividade-layout>
 
   </div>
 
