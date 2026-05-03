@@ -1,0 +1,88 @@
+<div class="modal-overlay" (click)="fecharModal()">
+  <div class="modal-agendamento-branco" (click)="$event.stopPropagation()">
+
+    <div class="modal-header-agendamento">
+      <h2>Reservar Vaga</h2>
+      <p class="atividade-destaque">
+        {{ atividade?.nome }}
+      </p>
+    </div>
+
+    <p class="modal-texto-instrucao" *ngIf="!mensagemSucessoAgendamento">
+      Preencha seus dados abaixo para garantir sua vaga.<br>
+      <span style="font-weight: bold; color: #1e5233;">Já nos visitou antes?</span> Basta digitar seu e-mail que preencheremos o resto para você!
+    </p>
+
+    <div *ngIf="mensagemSucessoAgendamento" class="mensagem-sucesso-container">
+      <app-icone nome="sucesso"></app-icone>
+      <h2>{{ mensagemSucessoAgendamento }}</h2>
+    </div>
+
+    <form (ngSubmit)="enviarPedidoAgendamento()" class="form-agendamento" *ngIf="!mensagemSucessoAgendamento" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+
+      <div class="campo-agendamento" style="position: relative;">
+        <input type="email" name="emailAgendamento" [(ngModel)]="emailAgendamento" (blur)="buscarVisitantePorEmail()" placeholder="Seu melhor e-mail..." required class="input-padrao-lenpa">
+        <span *ngIf="buscandoEmail" style="color: #666; font-size: 12px; position: absolute; right: 10px; top: 12px;">Buscando...</span>
+      </div>
+
+      <div class="campo-agendamento select-container">
+        <label class="label-flutuante">Você vai</label>
+        <select name="tipoAgendamento" [(ngModel)]="tipoAgendamento" class="input-padrao-lenpa select-lenpa">
+          <option value="INDIVIDUAL">Sozinho</option>
+          <option value="GRUPO">Com várias pessoas</option>
+        </select>
+      </div>
+
+      <div class="campo-agendamento slide-down" *ngIf="tipoAgendamento === 'GRUPO'">
+        <input type="number" name="quantidadeAgendamento" [(ngModel)]="quantidadeAgendamento" min="2" placeholder="Quantas pessoas vão junto com você?" class="input-padrao-lenpa">
+      </div>
+
+      <div class="campo-agendamento">
+        <input type="text" name="nomeAgendamento" [(ngModel)]="nomeAgendamento" placeholder="Nome Completo" required class="input-padrao-lenpa">
+      </div>
+
+      <div class="campo-agendamento autocomplete-container">
+
+        <input
+          type="text"
+          name="cidadeAgendamento"
+          [(ngModel)]="cidadeAgendamento"
+          (input)="filtrarCidades()"
+          placeholder="Cidade onde mora"
+          autocomplete="off"
+          required
+          class="input-padrao-lenpa">
+
+        <div class="dropdown-cidades" *ngIf="exibirDropdownCidades && cidadesFiltradas.length > 0">
+          <div
+            class="item-cidade"
+            *ngFor="let cid of cidadesFiltradas"
+            (click)="selecionarCidade(cid)">
+            {{ cid }}
+          </div>
+        </div>
+
+        <div class="dropdown-cidades item-cidade-vazio" *ngIf="exibirDropdownCidades && cidadesFiltradas.length === 0">
+          Buscando ou cidade não encontrada...
+        </div>
+
+      </div>
+      <p *ngIf="mensagemErroAgendamento" style="color: #d32f2f; font-size: 14px; text-align: center; margin: 0;">
+        {{ mensagemErroAgendamento }}
+      </p>
+
+      <div class="modal-botoes-padrao" style="margin-top: 10px; display: flex; gap: 15px;">
+        <app-botao-padrao tipo="secundario" (acaoClique)="fecharModal()">Cancelar</app-botao-padrao>
+
+        <app-botao-padrao
+          tipo="primario"
+          [desabilitado]="carregandoAgendamento || !emailAgendamento || !nomeAgendamento || !cidadeValida"
+          (acaoClique)="enviarPedidoAgendamento()">
+          {{ carregandoAgendamento ? 'Confirmando...' : 'Confirmar Vaga' }}
+        </app-botao-padrao>
+      </div>
+
+    </form>
+
+  </div>
+</div>

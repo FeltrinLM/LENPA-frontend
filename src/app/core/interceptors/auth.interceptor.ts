@@ -3,6 +3,14 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+
+  // 1. TRAVA DE SEGURANÇA: Se a requisição for para uma API externa (como o IBGE),
+  // passa reto sem injetar o token. Isso evita o vazamento da credencial do usuário.
+  if (req.url.includes('ibge.gov.br')) {
+    return next(req);
+  }
+
+  // 2. Lógica padrão para a nossa própria API (LENPA)
   const authService = inject(AuthService);
   const token = authService.getToken();
 

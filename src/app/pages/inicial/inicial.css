@@ -12,16 +12,16 @@
    ========================================== */
 .footer-inicial {
   width: 100%;
-  height: 130px; /* Reduzido */
+  height: 130px;
   background-color: #00331c;
   display: flex;
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.6);
   font-family: monospace, sans-serif;
-  font-size: 20px; /* Reduzido */
+  font-size: 20px;
   text-align: center;
-  padding: 0 20px; /* Reduzido */
+  padding: 0 20px;
 }
 
 /* -------------------------------------------
@@ -32,18 +32,18 @@
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4); /* Reduzido */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
   z-index: 10;
 }
 
 .banner-imagem::before {
   content: "";
   position: absolute;
-  top: -10px; right: -10px; bottom: -10px; left: -10px; /* Reduzido */
+  top: -10px; right: -10px; bottom: -10px; left: -10px;
   background-image: url('/assets/images/placeholder_background.jpg');
   background-size: cover;
   background-position: center center;
-  filter: blur(4px) brightness(0.8); /* Blur reduzido */
+  filter: blur(4px) brightness(0.8);
   z-index: -1;
 }
 
@@ -55,7 +55,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 15px 20px; /* Reduzido */
+  padding: 15px 20px;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -65,29 +65,30 @@
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* Reduzido */
+  gap: 10px;
 }
 
 .logo-texto {
   color: white;
   font-family: 'Arial', sans-serif;
-  font-size: 100px; /* Reduzido */
+  font-size: 100px;
   font-weight: 900;
-  letter-spacing: 1px; /* Reduzido */
+  letter-spacing: 1px;
 }
 
+/* Deixa a cor flexível para o componente de ícone do angular se necessário na raiz */
 .header-banner app-icone {
   color: white;
 }
 
 .usuario-container {
-  margin-right: 20px; /* Reduzido */
+  margin-right: 20px;
 }
 
-/* Tamanho específico do ícone de usuário no header */
+/* MANTIDO: Tamanho específico do ícone de usuário no header */
 .usuario-container ::ng-deep .icone-wrapper {
-  width: 65px; /* Reduzido */
-  height: 65px; /* Reduzido */
+  width: 65px;
+  height: 65px;
 }
 
 .usuario-container app-icone {
@@ -101,28 +102,28 @@
 
 .texto-banner {
   position: absolute;
-  bottom: 40px; /* Reduzido */
-  left: 40px; /* Reduzido */
+  bottom: 40px;
+  left: 40px;
   color: white;
   font-family: monospace;
-  font-size: 70px; /* Reduzido */
+  font-size: 70px;
   font-weight: bold;
   line-height: 1.3;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); /* Reduzido */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 .icone-instagram {
   position: absolute;
-  bottom: 30px; /* Reduzido */
-  right: 30px; /* Reduzido */
+  bottom: 30px;
+  right: 30px;
   color: white;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Tamanho específico do ícone do Instagram */
+/* MANTIDO: Tamanho específico do ícone do Instagram */
 .icone-instagram ::ng-deep .icone-wrapper {
-  width: 65px; /* Reduzido */
-  height: 65px; /* Reduzido */
+  width: 65px;
+  height: 65px;
 }
 
 .icone-instagram:hover {
@@ -156,15 +157,15 @@
 
 .modal-login {
   background: linear-gradient(135deg, #006A3B 0%, #004325 100%);
-  width: 600px; /* Reduzido */
-  padding: 30px; /* Reduzido */
-  border-radius: 20px; /* Reduzido */
+  width: 600px;
+  padding: 30px;
+  border-radius: 20px;
   border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.1); /* Reduzido */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px; /* Reduzido */
+  gap: 20px;
   font-family: 'Arial', sans-serif;
   animation: modalPopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -172,22 +173,23 @@
 .modal-header {
   display: flex;
   align-items: center;
-  gap: 15px; /* Reduzido */
+  gap: 15px;
   color: white;
 }
 
+/* MANTIDO: Tamanho do ícone do header do Login */
 .modal-header ::ng-deep .icone-wrapper {
-  width: 65px; /* Reduzido */
-  height: 65px; /* Reduzido */
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); /* Reduzido */
+  width: 65px;
+  height: 65px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
 }
 
 .modal-header h2 {
-  font-size: 55px; /* Reduzido */
+  font-size: 55px;
   margin: 0;
   font-weight: 800;
-  letter-spacing: -1px; /* Reduzido */
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Reduzido */
+  letter-spacing: -1px;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .modal-subtitulo {
@@ -195,7 +197,7 @@
   text-align: center;
   margin: 0;
   line-height: 1.5;
-  font-size: 25px; /* Reduzido */
+  font-size: 25px;
   font-weight: 500;
   letter-spacing: 1px;
 }
@@ -204,19 +206,19 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Reduzido */
+  gap: 15px;
 }
 
 .modal-inputs input {
   width: 100%;
-  padding: 15px 20px; /* Reduzido */
-  border-radius: 12px; /* Reduzido */
+  padding: 15px 20px;
+  border-radius: 12px;
   background-color: rgba(255, 255, 255, 0.95);
-  border: 2px solid transparent; /* Reduzido */
-  font-size: 20px; /* Reduzido */
+  border: 2px solid transparent;
+  font-size: 20px;
   color: #333;
   box-sizing: border-box;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1); /* Reduzido */
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
@@ -228,7 +230,7 @@
   outline: none;
   background-color: #ffffff;
   border-color: #a3e635;
-  box-shadow: 0 0 0 4px rgba(163, 230, 53, 0.2), inset 0 2px 5px rgba(0, 0, 0, 0.05); /* Reduzido */
+  box-shadow: 0 0 0 4px rgba(163, 230, 53, 0.2), inset 0 2px 5px rgba(0, 0, 0, 0.05);
   transform: scale(1.01);
 }
 
@@ -236,10 +238,9 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 15px; /* Reduzido */
-  margin-top: 15px; /* Reduzido */
+  gap: 15px;
+  margin-top: 15px;
 }
-
 
 /* ==========================================
    CARDS DE ATIVIDADES REAIS (Wrapper)
@@ -249,64 +250,61 @@
   flex-direction: column;
   width: 100%;
   align-items: center;
-  margin-top: 50px; /* Reduzido */
-  margin-bottom: 70px; /* Reduzido */
+  margin-top: 50px;
+  margin-bottom: 70px;
 }
 
 /* ==========================================
-   CONTEÚDO INJETADO NO CARD (DEVOLVIDO E REDUZIDO)
+   CONTEÚDO INJETADO NO CARD
    ========================================== */
 
-/* Cabeçalho do Hover */
 .hover-header {
-  border-bottom: 2px solid rgba(255, 255, 255, 0.15); /* Reduzido */
-  padding-bottom: 20px; /* Reduzido */
-  margin-bottom: 25px; /* Reduzido */
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .titulo-hover {
   color: white;
   font-family: monospace, 'Courier New', Courier;
-  font-size: 48px; /* Reduzido de 140px */
+  font-size: 48px;
   font-weight: 900;
   margin: 0;
   line-height: 1.1;
-  text-shadow: 0 4px 10px rgba(0,0,0,0.9); /* Reduzido */
+  text-shadow: 0 4px 10px rgba(0,0,0,0.9);
 }
 
-/* Grid de Informações Meta */
 .hover-meta-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px; /* Reduzido de 60px */
-  margin-bottom: 25px; /* Reduzido de 70px */
+  gap: 20px;
+  margin-bottom: 25px;
 }
 
 .meta-item {
   display: flex;
   flex-direction: column;
-  gap: 5px; /* Reduzido */
+  gap: 5px;
 }
 
 .meta-label {
   color: #02A34D;
   font-family: 'Arial', sans-serif;
-  font-size: 14px; /* Reduzido de 40px */
+  font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 1px; /* Reduzido */
-  text-shadow: 0 1px 3px rgba(0,0,0,0.8); /* Reduzido */
+  letter-spacing: 1px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
 .meta-value {
   color: white;
   font-family: monospace, 'Courier New', Courier;
-  font-size: 20px; /* Reduzido de 60px */
+  font-size: 20px;
   font-weight: bold;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.8); /* Reduzido */
+  text-shadow: 0 2px 5px rgba(0,0,0,0.8);
 }
 
-/* Descrição e Botão */
 .hover-description {
   flex: 1;
 }
@@ -314,210 +312,20 @@
 .hover-description p {
   color: rgba(255, 255, 255, 0.9);
   font-family: 'Arial', sans-serif;
-  font-size: 18px; /* Reduzido de 55px */
+  font-size: 18px;
   line-height: 1.6;
   margin: 0;
   max-width: 90%;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* Reduzido */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
 .hover-footer {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  margin-top: 20px; /* Reduzido */
+  margin-top: 20px;
 }
 
-/* Ajuste de tamanho do botão que ficava fixo em 500px no HTML */
 .hover-footer > div {
-  width: 170px !important; /* Reduzido de 500px, sobrescrevendo a style inline do HTML */
-}
-
-/* ==========================================
-   MODAL DE AGENDAMENTO (Design Branco Padrão)
-   ========================================== */
-.modal-agendamento-branco {
-  background-color: white;
-  padding: 35px 40px; /* Reduzido */
-  border-radius: 15px; /* Reduzido */
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); /* Reduzido */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px; /* Reduzido */
-  text-align: center;
-  width: 100%;
-  max-width: 550px; /* Reduzido */
-  animation: modalPopIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.modal-header-agendamento {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px; /* Reduzido */
-}
-
-.modal-header-agendamento h2 {
-  font-size: 35px; /* Reduzido */
-  color: #004325;
-  margin: 0;
-  font-family: sans-serif;
-  font-weight: 900;
-}
-
-.atividade-destaque {
-  font-size: 20px; /* Reduzido */
-  color: #006633;
-  margin: 0;
-  font-weight: bold;
-  font-family: monospace, sans-serif;
-}
-
-.modal-texto-instrucao {
-  font-size: 16px; /* Reduzido */
-  color: #666;
-  margin: 0;
-  line-height: 1.4;
-  max-width: 90%;
-}
-
-.form-agendamento {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 15px; /* Reduzido */
-}
-.campo-agendamento {
-  width: 100%;
-}
-
-.input-padrao-lenpa {
-  width: 100%;
-  padding: 15px 15px; /* Reduzido */
-  border: 2px solid #006633; /* Reduzido */
-  border-radius: 8px; /* Reduzido */
-  background-color: white;
-  color: #333;
-  font-family: sans-serif;
-  font-size: 18px; /* Reduzido */
-  outline: none;
-  box-sizing: border-box;
-  transition: all 0.2s;
-}
-
-.input-padrao-lenpa:focus {
-  border-color: #a3e635;
-  box-shadow: 0 0 0 4px rgba(163, 230, 53, 0.2); /* Reduzido */
-}
-
-.input-padrao-lenpa::placeholder {
-  color: #999;
-}
-
-.modal-botoes-padrao {
-  display: flex;
-  justify-content: center;
-  gap: 15px; /* Reduzido */
-  width: 100%;
-  margin-top: 15px; /* Reduzido */
-}
-
-.mensagem-sucesso-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px; /* Reduzido */
-  padding: 20px 0; /* Reduzido */
-}
-
-.mensagem-sucesso-container ::ng-deep .icone-wrapper {
-  width: 85px; /* Reduzido */
-  height: 85px; /* Reduzido */
-  color: #006633;
-}
-
-.mensagem-sucesso-container h2 {
-  color: #004325;
-  font-size: 25px; /* Reduzido */
-  margin: 0;
-  font-family: sans-serif;
-}
-
-/* ==========================================
-   ESTILIZAÇÃO DO SELECT E LABELS (Isolado)
-   ========================================== */
-
-.select-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px; /* Reduzido */
-}
-
-.label-flutuante {
-  color: #006633;
-  font-size: 14px; /* Reduzido */
-  font-family: sans-serif;
-  font-weight: bold;
-  margin-left: 5px; /* Reduzido */
-}
-
-.select-lenpa {
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23006633' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 15px center; /* Reduzido */
-  background-size: 15px; /* Reduzido */
-  padding-right: 35px; /* Reduzido */
-}
-
-/* Animação para a quantidade */
-.slide-down {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); } /* Reduzido */
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ==========================================
-   ANIMAÇÃO DO "BUSCANDO..." E BOTÕES
-   ========================================== */
-
-.campo-agendamento span[style*="buscando"] {
-  display: none;
-}
-
-.campo-agendamento > span {
-  color: #006633 !important;
-  font-size: 12px !important; /* Reduzido */
-  right: 15px !important; /* Reduzido */
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  font-weight: bold;
-  font-family: sans-serif;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { opacity: 0.5; }
-}
-
-/* Estilo para o botão bloqueado */
-.btn-primario:disabled {
-  background-color: #cccccc !important;
-  color: #888888 !important;
-  cursor: not-allowed;
-  box-shadow: none !important;
-  transform: none !important;
+  width: 170px !important;
 }
