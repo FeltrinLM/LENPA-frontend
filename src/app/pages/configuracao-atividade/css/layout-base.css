@@ -3,7 +3,7 @@
    ========================================== */
 .pagina-central {
   min-height: 100vh;
-  padding: 120px;
+  padding: 40px; /* Reduzido de 120px */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -16,47 +16,47 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 4200px;
-  margin-bottom: 120px;
+  max-width: 1400px; /* Reduzido de 4200px */
+  margin-bottom: 40px; /* Reduzido de 120px */
 }
 
 .titulo-pagina {
   font-family: monospace, 'Courier New', Courier;
   color: #005A32;
-  font-size: 126px;
+  font-size: 42px; /* Reduzido de 126px */
   margin: 0;
   font-weight: 900;
 }
 
 .card-formulario {
   background-color: white;
-  padding: 150px;
-  border-radius: 60px;
-  box-shadow: 0 30px 90px rgba(0,0,0,0.05);
+  padding: 50px; /* Reduzido de 150px */
+  border-radius: 20px; /* Reduzido de 60px */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Reduzido de 30px 90px */
   width: 100%;
-  max-width: 4200px;
+  max-width: 1400px; /* Reduzido de 4200px */
   display: flex;
   flex-direction: column;
-  gap: 90px;
+  gap: 30px; /* Reduzido de 90px */
 }
 
 .boas-vindas h2 {
   color: #006633;
   font-family: sans-serif;
-  font-size: 84px;
-  margin: 0 0 30px 0;
+  font-size: 28px; /* Reduzido de 84px */
+  margin: 0 0 10px 0; /* Reduzido de 30px */
 }
 
 .boas-vindas p {
   color: #64748b;
-  font-size: 54px;
+  font-size: 18px; /* Reduzido de 54px */
   margin: 0;
 }
 
 .placeholder-atividades p {
   color: #94a3b8;
-  font-size: 60px;
+  font-size: 20px; /* Reduzido de 60px */
   font-style: italic;
   text-align: center;
-  margin: 180px 0;
+  margin: 60px 0; /* Reduzido de 180px */
 }

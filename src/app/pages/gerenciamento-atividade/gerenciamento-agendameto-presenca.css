@@ -14,51 +14,52 @@
   align-self: flex-start;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 5px; /* Reduzido de 15px */
   background: none;
   border: none;
   color: #006633;
   font-family: sans-serif;
-  font-size: 45px;
+  font-size: 15px; /* Reduzido de 45px */
   font-weight: bold;
   cursor: pointer;
-  margin-bottom: 40px;
-  padding: 10px 20px;
-  border-radius: 12px;
+  margin-bottom: 13px; /* Reduzido de 40px */
+  padding: 3px 7px; /* Reduzido de 10px 20px */
+  border-radius: 4px; /* Reduzido de 12px */
   transition: all 0.2s;
 }
 
-.btn-voltar-painel svg {
-  width: 100px;
-  height: 100px;
+/* Adaptado para o app-icone que você está usando */
+.btn-voltar-painel ::ng-deep .icone-wrapper {
+  width: 33px !important; /* Reduzido de 100px */
+  height: 33px !important; /* Reduzido de 100px */
 }
 
 .btn-voltar-painel:hover {
   background-color: #e6f4ea;
-  transform: translateX(-5px);
+  transform: translateX(-2px); /* Reduzido de -5px */
 }
 
 /* Cabeçalho Bonito da Lista */
 .header-painel-lista {
-  width: 80%; /* <-- Largura aumentada para respirar */
-  max-width: none; /* <-- Trava removida */
-  height: 250px;
-  border-radius: 30px;
+  width: 80%;
+  max-width: none;
+  height: 83px; /* Reduzido de 250px */
+  border-radius: 10px; /* Reduzido de 30px */
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
-  padding: 50px 80px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-  margin-bottom: 60px;
+  padding: 16px 26px; /* Reduzido de 50px 80px */
+  box-shadow: 0 5px 13px rgba(0, 0, 0, 0.2); /* Reduzido */
+  margin-bottom: 20px; /* Reduzido de 60px */
 }
 
 .header-img-bg {
   position: absolute;
-  top: -20px; left: -20px; right: -20px; bottom: -20px;
+  top: -7px; left: -7px; right: -7px; bottom: -7px; /* Reduzido de -20px */
   background-size: cover;
   background-position: center;
-  filter: blur(10px) brightness(0.4);
+  filter: blur(3px) brightness(0.4); /* Blur reduzido de 10px */
   z-index: 1;
 }
 
@@ -70,15 +71,15 @@
 .header-texto h2 {
   color: white;
   font-family: monospace, sans-serif;
-  font-size: 80px;
-  margin: 0 0 10px 0;
-  text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+  font-size: 26px; /* Reduzido de 80px */
+  margin: 0 0 3px 0; /* Reduzido de 10px */
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8); /* Reduzido */
 }
 
 .header-texto p {
   color: #a3e635;
   font-family: sans-serif;
-  font-size: 40px;
+  font-size: 13px; /* Reduzido de 40px */
   margin: 0;
   font-weight: bold;
 }
@@ -86,52 +87,52 @@
 /* Tabela e Card Branco */
 .card-tabela {
   background-color: white;
-  width: 80%; /* <-- Largura aumentada para respirar */
-  max-width: none; /* <-- Trava removida */
-  border-radius: 24px;
-  padding: 40px 60px; /* <-- Espaço interno otimizado */
-  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  width: 80%;
+  max-width: none;
+  border-radius: 8px; /* Reduzido de 24px */
+  padding: 13px 20px; /* Reduzido de 40px 60px */
+  box-shadow: 0 7px 16px rgba(0,0,0,0.1); /* Reduzido */
 }
 
 .tabela-lenpa {
   width: 100%;
   border-collapse: collapse;
   font-family: sans-serif;
-  table-layout: auto; /* <-- Permite que a tabela distribua o espaço sozinha */
+  table-layout: auto;
 }
 
 .tabela-lenpa th {
   text-align: left;
-  font-size: 40px;
+  font-size: 13px; /* Reduzido de 40px */
   color: #666;
-  padding-bottom: 30px;
-  border-bottom: 4px solid #eee;
+  padding-bottom: 10px; /* Reduzido de 30px */
+  border-bottom: 1px solid #eee; /* Reduzido de 4px */
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px; /* Reduzido de 2px */
 }
 
 .tabela-lenpa td {
-  font-size: 45px;
+  font-size: 15px; /* Reduzido de 45px */
   color: #333;
-  padding: 40px 20px;
-  border-bottom: 2px solid #f0f0f0;
+  padding: 13px 7px; /* Reduzido de 40px 20px */
+  border-bottom: 1px solid #f0f0f0; /* Reduzido de 2px */
   vertical-align: middle;
 }
 
 .td-destaque {
   font-weight: bold;
   color: #004325 !important;
-  min-width: 400px; /* <-- Evita que o nome fique esmagado e quebre linha */
+  min-width: 133px; /* Reduzido de 400px */
 }
 
 /* Badges e Botões da Tabela */
 .badge-status {
   display: inline-block;
-  padding: 15px 30px;
+  padding: 5px 10px; /* Reduzido de 15px 30px */
   background-color: #fff3cd;
   color: #856404;
-  border-radius: 50px;
-  font-size: 30px;
+  border-radius: 16px; /* Reduzido de 50px */
+  font-size: 10px; /* Reduzido de 30px */
   font-weight: bold;
 }
 
@@ -139,37 +140,39 @@
   background-color: #d4edda;
   color: #155724;
 }
+
 /* Empty State */
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px 0;
+  padding: 33px 0; /* Reduzido de 100px 0 */
   color: #999;
 }
 
-.empty-state svg {
-  width: 150px;
-  height: 150px;
-  margin-bottom: 30px;
+/* Adaptado para o app-icone para não quebrar */
+.empty-state ::ng-deep .icone-wrapper {
+  width: 50px !important; /* Reduzido de 150px */
+  height: 50px !important; /* Reduzido de 150px */
+  margin-bottom: 10px !important; /* Reduzido de 30px */
   color: #ccc;
 }
 
 .empty-state h3 {
-  font-size: 50px;
-  margin: 0 0 15px 0;
+  font-size: 16px; /* Reduzido de 50px */
+  margin: 0 0 5px 0; /* Reduzido de 15px */
   color: #666;
 }
 
 .empty-state p {
-  font-size: 40px;
+  font-size: 13px; /* Reduzido de 40px */
   margin: 0;
 }
 
 .texto-carregando {
   text-align: center;
-  font-size: 40px;
+  font-size: 13px; /* Reduzido de 40px */
   color: #006633;
   font-family: sans-serif;
-  margin: 100px 0;
+  margin: 33px 0; /* Reduzido de 100px 0 */
 }

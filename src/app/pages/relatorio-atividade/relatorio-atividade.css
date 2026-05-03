@@ -3,7 +3,7 @@
    ========================================== */
 :host {
   display: block;
-  width: calc(100% - 400px);
+  width: calc(100% - 133px); /* Reduzido de 400px */
   position: absolute;
   left: 0;
   top: 0;
@@ -13,7 +13,7 @@
 .pagina-relatorio {
   width: 100%;
   min-height: 100vh;
-  padding: 80px;
+  padding: 26px; /* Reduzido de 80px */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -23,40 +23,47 @@
 
 .card-formulario {
   background-color: white;
-  padding: 80px;
-  border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  padding: 26px; /* Reduzido de 80px */
+  border-radius: 8px; /* Reduzido de 24px */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1); /* Reduzido */
   width: 100%;
-  max-width: 2800px;
+  max-width: 933px; /* Reduzido de 2800px */
   display: flex;
   flex-direction: column;
-  gap: 50px;
-  margin-bottom: 80px;
+  gap: 16px; /* Reduzido de 50px */
+  margin-bottom: 26px; /* Reduzido de 80px */
 }
 
-.linha-form { display: flex; gap: 40px; width: 100%; }
-.campo { display: flex; flex-direction: column; flex: 1; gap: 15px; }
-.campo label { font-family: monospace, sans-serif; font-weight: bold; color: #006633; font-size: 45px; }
+.linha-form { display: flex; gap: 13px; width: 100%; } /* Reduzido de 40px */
+.campo { display: flex; flex-direction: column; flex: 1; gap: 5px; } /* Reduzido de 15px */
+.campo label { font-family: monospace, sans-serif; font-weight: bold; color: #006633; font-size: 15px; } /* Reduzido de 45px */
 
 .input-lenpa {
-  padding: 30px 40px; border: 4px solid #006633; border-radius: 16px;
+  padding: 10px 13px; /* Reduzido de 30px 40px */
+  border: 1px solid #006633; /* Reduzido de 4px */
+  border-radius: 5px; /* Reduzido de 16px */
   background-color: white; color: #333; font-family: sans-serif;
-  font-size: 40px; outline: none; transition: all 0.2s; height: auto;
+  font-size: 13px; /* Reduzido de 40px */
+  outline: none; transition: all 0.2s; height: auto;
 }
-.input-lenpa:focus { border-color: #a3e635; box-shadow: 0 0 0 8px rgba(163, 230, 53, 0.2); }
+.input-lenpa:focus { border-color: #a3e635; box-shadow: 0 0 0 2px rgba(163, 230, 53, 0.2); } /* Reduzido */
 
 .mensagem-aviso {
-  background-color: #fffbeb; color: #b37a00; border: 6px solid #F0A400;
-  padding: 30px 40px; border-radius: 16px; font-size: 36px; font-weight: bold;
-  display: flex; align-items: center; gap: 30px; animation: fadeIn 0.3s ease-in;
+  background-color: #fffbeb; color: #b37a00; border: 2px solid #F0A400; /* Reduzido de 6px */
+  padding: 10px 13px; /* Reduzido de 30px 40px */
+  border-radius: 5px; /* Reduzido de 16px */
+  font-size: 12px; /* Reduzido de 36px */
+  font-weight: bold;
+  display: flex; align-items: center; gap: 10px; /* Reduzido de 30px */
+  animation: fadeIn 0.3s ease-in;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
+  from { opacity: 0; transform: translateY(-6px); } /* Reduzido de 20px */
   to { opacity: 1; transform: translateY(0); }
 }
 
-.rodape-form { display: flex; justify-content: center; margin-top: 40px; }
+.rodape-form { display: flex; justify-content: center; margin-top: 13px; } /* Reduzido de 40px */
 
 /* ==========================================
    TÍTULO DA PÁGINA
@@ -64,8 +71,8 @@
 .titulo-pagina {
   font-family: monospace, 'Courier New', Courier;
   color: #005A32;
-  font-size: 100px;
-  margin-bottom: 80px;
+  font-size: 33px; /* Reduzido de 100px */
+  margin-bottom: 26px; /* Reduzido de 80px */
   text-align: center;
   font-weight: 900;
 }
@@ -75,31 +82,31 @@
    ========================================== */
 .resultados-relatorio {
   width: 100%;
-  max-width: 2800px;
+  max-width: 933px; /* Reduzido de 2800px */
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 26px; /* Reduzido de 80px */
   animation: fadeIn 0.5s ease-in;
 }
 
 .bloco-resultado {
   background-color: white;
-  border-radius: 24px;
-  padding: 80px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+  border-radius: 8px; /* Reduzido de 24px */
+  padding: 26px; /* Reduzido de 80px */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05); /* Reduzido */
 }
 
 .bloco-resultado h2 {
   font-family: monospace, sans-serif;
   color: #005A32;
-  font-size: 60px;
-  margin: 0 0 50px 0;
-  border-bottom: 4px solid #e2e8f0;
-  padding-bottom: 20px;
+  font-size: 20px; /* Reduzido de 60px */
+  margin: 0 0 16px 0; /* Reduzido de 50px */
+  border-bottom: 1px solid #e2e8f0; /* Reduzido de 4px */
+  padding-bottom: 6px; /* Reduzido de 20px */
 }
 
 .total-destaque {
-  font-size: 70px;
+  font-size: 23px; /* Reduzido de 70px */
   color: #333;
   margin: 0;
   font-family: sans-serif;
@@ -113,36 +120,36 @@
 .lista-eventos-relatorio {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 13px; /* Reduzido de 40px */
 }
 
 .card-evento-relatorio {
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 20px; /* Reduzido de 60px */
   background-color: #f1f5f9;
-  border-radius: 24px;
-  padding: 40px;
-  border: 4px solid #e2e8f0;
+  border-radius: 8px; /* Reduzido de 24px */
+  padding: 13px; /* Reduzido de 40px */
+  border: 1px solid #e2e8f0; /* Reduzido de 4px */
 }
 
 .imagem-evento-relatorio {
-  width: 400px;
-  height: 250px;
+  width: 133px; /* Reduzido de 400px */
+  height: 83px; /* Reduzido de 250px */
   object-fit: cover;
-  border-radius: 16px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  border-radius: 5px; /* Reduzido de 16px */
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1); /* Reduzido */
 }
 
 .info-evento-relatorio h3 {
-  font-size: 55px;
+  font-size: 18px; /* Reduzido de 55px */
   color: #005A32;
-  margin: 0 0 20px 0;
+  margin: 0 0 6px 0; /* Reduzido de 20px */
   font-family: monospace, sans-serif;
 }
 
 .info-evento-relatorio p {
-  font-size: 45px;
+  font-size: 15px; /* Reduzido de 45px */
   color: #475569;
   margin: 0;
   font-family: sans-serif;
@@ -164,73 +171,68 @@
   max-width: none;
 
   /* 2. A MÁGICA DA CENTRALIZAÇÃO BILATERAL */
-  /* Movemos o card para a metade da largura do pai e puxamos metade do seu próprio tamanho de volta */
   position: relative;
   left: 50%;
   transform: translateX(-50%);
 
   /* 3. Estética e Respiro */
-  background-color: white; /* Garante o fundo branco no card expandido */
-  border-radius: 24px;
-  padding: 80px 180px;   /* Sua margem gorda interna */
+  background-color: white;
+  border-radius: 8px; /* Reduzido de 24px */
+  padding: 26px 60px;   /* Reduzido de 80px 180px */
   box-sizing: border-box;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-  margin-bottom: 80px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05); /* Reduzido */
+  margin-bottom: 26px; /* Reduzido de 80px */
 }
-
-/* IMPORTANTE: Removi o margin-left: auto e margin-right: auto
-   do bloco-graficos, pois o transform agora cuida disso.
-*/
 
 .container-grafico {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 60px;
+  gap: 20px; /* Reduzido de 60px */
   width: 100%;
 }
 
 .grafico-pizza {
-  width: 700px;
-  height: 700px;
+  width: 233px; /* Reduzido de 700px */
+  height: 233px; /* Reduzido de 700px */
   border-radius: 50%;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.15);
-  flex-shrink: 0; /* Impede o gráfico de ser esmagado pela expansão da legenda */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* Reduzido */
+  flex-shrink: 0;
 }
 
-/* Legenda: 5 Colunas, Fonte Grande, Sem quebras */
+/* Legenda: 4 Colunas, Fonte Normal, Sem quebras */
 .legenda-grafico {
   display: grid;
   grid-template-columns: repeat(4, max-content);
   justify-content: center;
-  gap: 40px 80px;
+  gap: 13px 26px; /* Reduzido de 40px 80px */
   width: 100%;
-  margin-top: 60px;
+  margin-top: 20px; /* Reduzido de 60px */
   background-color: #f1f5f9;
-  padding: 70px;
-  border-radius: 32px;
-  border: 4px solid #e2e8f0;
+  padding: 23px; /* Reduzido de 70px */
+  border-radius: 10px; /* Reduzido de 32px */
+  border: 1px solid #e2e8f0; /* Reduzido de 4px */
 }
 
 .item-legenda {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 8px; /* Reduzido de 25px */
 }
 
 .cor-legenda {
-  width: 45px;
-  height: 45px;
-  border-radius: 12px;
+  width: 15px; /* Reduzido de 45px */
+  height: 15px; /* Reduzido de 45px */
+  border-radius: 4px; /* Reduzido de 12px */
   flex-shrink: 0;
 }
 
 .item-legenda p {
-  font-size: 38px;
+  font-size: 13px; /* Reduzido de 38px */
   color: #1e293b;
   margin: 0;
   font-family: sans-serif;
   font-weight: 800;
   line-height: 1;
-  white-space: nowrap; /* A força motriz da expansão do card */
+  white-space: nowrap;
 }

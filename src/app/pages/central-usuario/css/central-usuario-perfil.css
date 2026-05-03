@@ -4,30 +4,30 @@
 .lista-credenciais {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 13px; /* Reduzido de 40px */
 }
 
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 5px; /* Reduzido de 15px */
 }
 
 .campo label {
   font-family: monospace, sans-serif;
   font-weight: bold;
   color: #006633;
-  font-size: 40px;
+  font-size: 13px; /* Reduzido de 40px */
 }
 
 .input-falso {
-  padding: 30px 40px;
-  border: 4px solid #006633;
-  border-radius: 16px;
+  padding: 10px 13px; /* Reduzido de 30px 40px */
+  border: 1px solid #006633; /* Reduzido de 4px */
+  border-radius: 5px; /* Reduzido de 16px */
   background-color: #ffffff;
   color: #004325;
   font-family: sans-serif;
-  font-size: 50px;
+  font-size: 16px; /* Reduzido de 50px */
   font-weight: bold;
   display: flex;
   justify-content: space-between;
@@ -43,7 +43,7 @@
 
 .input-falso.modo-edicao {
   background-color: white;
-  border: 4px dashed #006633;
+  border: 1px dashed #006633; /* Reduzido de 4px */
 }
 
 .campo-edicao {
@@ -54,11 +54,11 @@
   outline: none;
   color: #004325;
   font-family: sans-serif;
-  font-size: 50px;
+  font-size: 16px; /* Reduzido de 50px */
   font-weight: bold;
   padding: 0;
-  margin-right: 40px;
-  border-bottom: 4px solid #eaf3ed;
+  margin-right: 13px; /* Reduzido de 40px */
+  border-bottom: 1px solid #eaf3ed; /* Reduzido de 4px */
   transition: border-color 0.3s;
 }
 
@@ -72,27 +72,29 @@
 .container-editar-senha {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 10px; /* Reduzido de 30px */
   background-color: white;
-  padding: 50px;
-  border-radius: 16px;
-  border: 4px dashed #006633;
+  padding: 16px; /* Reduzido de 50px */
+  border-radius: 5px; /* Reduzido de 16px */
+  border: 1px dashed #006633; /* Reduzido de 4px */
 }
 
 .campo-senha-duplo {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 6px; /* Reduzido de 20px */
 }
 
 .campo-senha-interno {
   font-family: monospace, sans-serif;
-  font-size: 40px;
+  font-size: 13px; /* Reduzido de 40px */
   color: #555;
   background-color: white;
   outline: none;
-  padding: 20px 30px;
-  border-radius: 12px;
+  padding: 6px 10px; /* Reduzido de 20px 30px */
+  border-radius: 4px; /* Reduzido de 12px */
+  /* Mantive uma bordinha leve para ele não ficar "flutuando" no branco, já que não tinha borda declarada antes do focus */
+  border: 1px solid #ddd;
 }
 
 .campo-senha-interno:focus {
@@ -101,7 +103,7 @@
 
 .mensagem-erro-senha {
   color: #F0A400;
-  font-size: 35px;
+  font-size: 12px; /* Reduzido de 35px */
   font-weight: bold;
   font-family: sans-serif;
   text-align: center;
@@ -109,8 +111,8 @@
 
 .acoes-edicao-senha {
   display: flex;
-  gap: 30px;
-  margin-top: 10px;
+  gap: 10px; /* Reduzido de 30px */
+  margin-top: 3px; /* Reduzido de 10px */
 }
 
 /* ==========================================
@@ -118,7 +120,7 @@
    ========================================== */
 .acoes-edicao {
   display: flex;
-  gap: 30px;
+  gap: 10px; /* Reduzido de 30px */
   flex-shrink: 0;
 }
 
@@ -148,33 +150,33 @@
    ========================================== */
 .botoes-gerenciamento {
   display: flex;
-  gap: 30px;
+  gap: 10px; /* Reduzido de 30px */
   width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 6px; /* Reduzido de 20px */
+  margin-bottom: 6px; /* Reduzido de 20px */
 }
 
 .btn-gerenciar {
   flex: 1;
-  padding: 30px 40px;
-  border-radius: 16px;
-  font-size: 40px;
+  padding: 10px 13px; /* Reduzido de 30px 40px */
+  border-radius: 5px; /* Reduzido de 16px */
+  font-size: 13px; /* Reduzido de 40px */
   font-weight: bold;
   cursor: pointer;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px; /* Reduzido de 2px */
   transition: all 0.3s ease;
   background-color: #ffffff;
 }
 
 .btn-funcionarios {
   color: #074168;
-  border: 4px solid #074168;
+  border: 1px solid #074168; /* Reduzido de 4px */
 }
 
 .btn-funcionarios:hover {
   background-color: #074168;
   color: #ffffff;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(6, 28, 162, 0.3);
+  transform: translateY(-1px); /* Reduzido de -4px */
+  box-shadow: 0 5px 10px rgba(6, 28, 162, 0.3); /* Reduzido de 15px 30px */
 }
