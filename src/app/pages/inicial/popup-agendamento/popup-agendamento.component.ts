@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http'; // <-- IMPORT DO HTTP
+import { HttpClient } from '@angular/common/http';
 
 // Serviços
 import { VisitanteService } from '../../../core/services/api/visitante.service';
@@ -35,7 +35,9 @@ export class PopupAgendamentoComponent implements OnInit {
   nomeAgendamento: string = '';
   cidadeAgendamento: string = '';
   tipoAgendamento: 'INDIVIDUAL' | 'GRUPO' = 'INDIVIDUAL';
-  quantidadeAgendamento: number = 1;
+
+  // SOLUÇÃO 2: Agora começa como null, permitindo que o placeholder apareça no HTML!
+  quantidadeAgendamento: number | null = null;
 
   buscandoEmail: boolean = false;
 
@@ -45,6 +47,9 @@ export class PopupAgendamentoComponent implements OnInit {
   listaCidadesNoBanco: string[] = [];
   cidadesFiltradas: string[] = [];
   exibirDropdownCidades: boolean = false;
+
+  // SOLUÇÃO 1: A chave do nosso "Passe Livre"
+  cidadeVeioDoBanco: boolean = false;
 
   ngOnInit() {
     this.buscarCidadesIBGE();
@@ -69,6 +74,9 @@ export class PopupAgendamentoComponent implements OnInit {
   }
 
   filtrarCidades() {
+    // Se o usuário digitou qualquer coisa, ele perde o passe livre e precisa escolher da lista
+    this.cidadeVeioDoBanco = false;
+
     const termoOriginal = this.cidadeAgendamento.trim();
     const termo = this.removerAcentos(termoOriginal.toLowerCase());
 
@@ -91,9 +99,11 @@ export class PopupAgendamentoComponent implements OnInit {
     this.exibirDropdownCidades = false;
   }
 
-  // A MÁGICA DE VALIDAÇÃO ESTÁ AQUI:
-  // Essa variável verifica em tempo real se o que está escrito no input existe na lista oficial do IBGE
   get cidadeValida(): boolean {
+    // A MÁGICA AQUI: Se a cidade veio preenchida do banco pelo e-mail, ela é válida automaticamente!
+    if (this.cidadeVeioDoBanco) return true;
+
+    // Se não, passa pela verificação normal do IBGE
     return this.listaCidadesNoBanco.includes(this.cidadeAgendamento);
   }
 
@@ -106,20 +116,33 @@ export class PopupAgendamentoComponent implements OnInit {
   }
 
   buscarVisitantePorEmail() {
-    if (!this.emailAgendamento || !this.emailAgendamento.includes('@')) return;
+    const emailLimpo = this.emailAgendamento.trim();
+    this.emailAgendamento = emailLimpo;
+
+    if (!emailLimpo || !emailLimpo.includes('@')) return;
 
     this.buscandoEmail = true;
 
-    this.visitanteService.buscarPorEmail(this.emailAgendamento).subscribe({
+    this.visitanteService.buscarPorEmail(emailLimpo).subscribe({
       next: (visitante: any) => {
         this.buscandoEmail = false;
-        if (visitante) {
+
+        if (visitante && visitante.nome) {
           this.nomeAgendamento = visitante.nome;
           this.cidadeAgendamento = visitante.cidade;
+
+          // Habilita o "Passe Livre" e garante que o menu de cidades fique escondido
+          this.cidadeVeioDoBanco = true;
+          this.exibirDropdownCidades = false;
         }
       },
       error: (err: any) => {
         this.buscandoEmail = false;
+        this.nomeAgendamento = '';
+        this.cidadeAgendamento = '';
+        this.cidadesFiltradas = [];
+        this.exibirDropdownCidades = false;
+        this.cidadeVeioDoBanco = false; // Sem visitante = sem passe livre
       }
     });
   }
@@ -130,7 +153,6 @@ export class PopupAgendamentoComponent implements OnInit {
       return;
     }
 
-    // TRAVA DE SEGURANÇA: Se o usuário burlou o HTML e forçou o clique, o TS barra.
     if (!this.cidadeValida) {
       this.mensagemErroAgendamento = 'Por favor, selecione uma cidade válida clicando nas opções da lista.';
       return;
@@ -144,7 +166,8 @@ export class PopupAgendamentoComponent implements OnInit {
       nomeVisitante: this.nomeAgendamento,
       emailVisitante: this.emailAgendamento,
       cidadeVisitante: this.cidadeAgendamento,
-      quantidade: this.tipoAgendamento === 'INDIVIDUAL' ? 1 : this.quantidadeAgendamento
+      // Fallback de segurança: Se vier null, manda 2 pro Java.
+      quantidade: this.tipoAgendamento === 'INDIVIDUAL' ? 1 : (this.quantidadeAgendamento || 2)
     };
 
     this.agendarService.agendar(payload).subscribe({
