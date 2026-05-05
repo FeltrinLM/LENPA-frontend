@@ -10,13 +10,13 @@
 button {
   flex: 1;
   width: 100%;
-  padding: 30px 40px;
-  border-radius: 16px;
-  font-size: 20px;
+  padding: 10px 15px; /* Reduzido de 30px 40px */
+  border-radius: 6px; /* Reduzido de 16px */
+  font-size: 14px; /* Reduzido de 20px, mantendo a legibilidade */
   font-weight: bold;
   cursor: pointer;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px; /* Reduzido de 2px */
   transition: all 0.3s ease;
   background-color: #ffffff; /* Fundo sempre branco no estado normal */
 }
@@ -24,27 +24,27 @@ button {
 /* BOTÕES PARA CONCLUIR AÇÃO (Verde Sólido no Hover) */
 .btn-primario {
   color: #006633;
-  border: 4px solid #006633;
+  border: 2px solid #006633; /* Borda reduzida de 4px para 2px */
 }
 
 .btn-primario:hover {
   background-color: #006633;
   color: #ffffff;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(0, 102, 51, 0.3);
+  transform: translateY(-2px); /* Animação de pulo reduzida pela metade */
+  box-shadow: 0 5px 10px rgba(0, 102, 51, 0.3); /* Sombra 3x menor */
 }
 
 /* BOTÕES PARA CANCELAR/INTERROMPER (Laranja Sólido no Hover) */
 .btn-secundario {
   color: #F0A400;
-  border: 4px solid #F0A400;
+  border: 2px solid #F0A400; /* Borda reduzida de 4px para 2px */
 }
 
 .btn-secundario:hover {
   background-color: #F0A400;
   color: #ffffff;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(240, 164, 0, 0.3);
+  transform: translateY(-2px); /* Animação de pulo reduzida pela metade */
+  box-shadow: 0 5px 10px rgba(240, 164, 0, 0.3); /* Sombra 3x menor */
 }
 
 /* Estado de botão bloqueado (Ex: carregando/salvando) */

@@ -1,7 +1,20 @@
 /* ==========================================
-   LAYOUT PADRÃO E CONTAINER FLEX (central-usuario-layout.css)
+   CONFIGURAÇÃO ESTRUTURAL (O PULO DO GATO)
+   ========================================== */
+:host {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 100vh;
+}
+
+/* ==========================================
+   LAYOUT PADRÃO E CONTAINER FLEX
    ========================================== */
 .pagina-central {
+  width: 100%; /* Novo: Ocupa tudo por padrão */
   min-height: 100vh;
   padding: 26px; /* Reduzido de 80px */
   box-sizing: border-box;
@@ -10,6 +23,12 @@
   align-items: center;
   background-color: #f8fafc;
   overflow-x: hidden;
+  transition: width 0.3s ease; /* Transição suave */
+}
+
+/* Container com Sidebar (Logado): Encolhe os exatos 140px na direita */
+.pagina-central.com-sidebar {
+  width: calc(100% - 140px);
 }
 
 .cabecalho-pagina {

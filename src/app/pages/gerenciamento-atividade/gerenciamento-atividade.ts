@@ -9,12 +9,11 @@ import { AgendarService } from '../../core/services/api/agendar.service';
 // IMPORTANDO OS COMPONENTES
 import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao-padrao.component';
 import { IconeComponent } from '../../shared/components/icone/icone.component';
-import { CardAtividadeLayoutComponent } from '../../shared/components/card-atividade/card-atividade.component'; // <-- NOVO IMPORT AQUI
+import { CardAtividadeLayoutComponent } from '../../shared/components/card-atividade/card-atividade.component';
 
 @Component({
   selector: 'app-gerenciamento-atividade',
   standalone: true,
-  // ADICIONADO AQUI NO ARRAY DE IMPORTS
   imports: [CommonModule, FormsModule, BotaoPadraoComponent, IconeComponent, CardAtividadeLayoutComponent],
   templateUrl: './gerenciamento-atividade.html',
   styleUrls: [
@@ -45,6 +44,12 @@ export class GerenciamentoAtividade implements OnInit {
     responsavel: { nome: '', cidade: '' }
   };
 
+  // ==========================================
+  // VARIÁVEIS DO AUTOCOMPLETE DE NOMES
+  // ==========================================
+  visitantesFiltrados: any[] = [];
+  exibirDropdownNomes: boolean = false;
+
   ngOnInit() {
     this.carregarDadosIniciais();
   }
@@ -67,8 +72,68 @@ export class GerenciamentoAtividade implements OnInit {
     });
   }
 
-  // A FUNÇÃO getImagemUrl FOI REMOVIDA DAQUI!
-  // O CardAtividadeLayoutComponent agora cuida disso nativamente.
+  // ==========================================
+  // LÓGICA DO AUTOCOMPLETE E PREENCHIMENTO RÁPIDO
+  // ==========================================
+
+  private removerAcentos(texto: string): string {
+    return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  filtrarNomes() {
+    const termoOriginal = this.formCadastro.visitante.nome.trim();
+    const termo = this.removerAcentos(termoOriginal.toLowerCase());
+
+    if (termo.length > 0) {
+      this.visitantesFiltrados = this.pessoasCadastradas
+        .filter(v => {
+          if (!v.nome) return false;
+          const nomeNormalizado = this.removerAcentos(v.nome.toLowerCase());
+          // Usamos includes para achar pelo sobrenome também (ex: digitar "Mendes" acha "Lorenzo Feltrin Mendes")
+          return nomeNormalizado.includes(termo);
+        })
+        .sort((a, b) => a.nome.localeCompare(b.nome));
+
+      this.exibirDropdownNomes = true;
+    } else {
+      this.exibirDropdownNomes = false;
+      // Se apagar o nome todo, limpa a cidade também
+      this.formCadastro.visitante.cidade = '';
+    }
+  }
+
+  selecionarNome(visitante: any) {
+    this.formCadastro.visitante.nome = visitante.nome;
+    this.formCadastro.visitante.cidade = visitante.cidade;
+    this.exibirDropdownNomes = false;
+  }
+
+  esconderDropdownNomes() {
+    // O setTimeout garante que o clique na lista ocorra ANTES da lista sumir
+    setTimeout(() => {
+      this.exibirDropdownNomes = false;
+
+      // Fallback: Se o usuário só apertar TAB sem clicar na lista, a gente tenta achar e preencher a cidade mesmo assim
+      this.buscarCidadePorNome();
+    }, 200);
+  }
+
+  buscarCidadePorNome() {
+    const nomeLimpo = (this.formCadastro.visitante.nome || '').trim();
+    if (!nomeLimpo) return;
+
+    const visitanteConhecido = this.pessoasCadastradas.find(
+      v => v.nome && v.nome.toLowerCase() === nomeLimpo.toLowerCase()
+    );
+
+    if (visitanteConhecido && !this.formCadastro.visitante.cidade) {
+      this.formCadastro.visitante.cidade = visitanteConhecido.cidade;
+    }
+  }
+
+  // ==========================================
+  // LÓGICA DE SALVAR E GERENCIAR
+  // ==========================================
 
   salvarCadastro() {
     if (!this.formCadastro.eventoSelecionado) {
@@ -105,7 +170,7 @@ export class GerenciamentoAtividade implements OnInit {
     const payload = {
       idAtividade: this.formCadastro.eventoSelecionado,
       nomeVisitante: nomeFinal,
-      emailVisitante: null,
+      emailVisitante: null, // Sempre null pelo painel do funcionário
       cidadeVisitante: cidadeFinal,
       quantidade: quantidadeFinal
     };

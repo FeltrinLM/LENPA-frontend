@@ -201,3 +201,48 @@ select.input-lenpa {
 app-card-atividade-layout:hover .card-admin-seta ::ng-deep .icone-wrapper {
   transform: translateX(10px) !important; /* Reduzido de 30px */
 }
+
+/* ==========================================
+   BOTÕES DE SUGESTÃO DE VISITANTES (AUTOCOMPLETE)
+   ========================================== */
+.lista-botoes-sugestao {
+  display: flex;
+  flex-wrap: wrap; /* Faz os botões pularem de linha se faltar espaço */
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-sugestao {
+  background-color: #f4fbf7; /* Fundo verdinho claro */
+  border: 1px solid #cce3d6;
+  border-radius: 20px; /* Bordas arredondadas tipo "pílula" */
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sugestao:hover {
+  background-color: #1e5233; /* Fica verde escuro quando passa o mouse */
+  border-color: #1e5233;
+  transform: translateY(-2px);
+}
+
+.sugestao-nome {
+  color: #1e5233;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.sugestao-cidade {
+  color: #666;
+  font-size: 11px;
+}
+
+/* Muda a cor das letras para branco quando o botão for focado/hover */
+.btn-sugestao:hover .sugestao-nome,
+.btn-sugestao:hover .sugestao-cidade {
+  color: #ffffff;
+}

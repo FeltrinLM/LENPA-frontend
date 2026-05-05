@@ -170,9 +170,18 @@
 .card-funcionarios .btn-icone-excluir {
   background-color: transparent;
   border: none;
+  cursor: pointer;
+  padding: 5px; /* Adicionado um padding leve para área de clique */
 }
+
+/* AQUI ESTÁ A MUDANÇA: Tamanho cravado reduzido 3x */
 .card-funcionarios .btn-icone-excluir ::ng-deep .icone-wrapper {
+  width: 22px !important;
+  height: 22px !important;
   color: #074168 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-funcionarios .btn-icone-excluir:hover ::ng-deep .icone-wrapper {

@@ -1,7 +1,20 @@
 /* ==========================================
+   CONFIGURAÇÃO ESTRUTURAL (SIMPLIFICADA)
+   ========================================== */
+:host {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 140px; /* Como só tem login aqui, paramos cravados na sidebar permanentemente */
+  min-height: 100vh;
+}
+
+/* ==========================================
    ESTRUTURA PRINCIPAL (TRIPLICADA E CLEAN)
    ========================================== */
 .pagina-central {
+  width: 100%; /* Pega o espaço total que o host liberou */
   min-height: 100vh;
   padding: 40px; /* Reduzido de 120px */
   box-sizing: border-box;
@@ -9,6 +22,7 @@
   flex-direction: column;
   align-items: center;
   background-color: #f1f5f9; /* Fundo geral levemente cinza */
+  overflow-x: hidden; /* Garantia para evitar scroll horizontal indesejado */
 }
 
 .cabecalho-pagina {

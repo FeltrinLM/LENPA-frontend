@@ -1,22 +1,22 @@
 /* ==========================================
-   BOTÃO FLUTUANTE (FAB) - BLINDADO E COM AS MARGENS GIGANTES
+   BOTÃO FLUTUANTE (FAB) - AUMENTADO EM 50%
    ========================================== */
 .btn-flutuante-cadastrar {
   position: fixed;
-  bottom: 150px;   /* Restaurado: Longe do fundo */
-  right: 500px;    /* Restaurado: Longe da sidebar! */
-  height: 65px;
-  min-width: 65px;
+  bottom: 40px;    /* Cola no fundo, com uma margem de 40px */
+  right: 170px;    /* 140px da sidebar + 30px de distância dela */
+  height: 98px;
+  min-width: 98px;
   background-color: #005A32;
   color: white;
   border: none;
-  border-radius: 50px;
+  border-radius: 75px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 15px;
+  padding: 0 23px;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(0, 90, 50, 0.4);
+  box-shadow: 0 15px 38px rgba(0, 90, 50, 0.4);
   transition: all 0.3s ease;
   z-index: 9999;
   overflow: hidden;
@@ -24,12 +24,12 @@
 
 .texto-fab {
   font-family: monospace, sans-serif;
-  font-size: 18px;
+  font-size: 27px; /* Aumentado de 18px */
   font-weight: bold;
   white-space: nowrap;
   max-width: 0;
   opacity: 0;
-  overflow: hidden; /* Mantém o texto sob controle */
+  overflow: hidden;
   transition: max-width 0.3s ease, opacity 0.3s ease, margin-right 0.3s ease;
 }
 
@@ -37,27 +37,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0; /* A REGRA MÁGICA: Impede o ícone de ser esmagado! */
+  width: 45px; /* Aumentado de 30px */
+  height: 45px; /* Aumentado de 30px */
+  flex-shrink: 0;
 }
 
 ::ng-deep .icone-fab svg {
-  width: 30px !important;
-  height: 30px !important;
+  width: 45px !important; /* Aumentado de 30px */
+  height: 45px !important; /* Aumentado de 30px */
   display: block;
 }
 
 /* --- ESTADO HOVER (QUANDO PASSA O MOUSE) --- */
 .btn-flutuante-cadastrar:hover {
-  padding: 0 25px;
+  padding: 0 38px; /* Aumentado de 25px */
   background-color: #004d2b;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(0, 90, 50, 0.5);
+  transform: translateY(-6px); /* Pulo aumentado de -4px */
+  box-shadow: 0 23px 53px rgba(0, 90, 50, 0.5); /* Sombra hover redimensionada */
 }
 
 .btn-flutuante-cadastrar:hover .texto-fab {
-  max-width: 300px;
+  max-width: 450px; /* Aumentado de 300px para o texto não ser cortado */
   opacity: 1;
-  margin-right: 12px;
+  margin-right: 18px; /* Aumentado de 12px */
 }

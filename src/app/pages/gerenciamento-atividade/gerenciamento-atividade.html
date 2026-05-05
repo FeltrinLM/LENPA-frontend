@@ -38,16 +38,37 @@
       </div>
 
       <div *ngIf="formCadastro.tipoVisitante === 'individual'" class="bloco-condicional animacao-surgir">
+
         <div class="linha-form">
-          <div class="campo">
+          <div class="campo" style="flex: 1;">
             <label>Nome do Visitante</label>
-            <input type="text" [(ngModel)]="formCadastro.visitante.nome" class="input-lenpa" placeholder="Nome completo">
+            <input
+              type="text"
+              [(ngModel)]="formCadastro.visitante.nome"
+              (input)="filtrarNomes()"
+              (blur)="esconderDropdownNomes()"
+              autocomplete="off"
+              class="input-lenpa"
+              placeholder="Digite o nome...">
+
+            <div class="lista-botoes-sugestao" *ngIf="exibirDropdownNomes && visitantesFiltrados.length > 0">
+              <button
+                type="button"
+                class="btn-sugestao"
+                *ngFor="let v of visitantesFiltrados"
+                (mousedown)="selecionarNome(v)">
+                <span class="sugestao-nome">{{ v.nome }}</span>
+                <span class="sugestao-cidade">{{ v.cidade }}</span>
+              </button>
+            </div>
           </div>
-          <div class="campo">
+
+          <div class="campo" style="flex: 1;">
             <label>Cidade em que reside</label>
             <input type="text" [(ngModel)]="formCadastro.visitante.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
           </div>
         </div>
+
       </div>
 
       <div *ngIf="formCadastro.tipoVisitante === 'instituicao'" class="bloco-condicional animacao-surgir">

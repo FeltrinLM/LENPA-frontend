@@ -1,4 +1,6 @@
-<div class="pagina-inicial-container">
+<!-- Container Principal com classe dinâmica amarrada ao login -->
+<div class="pagina-inicial-container" [class.com-sidebar]="authService.isLoggedIn()">
+
   <div class="banner-imagem">
     <header class="header-banner">
       <div class="logo-container">
