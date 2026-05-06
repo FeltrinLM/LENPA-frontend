@@ -1,17 +1,16 @@
 :host {
   display: block;
-  width: calc(100% - 133px); /* Reduzido de 400px */
+  width: calc(100% - 133px);
   position: absolute;
   left: 0;
   top: 0;
   min-height: 100vh;
 }
 
-/* 2. CONTAINER DA PÁGINA */
 .pagina-gerenciamento {
   width: 100%;
   min-height: 100vh;
-  padding: 26px; /* Reduzido de 80px */
+  padding: 26px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -19,176 +18,172 @@
   background-color: #f8fafc;
 }
 
-/* 3. TÍTULO DA PÁGINA GIGANTE */
 .titulo-pagina {
   font-family: monospace, 'Courier New', Courier;
   color: #005A32;
-  font-size: 33px; /* Reduzido de 100px */
-  margin-bottom: 26px; /* Reduzido de 80px */
+  font-size: 33px;
+  margin-bottom: 26px;
   text-align: center;
   font-weight: 900;
 }
 
-/* 4. O CARD DO FORMULÁRIO */
+/* CARD DO FORMULÁRIO */
 .card-formulario-condicional {
   background-color: white;
-  padding: 26px; /* Reduzido de 80px */
-  border-radius: 8px; /* Reduzido de 24px */
+  padding: 26px;
+  border-radius: 8px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-
   width: 100%;
-  max-width: 600px; /* Reduzido de 1800px */
-
+  max-width: 600px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Reduzido de 50px */
+  gap: 16px;
 }
 
-/* Deixa os campos lado a lado em telas grandes */
-.linha-form {
-  display: flex;
-  gap: 13px; /* Reduzido de 40px */
+.separador-pontilhado {
+  border: 0;
+  border-top: 4px dashed #ddd;
+  margin: 10px 0;
   width: 100%;
 }
 
-/* Cada campo individual (label + input/select) */
+.linha-form {
+  display: flex;
+  gap: 13px;
+  width: 100%;
+  align-items: flex-start;
+}
+
 .campo {
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 5px; /* Reduzido de 15px */
+  min-width: 0;
+  gap: 5px;
+}
+
+/* Classe utilitária para campos que precisam expandir sozinhos */
+.flex-1 {
+  flex: 1;
 }
 
 .campo label {
   font-family: monospace, sans-serif;
   font-weight: bold;
   color: #006633;
-  font-size: 12px; /* Reduzido de 36px */
+  font-size: 12px;
 }
 
-/* Padronização de Inputs e Selects GIGANTES */
 .input-lenpa {
-  padding: 10px 13px; /* Reduzido de 30px 40px */
-  border: 1px solid #006633; /* Reduzido de 4px */
-  border-radius: 5px; /* Reduzido de 16px */
+  width: 100%;
+  padding: 10px 13px;
+  border: 1px solid #006633;
+  border-radius: 5px;
   background-color: white;
   color: #333;
   font-family: sans-serif;
-  font-size: 13px; /* Reduzido de 40px */
+  font-size: 13px;
   outline: none;
   transition: all 0.2s;
-  height: auto;
+  box-sizing: border-box;
+  height: 42px;
 }
 
 .input-lenpa:focus {
   border-color: #a3e635;
-  box-shadow: 0 0 0 2px rgba(163, 230, 53, 0.2); /* Reduzido */
+  box-shadow: 0 0 0 2px rgba(163, 230, 53, 0.2);
 }
 
-/* Consertando a setinha do <select> para telas grandes */
 select.input-lenpa {
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23006633' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 10px center; /* Reduzido */
-  background-size: 13px; /* Reduzido */
-  padding-right: 26px; /* Reduzido */
+  background-position: right 10px center;
+  background-size: 13px;
+  padding-right: 26px;
 }
 
-/* Blocos que aparecem/somem */
 .bloco-condicional {
   display: flex;
   flex-direction: column;
-  gap: 13px; /* Reduzido de 40px */
-  padding-top: 13px; /* Reduzido de 40px */
-  border-top: 1px dashed #ddd; /* Reduzido */
+  width: 100%;
+  gap: 13px;
+  padding-top: 13px;
+  border-top: 1px dashed #ddd;
 }
 
-/* Destaque visual para a área de cadastro de nova pessoa */
 .caixa-nova-pessoa {
   background-color: #f0fdf4;
-  padding: 13px; /* Reduzido de 40px */
-  border-radius: 5px; /* Reduzido de 16px */
-  border: 1px solid #bbf7d0; /* Reduzido */
+  padding: 13px;
+  border-radius: 5px;
+  border: 1px solid #bbf7d0;
+  box-sizing: border-box;
 }
 
-/* Animação suave */
-.animacao-surgir {
-  animation: fadeIn 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-6px); } /* Reduzido */
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Botão principal */
 .rodape-form {
   display: flex;
   justify-content: center;
-  margin-top: 13px; /* Reduzido de 40px */
+  margin-top: 13px;
 }
 
-/* ==========================================
-   NOVA SEÇÃO DE CARDS DE GERENCIAMENTO
-   ========================================== */
+.mensagem-vazia-servidor {
+  text-align: center;
+  font-size: 40px;
+  color: #888;
+  font-family: sans-serif;
+}
+
+/* SEÇÃO DE CARDS */
 .titulo-secao-cards {
   font-family: monospace, 'Courier New', Courier;
   color: #005A32;
-  font-size: 33px; /* Reduzido de 100px */
+  font-size: 33px;
   text-align: center;
   font-weight: 900;
-  margin-top: 40px; /* Reduzido de 120px */
-  margin-bottom: 26px; /* Reduzido de 80px */
+  margin-top: 40px;
+  margin-bottom: 26px;
 }
 
 .grid-cards-atividades {
   display: flex;
   flex-direction: column;
-  gap: 13px; /* Reduzido de 40px */
-  margin-bottom: 33px; /* Reduzido de 100px */
+  gap: 13px;
+  margin-bottom: 33px;
   width: 100%;
-  max-width: 600px; /* Reduzido de 1800px */
+  max-width: 600px;
 }
-
-/* ==========================================
-   CONTEÚDO INJETADO NO HOVER DO CARD
-   ========================================== */
 
 .textos-hover {
   display: flex;
   flex-direction: column;
-  gap: 6px; /* Reduzido de 20px */
+  gap: 6px;
   text-align: left;
 }
 
 .titulo-hover {
   color: white;
   font-family: monospace, 'Courier New', Courier;
-  font-size: 30px; /* Reduzido de 90px */
+  font-size: 30px;
   font-weight: 900;
   margin: 0;
   line-height: 1.1;
-  text-shadow: 0 3px 10px rgba(0,0,0,0.9); /* Reduzido */
+  text-shadow: 0 3px 10px rgba(0,0,0,0.9);
 }
 
 .subtitulo-hover {
   color: rgba(255, 255, 255, 0.85);
   font-family: sans-serif;
-  font-size: 15px; /* Reduzido de 45px */
+  font-size: 15px;
   margin: 0;
 }
 
-/* ==========================================
-   ÍCONE SETA DO CARD
-   ========================================== */
 .card-admin-seta {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Injeta a cor e transição. Adicionei width/height proporcionais */
 :host .card-admin-seta ::ng-deep .icone-wrapper {
   color: #a3e635 !important;
   width: 40px !important;
@@ -196,26 +191,22 @@ select.input-lenpa {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Para a animação acontecer quando o CARD for hoverizado (não apenas o ícone).
-   A âncora de hover passa a ser o app-card-atividade-layout. */
 app-card-atividade-layout:hover .card-admin-seta ::ng-deep .icone-wrapper {
-  transform: translateX(10px) !important; /* Reduzido de 30px */
+  transform: translateX(10px) !important;
 }
 
-/* ==========================================
-   BOTÕES DE SUGESTÃO DE VISITANTES (AUTOCOMPLETE)
-   ========================================== */
+/* AUTOCOMPLETE */
 .lista-botoes-sugestao {
   display: flex;
-  flex-wrap: wrap; /* Faz os botões pularem de linha se faltar espaço */
+  flex-wrap: wrap;
   gap: 8px;
   margin-top: 10px;
 }
 
 .btn-sugestao {
-  background-color: #f4fbf7; /* Fundo verdinho claro */
+  background-color: #f4fbf7;
   border: 1px solid #cce3d6;
-  border-radius: 20px; /* Bordas arredondadas tipo "pílula" */
+  border-radius: 20px;
   padding: 6px 14px;
   display: flex;
   align-items: center;
@@ -225,7 +216,7 @@ app-card-atividade-layout:hover .card-admin-seta ::ng-deep .icone-wrapper {
 }
 
 .btn-sugestao:hover {
-  background-color: #1e5233; /* Fica verde escuro quando passa o mouse */
+  background-color: #1e5233;
   border-color: #1e5233;
   transform: translateY(-2px);
 }
@@ -241,8 +232,16 @@ app-card-atividade-layout:hover .card-admin-seta ::ng-deep .icone-wrapper {
   font-size: 11px;
 }
 
-/* Muda a cor das letras para branco quando o botão for focado/hover */
 .btn-sugestao:hover .sugestao-nome,
 .btn-sugestao:hover .sugestao-cidade {
   color: #ffffff;
+}
+
+.animacao-surgir {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }

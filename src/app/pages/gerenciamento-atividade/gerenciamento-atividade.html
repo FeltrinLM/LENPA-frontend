@@ -1,13 +1,13 @@
 <div class="pagina-gerenciamento">
 
+  <!-- VISÃO PADRÃO: FORMULÁRIO E CARDS -->
   <div class="container-visao-padrao animacao-surgir" *ngIf="!eventoSelecionadoParaGerenciar">
 
     <h1 class="titulo-pagina">Agendamento e Presença</h1>
 
     <div class="card-formulario-condicional">
-
       <div class="linha-form">
-        <div class="campo" style="flex: 1;">
+        <div class="campo flex-1">
           <label>Qual atividade?</label>
           <select [(ngModel)]="formCadastro.eventoSelecionado" class="input-lenpa">
             <option value="" disabled selected>Selecione a atividade no sistema...</option>
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <hr style="border: 0; border-top: 4px dashed #ddd; margin: 10px 0; width: 100%;">
+      <hr class="separador-pontilhado">
 
       <div class="linha-form">
         <div class="campo">
@@ -37,10 +37,10 @@
         </div>
       </div>
 
+      <!-- BLOCO INDIVIDUAL -->
       <div *ngIf="formCadastro.tipoVisitante === 'individual'" class="bloco-condicional animacao-surgir">
-
         <div class="linha-form">
-          <div class="campo" style="flex: 1;">
+          <div class="campo flex-1">
             <label>Nome do Visitante</label>
             <input
               type="text"
@@ -63,14 +63,14 @@
             </div>
           </div>
 
-          <div class="campo" style="flex: 1;">
+          <div class="campo flex-1">
             <label>Cidade em que reside</label>
             <input type="text" [(ngModel)]="formCadastro.visitante.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
           </div>
         </div>
-
       </div>
 
+      <!-- BLOCO INSTITUIÇÃO -->
       <div *ngIf="formCadastro.tipoVisitante === 'instituicao'" class="bloco-condicional animacao-surgir">
         <div class="linha-form">
           <div class="campo">
@@ -91,7 +91,7 @@
         <div class="linha-form caixa-nova-pessoa">
           <div class="campo">
             <label>Nome do Responsável</label>
-            <input type="text" [(ngModel)]="formCadastro.responsavel.nome" class="input-lenpa" placeholder="Nome do líder">
+            <input type="text" [(ngModel)]="formCadastro.responsavel.nome" class="input-lenpa">
           </div>
           <div class="campo">
             <label>Cidade do Responsável</label>
@@ -107,21 +107,19 @@
       </div>
     </div>
 
-    <h2 class="titulo-secao-cards">Gerenciamento de<br>Agendamentos e Presenças</h2>
+    <h2 class="titulo-secao-cards">Gerenciamento de Agendamentos e Presenças</h2>
 
-    <p *ngIf="eventosDisponiveis.length === 0" style="text-align: center; font-size: 40px; color: #888; font-family: sans-serif;">
+    <p *ngIf="eventosDisponiveis.length === 0" class="mensagem-vazia-servidor">
       Nenhuma atividade carregada do servidor...
     </p>
 
     <div class="grid-cards-atividades" *ngIf="eventosDisponiveis.length > 0">
-
       <app-card-atividade-layout
         *ngFor="let evento of eventosDisponiveis"
         modo="horizontal"
         [imagemRaw]="evento.imagem"
         [titulo]="evento.nome"
         (click)="abrirGerenciamentoAtividade(evento)">
-
         <div class="textos-hover">
           <h2 class="titulo-hover">{{ evento.nome }}</h2>
           <p class="subtitulo-hover">Visualizar lista de visitantes, vagas e check-in</p>
@@ -129,19 +127,17 @@
         <div class="card-admin-seta">
           <app-icone nome="seta-direita"></app-icone>
         </div>
-
       </app-card-atividade-layout>
-
     </div>
-
   </div>
 
+  <!-- VISÃO DE LISTA: TABELA E GERENCIAMENTO -->
   <div class="container-visao-lista animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar">
-
-    <button class="btn-voltar-painel" (click)="fecharGerenciamento()">
-      <app-icone nome="seta-esquerda"></app-icone>
-      Voltar para o Painel Inicial
-    </button>
+    <div class="btn-voltar-fixo">
+      <app-botao-padrao tipo="secundario" (acaoClique)="fecharGerenciamento()">
+        Voltar para o Painel
+      </app-botao-padrao>
+    </div>
 
     <div class="header-painel-lista">
       <div class="header-img-bg" [style.backgroundImage]="'url(' + (eventoSelecionadoParaGerenciar.imagem ? (eventoSelecionadoParaGerenciar.imagem.startsWith('http') ? eventoSelecionadoParaGerenciar.imagem : 'http://localhost:8080/uploads/' + eventoSelecionadoParaGerenciar.imagem) : '/assets/images/placeholder_background.jpg') + ')'"></div>
@@ -157,25 +153,24 @@
       <table class="tabela-lenpa" *ngIf="!carregandoLista && listaAgendamentos.length > 0">
         <thead>
         <tr>
-          <th style="width: 40%;">Nome do Visitante / Grupo</th>
-          <th style="width: 25%;">Cidade</th>
-          <th style="text-align: center; width: 5%;">Qtd</th>
-          <th style="text-align: center; width: 10%;">Status</th>
-          <th style="text-align: right; width: 20%;">Ação</th>
+          <th>Nome do Visitante / Grupo</th>
+          <th>Cidade</th>
+          <th>Qtd</th>
+          <th>Status</th>
+          <th>Ação</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let ag of listaAgendamentos">
           <td class="td-destaque">{{ ag.nomeVisitante }}</td>
           <td>{{ ag.cidadeDisplay }}</td>
-          <td style="text-align: center; font-weight: bold;">{{ ag.quantidade || 1 }}</td>
-          <td style="text-align: center;">
-                <span class="badge-status" [ngClass]="{'confirmado': ag.presencaConfirmada || ag.status === 'CONFIRMADO'}">
-                  {{ (ag.presencaConfirmada || ag.status === 'CONFIRMADO') ? 'PRESENTE' : 'PENDENTE' }}
-                </span>
+          <td>{{ ag.quantidade || 1 }}</td>
+          <td>
+              <span class="badge-status" [ngClass]="{'confirmado': ag.presencaConfirmada || ag.status === 'CONFIRMADO'}">
+                {{ (ag.presencaConfirmada || ag.status === 'CONFIRMADO') ? 'PRESENTE' : 'PENDENTE' }}
+              </span>
           </td>
-          <td style="text-align: right; display: flex; justify-content: flex-end; gap: 15px;">
-
+          <td>
             <ng-container *ngIf="!ag.presencaConfirmada && ag.status !== 'CONFIRMADO'">
               <app-botao-padrao tipo="primario" (acaoClique)="fazerCheckIn(ag)">
                 Confirmar Presença
@@ -183,15 +178,12 @@
             </ng-container>
 
             <ng-container *ngIf="ag.presencaConfirmada || ag.status === 'CONFIRMADO'">
-              <app-botao-padrao tipo="primario" [desabilitado]="true">
-                ✓ Liberado
-              </app-botao-padrao>
+              <app-botao-padrao tipo="primario" [desabilitado]="true">✓ Liberado</app-botao-padrao>
             </ng-container>
 
             <app-botao-padrao tipo="secundario" (acaoClique)="cancelarAgendamento(ag)">
               Excluir Agendamento
             </app-botao-padrao>
-
           </td>
         </tr>
         </tbody>
@@ -202,9 +194,7 @@
         <h3>Ninguém agendado ainda</h3>
         <p>Quando visitantes se registrarem, eles aparecerão nesta lista.</p>
       </div>
-
     </div>
-
   </div>
 
 </div>

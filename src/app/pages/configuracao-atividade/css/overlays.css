@@ -1,13 +1,13 @@
 /* ==========================================
-   MODAIS DE CADASTRO E EXCLUSÃO
+   MODAIS DE CADASTRO E EXCLUSÃO (ESCALA 75%)
    ========================================== */
 @keyframes overlayFadeIn {
   from { opacity: 0; backdrop-filter: blur(0px); }
-  to { opacity: 1; backdrop-filter: blur(5px); } /* Reduzido de 15px */
+  to { opacity: 1; backdrop-filter: blur(4px); }
 }
 
 @keyframes modalPopIn {
-  from { opacity: 0; transform: scale(0.95) translateY(20px); } /* Reduzido de 60px */
+  from { opacity: 0; transform: scale(0.95) translateY(15px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
@@ -27,26 +27,26 @@
 
 .modal-confirmacao {
   background-color: white;
-  padding: 40px; /* Reduzido de 120px */
-  border-radius: 20px; /* Reduzido de 60px */
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); /* Reduzido de 60px 180px */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px; /* Reduzido de 60px */
+  gap: 15px;
   text-align: center;
-  max-width: 800px; /* Reduzido de 2400px */
+  max-width: 600px;
   animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .modal-cadastro {
-  width: 100%;
-  max-width: 900px; /* Reduzido de 2700px */
-  min-width: 600px; /* Reduzido de 1800px */
+  width: 95%;
+  max-width: 675px;
+  min-width: 450px;
 }
 
 .modal-confirmacao h2 {
-  font-size: 36px; /* Reduzido de 108px */
+  font-size: 27px;
   color: #004325;
   margin: 0;
   font-family: sans-serif;
@@ -54,12 +54,15 @@
 }
 
 .modal-confirmacao p {
-  font-size: 18px; /* Reduzido de 54px */
+  font-size: 14px;
   color: #666;
-  margin: 0 0 10px 0; /* Reduzido de 30px */
+  margin: 0 0 8px 0;
   line-height: 1.4;
 }
 
+/* ==========================================
+   ESTRUTURA DOS FORMULÁRIOS
+   ========================================== */
 .form-dinamico {
   width: 100%;
 }
@@ -67,20 +70,20 @@
 .grupo-inputs {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Reduzido de 60px */
+  gap: 15px;
   width: 100%;
 }
 
 .linha-inputs {
   display: flex;
-  gap: 20px; /* Reduzido de 60px */
+  gap: 15px;
   width: 100%;
 }
 
 .campo-form {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Reduzido de 24px */
+  gap: 6px;
   text-align: left;
 }
 
@@ -88,19 +91,19 @@
   font-family: monospace, sans-serif;
   font-weight: bold;
   color: #006633;
-  font-size: 16px; /* Reduzido de 48px */
-  margin-left: 5px; /* Reduzido de 15px */
+  font-size: 12px;
+  margin-left: 4px;
 }
 
 .input-modal {
   width: 100%;
-  padding: 12px 16px; /* Reduzido de 36px 48px */
-  border: 2px solid #006633; /* Reduzido de 6px */
-  border-radius: 10px; /* Reduzido de 30px */
+  padding: 9px 12px;
+  border: 2px solid #006633;
+  border-radius: 8px;
   background-color: #f0fdf4;
   color: #004325;
   font-family: sans-serif;
-  font-size: 16px; /* Reduzido de 48px */
+  font-size: 12px;
   font-weight: bold;
   outline: none;
   box-sizing: border-box;
@@ -119,23 +122,26 @@
 
 select.input-modal {
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23006633%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23006633%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%0-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
-  background-position: right 15px top 50%; /* Reduzido de 45px */
-  background-size: 16px auto; /* Reduzido de 48px */
+  background-position: right 11px top 50%;
+  background-size: 12px auto;
   cursor: pointer;
 }
 
 .textarea-modal {
   resize: vertical;
-  min-height: 120px; /* Reduzido de 360px */
+  min-height: 90px;
 }
 
+/* ==========================================
+   DROPZONE E IMAGEM (CORREÇÃO DO ÍCONE)
+   ========================================== */
 .dropzone {
-  border: 2px dashed #006633; /* Reduzido de 6px */
-  border-radius: 10px; /* Reduzido de 30px */
+  border: 2px dashed #006633;
+  border-radius: 8px;
   background-color: #f0fdf4;
-  padding: 25px; /* Reduzido de 75px */
+  padding: 18px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -143,40 +149,38 @@ select.input-modal {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 150px; /* Reduzido de 450px */
+  min-height: 110px;
 }
 
-.dropzone.drag-over {
-  background-color: #dcfce7;
-  border-color: #004325;
-}
-
-.dropzone svg {
-  width: 48px; /* Reduzido de 144px */
-  height: 48px; /* Reduzido de 144px */
-  color: #006633;
-  margin-bottom: 10px; /* Reduzido de 30px */
+/* O PULO DO GATO: Sobreescrevendo a cor do ícone de upload para verde */
+.dropzone ::ng-deep .icone-wrapper,
+.dropzone ::ng-deep svg {
+  color: #006633 !important;
+  fill: #006633 !important;
+  width: 36px !important;
+  height: 36px !important;
+  margin-bottom: 8px;
 }
 
 .dropzone p {
   color: #004325;
-  font-size: 16px; /* Reduzido de 48px */
+  font-size: 12px;
   font-weight: bold;
   margin: 0;
 }
 
 .imagem-preview {
   max-width: 100%;
-  max-height: 180px; /* Reduzido de 540px */
-  border-radius: 8px; /* Reduzido de 24px */
+  max-height: 135px;
+  border-radius: 6px;
   object-fit: cover;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.15); /* Reduzido de 15px 30px */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .remover-imagem {
   color: #F0A400 !important;
-  font-size: 14px !important; /* Reduzido de 42px */
-  margin-top: 15px !important; /* Reduzido de 45px */
+  font-size: 10px !important;
+  margin-top: 11px !important;
   text-decoration: underline;
   transition: color 0.2s;
   cursor: pointer;
@@ -186,9 +190,25 @@ select.input-modal {
   color: #c28400 !important;
 }
 
+/* ==========================================
+   ALINHAMENTO DOS BOTÕES
+   ========================================== */
+.botoes-confirmacao {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.botoes-confirmacao app-botao-padrao {
+  flex: 1;
+  max-width: 200px;
+}
+
 .mensagem-erro {
   color: #d32f2f;
-  font-size: 12px; /* Reduzido de 36px */
+  font-size: 9px;
   font-family: sans-serif;
-  margin-top: -5px; /* Reduzido de -15px */
+  margin-top: -4px;
 }

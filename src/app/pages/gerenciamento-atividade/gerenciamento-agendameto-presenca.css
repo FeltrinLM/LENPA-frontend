@@ -1,7 +1,4 @@
-/* ==========================================
-   NOVA VISÃO: PAINEL DE LISTA (TOGGLE)
-   ========================================== */
-
+/* PAINEL DE LISTA (GERENCIAMENTO) */
 .container-visao-padrao, .container-visao-lista {
   width: 100%;
   display: flex;
@@ -9,57 +6,35 @@
   align-items: center;
 }
 
-/* Botão de Voltar */
-.btn-voltar-painel {
-  align-self: flex-start;
+.btn-voltar-fixo {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  z-index: 1100;
+  width: 220px;
   display: flex;
-  align-items: center;
-  gap: 5px; /* Reduzido de 15px */
-  background: none;
-  border: none;
-  color: #006633;
-  font-family: sans-serif;
-  font-size: 15px; /* Reduzido de 45px */
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 13px; /* Reduzido de 40px */
-  padding: 3px 7px; /* Reduzido de 10px 20px */
-  border-radius: 4px; /* Reduzido de 12px */
-  transition: all 0.2s;
 }
 
-/* Adaptado para o app-icone que você está usando */
-.btn-voltar-painel ::ng-deep .icone-wrapper {
-  width: 33px !important; /* Reduzido de 100px */
-  height: 33px !important; /* Reduzido de 100px */
-}
-
-.btn-voltar-painel:hover {
-  background-color: #e6f4ea;
-  transform: translateX(-2px); /* Reduzido de -5px */
-}
-
-/* Cabeçalho Bonito da Lista */
 .header-painel-lista {
   width: 80%;
   max-width: none;
-  height: 83px; /* Reduzido de 250px */
-  border-radius: 10px; /* Reduzido de 30px */
+  height: 83px;
+  border-radius: 10px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
-  padding: 16px 26px; /* Reduzido de 50px 80px */
-  box-shadow: 0 5px 13px rgba(0, 0, 0, 0.2); /* Reduzido */
-  margin-bottom: 20px; /* Reduzido de 60px */
+  padding: 16px 26px;
+  box-shadow: 0 5px 13px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
 }
 
 .header-img-bg {
   position: absolute;
-  top: -7px; left: -7px; right: -7px; bottom: -7px; /* Reduzido de -20px */
+  top: -7px; left: -7px; right: -7px; bottom: -7px;
   background-size: cover;
   background-position: center;
-  filter: blur(3px) brightness(0.4); /* Blur reduzido de 10px */
+  filter: blur(3px) brightness(0.4);
   z-index: 1;
 }
 
@@ -71,27 +46,28 @@
 .header-texto h2 {
   color: white;
   font-family: monospace, sans-serif;
-  font-size: 26px; /* Reduzido de 80px */
-  margin: 0 0 3px 0; /* Reduzido de 10px */
-  text-shadow: 0 1px 3px rgba(0,0,0,0.8); /* Reduzido */
+  font-size: 26px;
+  margin: 0 0 3px 0;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
 .header-texto p {
   color: #a3e635;
   font-family: sans-serif;
-  font-size: 13px; /* Reduzido de 40px */
+  font-size: 13px;
   margin: 0;
   font-weight: bold;
 }
 
-/* Tabela e Card Branco */
+/* TABELA */
 .card-tabela {
   background-color: white;
   width: 80%;
   max-width: none;
-  border-radius: 8px; /* Reduzido de 24px */
-  padding: 13px 20px; /* Reduzido de 40px 60px */
-  box-shadow: 0 7px 16px rgba(0,0,0,0.1); /* Reduzido */
+  border-radius: 8px;
+  padding: 13px 20px;
+  box-shadow: 0 7px 16px rgba(0,0,0,0.1);
+  margin-bottom: 50px;
 }
 
 .tabela-lenpa {
@@ -103,36 +79,58 @@
 
 .tabela-lenpa th {
   text-align: left;
-  font-size: 13px; /* Reduzido de 40px */
+  font-size: 13px;
   color: #666;
-  padding-bottom: 10px; /* Reduzido de 30px */
-  border-bottom: 1px solid #eee; /* Reduzido de 4px */
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
   text-transform: uppercase;
-  letter-spacing: 1px; /* Reduzido de 2px */
+  letter-spacing: 1px;
 }
 
+/* Larguras das colunas extraídas do HTML */
+.tabela-lenpa th:nth-child(1) { width: 40%; }
+.tabela-lenpa th:nth-child(2) { width: 25%; }
+.tabela-lenpa th:nth-child(3) { width: 5%; text-align: center; }
+.tabela-lenpa th:nth-child(4) { width: 10%; text-align: center; }
+.tabela-lenpa th:nth-child(5) { width: 20%; text-align: right; }
+
 .tabela-lenpa td {
-  font-size: 15px; /* Reduzido de 45px */
+  font-size: 15px;
   color: #333;
-  padding: 13px 7px; /* Reduzido de 40px 20px */
-  border-bottom: 1px solid #f0f0f0; /* Reduzido de 2px */
+  padding: 13px 7px;
+  border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
+}
+
+.tabela-lenpa td:nth-child(3) {
+  text-align: center;
+  font-weight: bold;
+}
+
+.tabela-lenpa td:nth-child(4) {
+  text-align: center;
+}
+
+.tabela-lenpa td:nth-child(5) {
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
 }
 
 .td-destaque {
   font-weight: bold;
   color: #004325 !important;
-  min-width: 133px; /* Reduzido de 400px */
+  min-width: 133px;
 }
 
-/* Badges e Botões da Tabela */
 .badge-status {
   display: inline-block;
-  padding: 5px 10px; /* Reduzido de 15px 30px */
+  padding: 5px 10px;
   background-color: #fff3cd;
   color: #856404;
-  border-radius: 16px; /* Reduzido de 50px */
-  font-size: 10px; /* Reduzido de 30px */
+  border-radius: 16px;
+  font-size: 10px;
   font-weight: bold;
 }
 
@@ -141,38 +139,36 @@
   color: #155724;
 }
 
-/* Empty State */
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 33px 0; /* Reduzido de 100px 0 */
+  padding: 33px 0;
   color: #999;
 }
 
-/* Adaptado para o app-icone para não quebrar */
 .empty-state ::ng-deep .icone-wrapper {
-  width: 50px !important; /* Reduzido de 150px */
-  height: 50px !important; /* Reduzido de 150px */
-  margin-bottom: 10px !important; /* Reduzido de 30px */
+  width: 50px !important;
+  height: 50px !important;
+  margin-bottom: 10px !important;
   color: #ccc;
 }
 
 .empty-state h3 {
-  font-size: 16px; /* Reduzido de 50px */
-  margin: 0 0 5px 0; /* Reduzido de 15px */
+  font-size: 16px;
+  margin: 0 0 5px 0;
   color: #666;
 }
 
 .empty-state p {
-  font-size: 13px; /* Reduzido de 40px */
+  font-size: 13px;
   margin: 0;
 }
 
 .texto-carregando {
   text-align: center;
-  font-size: 13px; /* Reduzido de 40px */
+  font-size: 13px;
   color: #006633;
   font-family: sans-serif;
-  margin: 33px 0; /* Reduzido de 100px 0 */
+  margin: 33px 0;
 }
