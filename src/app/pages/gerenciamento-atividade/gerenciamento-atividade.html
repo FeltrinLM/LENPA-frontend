@@ -1,6 +1,5 @@
 <div class="pagina-gerenciamento">
 
-  <!-- VISÃO PADRÃO: FORMULÁRIO E CARDS -->
   <div class="container-visao-padrao animacao-surgir" *ngIf="!eventoSelecionadoParaGerenciar">
 
     <h1 class="titulo-pagina">Agendamento e Presença</h1>
@@ -37,7 +36,6 @@
         </div>
       </div>
 
-      <!-- BLOCO INDIVIDUAL -->
       <div *ngIf="formCadastro.tipoVisitante === 'individual'" class="bloco-condicional animacao-surgir">
         <div class="linha-form">
           <div class="campo flex-1">
@@ -63,14 +61,33 @@
             </div>
           </div>
 
-          <div class="campo flex-1">
+          <div class="campo flex-1 autocomplete-container">
             <label>Cidade em que reside</label>
-            <input type="text" [(ngModel)]="formCadastro.visitante.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
+            <input
+              type="text"
+              [(ngModel)]="formCadastro.visitante.cidade"
+              (input)="filtrarCidades()"
+              (blur)="esconderDropdownCidades()"
+              autocomplete="off"
+              class="input-lenpa"
+              placeholder="Ex: Santa Maria">
+
+            <div class="dropdown-cidades" *ngIf="exibirDropdownCidades && cidadesFiltradas.length > 0">
+              <div
+                class="item-cidade"
+                *ngFor="let cid of cidadesFiltradas"
+                (mousedown)="selecionarCidade(cid)">
+                {{ cid }}
+              </div>
+            </div>
+
+            <div class="dropdown-cidades item-cidade-vazio" *ngIf="exibirDropdownCidades && cidadesFiltradas.length === 0">
+              Buscando ou não encontrada...
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- BLOCO INSTITUIÇÃO -->
       <div *ngIf="formCadastro.tipoVisitante === 'instituicao'" class="bloco-condicional animacao-surgir">
         <div class="linha-form">
           <div class="campo">
@@ -101,7 +118,10 @@
       </div>
 
       <div class="rodape-form">
-        <app-botao-padrao tipo="primario" (acaoClique)="salvarCadastro()">
+        <app-botao-padrao
+          tipo="primario"
+          [desabilitado]="formCadastro.tipoVisitante === 'individual' && !isCidadeIndividualValida"
+          (acaoClique)="salvarCadastro()">
           {{ formCadastro.acao === 'agendar' ? 'Registrar Agendamento' : 'Confirmar Presença' }}
         </app-botao-padrao>
       </div>
@@ -131,14 +151,13 @@
     </div>
   </div>
 
-  <!-- VISÃO DE LISTA: TABELA E GERENCIAMENTO -->
-  <div class="container-visao-lista animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar">
-    <div class="btn-voltar-fixo">
-      <app-botao-padrao tipo="secundario" (acaoClique)="fecharGerenciamento()">
-        Voltar para o Painel
-      </app-botao-padrao>
-    </div>
+  <div class="btn-voltar-fixo animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar">
+    <app-botao-padrao tipo="secundario" (acaoClique)="fecharGerenciamento()">
+      Voltar para o Painel
+    </app-botao-padrao>
+  </div>
 
+  <div class="container-visao-lista animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar">
     <div class="header-painel-lista">
       <div class="header-img-bg" [style.backgroundImage]="'url(' + (eventoSelecionadoParaGerenciar.imagem ? (eventoSelecionadoParaGerenciar.imagem.startsWith('http') ? eventoSelecionadoParaGerenciar.imagem : 'http://localhost:8080/uploads/' + eventoSelecionadoParaGerenciar.imagem) : '/assets/images/placeholder_background.jpg') + ')'"></div>
       <div class="header-texto">

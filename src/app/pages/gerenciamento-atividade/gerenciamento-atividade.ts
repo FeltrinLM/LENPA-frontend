@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 import { AtividadeService } from '../../core/services/api/atividade.service';
 import { VisitanteService } from '../../core/services/api/visitante.service';
@@ -14,19 +15,22 @@ import { CardAtividadeLayoutComponent } from '../../shared/components/card-ativi
 @Component({
   selector: 'app-gerenciamento-atividade',
   standalone: true,
-  imports: [CommonModule, FormsModule, BotaoPadraoComponent, IconeComponent, CardAtividadeLayoutComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    BotaoPadraoComponent,
+    IconeComponent,
+    CardAtividadeLayoutComponent,
+  ],
   templateUrl: './gerenciamento-atividade.html',
-  styleUrls: [
-    './gerenciamento-atividade.css',
-    './gerenciamento-agendameto-presenca.css'
-  ]
+  styleUrls: ['./gerenciamento-atividade.css', './gerenciamento-agendameto-presenca.css'],
 })
 export class GerenciamentoAtividade implements OnInit {
-
   private atividadeService = inject(AtividadeService);
   private visitanteService = inject(VisitanteService);
   private agendarService = inject(AgendarService);
   private cdr = inject(ChangeDetectorRef);
+  private http = inject(HttpClient);
 
   eventosDisponiveis: any[] = [];
   pessoasCadastradas: any[] = [];
@@ -41,7 +45,7 @@ export class GerenciamentoAtividade implements OnInit {
     tipoVisitante: 'individual',
     visitante: { nome: '', cidade: '' },
     instituicao: { nome: '', quantidade: null as number | null, local: '' },
-    responsavel: { nome: '', cidade: '' }
+    responsavel: { nome: '', cidade: '' },
   };
 
   // ==========================================
@@ -50,30 +54,44 @@ export class GerenciamentoAtividade implements OnInit {
   visitantesFiltrados: any[] = [];
   exibirDropdownNomes: boolean = false;
 
+  // ==========================================
+  // VARIÁVEIS DO AUTOCOMPLETE DE CIDADES
+  // ==========================================
+  listaCidadesNoBanco: string[] = [];
+  cidadesFiltradas: string[] = [];
+  exibirDropdownCidades: boolean = false;
+  cidadeConfirmada: boolean = false;
+
+  get isCidadeIndividualValida(): boolean {
+    if (this.formCadastro.tipoVisitante !== 'individual') return true;
+    return this.cidadeConfirmada;
+  }
+
   ngOnInit() {
     this.carregarDadosIniciais();
+    this.buscarCidadesIBGE();
   }
 
   carregarDadosIniciais() {
     this.atividadeService.listar().subscribe({
       next: (res: any) => {
-        this.eventosDisponiveis = res.content ? res.content : (Array.isArray(res) ? res : []);
+        this.eventosDisponiveis = res.content ? res.content : Array.isArray(res) ? res : [];
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('Erro ao carregar atividades', err)
+      error: (err: any) => console.error('Erro ao carregar atividades', err),
     });
 
     this.visitanteService.listar().subscribe({
       next: (res: any) => {
-        this.pessoasCadastradas = res.content ? res.content : (Array.isArray(res) ? res : []);
+        this.pessoasCadastradas = res.content ? res.content : Array.isArray(res) ? res : [];
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('Erro ao carregar visitantes', err)
+      error: (err: any) => console.error('Erro ao carregar visitantes', err),
     });
   }
 
   // ==========================================
-  // LÓGICA DO AUTOCOMPLETE E PREENCHIMENTO RÁPIDO
+  // LÓGICA DO AUTOCOMPLETE E PREENCHIMENTO RÁPIDO (NOMES)
   // ==========================================
 
   private removerAcentos(texto: string): string {
@@ -86,10 +104,9 @@ export class GerenciamentoAtividade implements OnInit {
 
     if (termo.length > 0) {
       this.visitantesFiltrados = this.pessoasCadastradas
-        .filter(v => {
+        .filter((v) => {
           if (!v.nome) return false;
           const nomeNormalizado = this.removerAcentos(v.nome.toLowerCase());
-          // Usamos includes para achar pelo sobrenome também (ex: digitar "Mendes" acha "Lorenzo Feltrin Mendes")
           return nomeNormalizado.includes(termo);
         })
         .sort((a, b) => a.nome.localeCompare(b.nome));
@@ -97,7 +114,6 @@ export class GerenciamentoAtividade implements OnInit {
       this.exibirDropdownNomes = true;
     } else {
       this.exibirDropdownNomes = false;
-      // Se apagar o nome todo, limpa a cidade também
       this.formCadastro.visitante.cidade = '';
     }
   }
@@ -105,15 +121,15 @@ export class GerenciamentoAtividade implements OnInit {
   selecionarNome(visitante: any) {
     this.formCadastro.visitante.nome = visitante.nome;
     this.formCadastro.visitante.cidade = visitante.cidade;
+    if (visitante.cidade) {
+      this.cidadeConfirmada = true;
+    }
     this.exibirDropdownNomes = false;
   }
 
   esconderDropdownNomes() {
-    // O setTimeout garante que o clique na lista ocorra ANTES da lista sumir
     setTimeout(() => {
       this.exibirDropdownNomes = false;
-
-      // Fallback: Se o usuário só apertar TAB sem clicar na lista, a gente tenta achar e preencher a cidade mesmo assim
       this.buscarCidadePorNome();
     }, 200);
   }
@@ -123,12 +139,63 @@ export class GerenciamentoAtividade implements OnInit {
     if (!nomeLimpo) return;
 
     const visitanteConhecido = this.pessoasCadastradas.find(
-      v => v.nome && v.nome.toLowerCase() === nomeLimpo.toLowerCase()
+      (v) => v.nome && v.nome.toLowerCase() === nomeLimpo.toLowerCase(),
     );
 
     if (visitanteConhecido && !this.formCadastro.visitante.cidade) {
       this.formCadastro.visitante.cidade = visitanteConhecido.cidade;
+      this.cidadeConfirmada = true;
     }
+  }
+
+  // ==========================================
+  // LÓGICA DO AUTOCOMPLETE DE CIDADES (IBGE)
+  // ==========================================
+
+  buscarCidadesIBGE() {
+    const urlIbge = 'https://servicodados.ibge.gov.br/api/v1/localidades/estados/RS/municipios';
+
+    this.http.get<any[]>(urlIbge).subscribe({
+      next: (dados) => {
+        this.listaCidadesNoBanco = dados.map((cidade) => cidade.nome);
+      },
+      error: (err) => {
+        console.error('Erro ao conectar com IBGE', err);
+        this.listaCidadesNoBanco = ['Santa Maria', 'Itaara', 'Silveira Martins'];
+      },
+    });
+  }
+
+  filtrarCidades() {
+    this.cidadeConfirmada = false;
+
+    const termoOriginal = (this.formCadastro.visitante.cidade || '').trim();
+    const termo = this.removerAcentos(termoOriginal.toLowerCase());
+
+    if (termo.length > 0) {
+      this.cidadesFiltradas = this.listaCidadesNoBanco
+        .filter((cidade) => {
+          const cidadeNormalizada = this.removerAcentos(cidade.toLowerCase());
+          return cidadeNormalizada.startsWith(termo);
+        })
+        .sort((a, b) => a.localeCompare(b));
+
+      this.exibirDropdownCidades = true;
+    } else {
+      this.exibirDropdownCidades = false;
+    }
+  }
+
+  selecionarCidade(cidadeEscolhida: string) {
+    this.formCadastro.visitante.cidade = cidadeEscolhida;
+    this.cidadeConfirmada = true;
+    this.exibirDropdownCidades = false;
+  }
+
+  esconderDropdownCidades() {
+    setTimeout(() => {
+      this.exibirDropdownCidades = false;
+    }, 200);
   }
 
   // ==========================================
@@ -137,12 +204,17 @@ export class GerenciamentoAtividade implements OnInit {
 
   salvarCadastro() {
     if (!this.formCadastro.eventoSelecionado) {
-      alert("Por favor, selecione uma atividade.");
+      alert('Por favor, selecione uma atividade.');
       return;
     }
 
     if (this.formCadastro.acao === 'confirmar') {
-      alert("Para confirmar a presença, abra a lista da atividade lá embaixo!");
+      alert('Para confirmar a presença, abra a lista da atividade lá embaixo!');
+      return;
+    }
+
+    if (this.formCadastro.tipoVisitante === 'individual' && !this.isCidadeIndividualValida) {
+      alert('Por favor, selecione a cidade do visitante clicando em uma das opções da lista.');
       return;
     }
 
@@ -163,26 +235,27 @@ export class GerenciamentoAtividade implements OnInit {
     }
 
     if (!nomeFinal || !cidadeFinal) {
-      alert("Preencha os campos obrigatórios.");
+      alert('Preencha os campos obrigatórios.');
       return;
     }
 
     const payload = {
       idAtividade: this.formCadastro.eventoSelecionado,
       nomeVisitante: nomeFinal,
-      emailVisitante: null, // Sempre null pelo painel do funcionário
+      emailVisitante: null,
       cidadeVisitante: cidadeFinal,
-      quantidade: quantidadeFinal
+      quantidade: quantidadeFinal,
     };
 
     this.agendarService.agendar(payload).subscribe({
       next: () => {
         alert('Agendamento registrado!');
         this.formCadastro.visitante = { nome: '', cidade: '' };
+        this.cidadeConfirmada = false;
         this.formCadastro.instituicao = { nome: '', quantidade: null, local: '' };
         this.formCadastro.responsavel = { nome: '', cidade: '' };
       },
-      error: (err: any) => alert('Erro: ' + (err.error?.message || 'Falha no agendamento.'))
+      error: (err: any) => alert('Erro: ' + (err.error?.message || 'Falha no agendamento.')),
     });
   }
 
@@ -200,14 +273,14 @@ export class GerenciamentoAtividade implements OnInit {
     this.carregandoLista = true;
     this.agendarService.listar().subscribe({
       next: (res: any) => {
-        const todosAgendamentos = res.content ? res.content : (Array.isArray(res) ? res : []);
+        const todosAgendamentos = res.content ? res.content : Array.isArray(res) ? res : [];
 
         this.listaAgendamentos = todosAgendamentos
           .filter((a: any) => a.idAtividade === idAtividade)
           .map((a: any) => {
             return {
               ...a,
-              cidadeDisplay: a.cidadeVisitante || a.cidade || 'Não informada'
+              cidadeDisplay: a.cidadeVisitante || a.cidade || 'Não informada',
             };
           });
 
@@ -217,7 +290,7 @@ export class GerenciamentoAtividade implements OnInit {
       error: (err: any) => {
         console.error('Erro ao buscar lista', err);
         this.carregandoLista = false;
-      }
+      },
     });
   }
 
@@ -230,7 +303,7 @@ export class GerenciamentoAtividade implements OnInit {
         agendamento.presencaConfirmada = true;
         this.cdr.detectChanges();
       },
-      error: () => alert('Erro ao confirmar presença.')
+      error: () => alert('Erro ao confirmar presença.'),
     });
   }
 
@@ -239,9 +312,12 @@ export class GerenciamentoAtividade implements OnInit {
       const id = agendamento.idAgendamento || agendamento.id;
       this.agendarService.cancelar(id).subscribe({
         next: () => {
-          this.carregarListaAgendamentos(this.eventoSelecionadoParaGerenciar.idAtividade || this.eventoSelecionadoParaGerenciar.id);
+          this.carregarListaAgendamentos(
+            this.eventoSelecionadoParaGerenciar.idAtividade ||
+              this.eventoSelecionadoParaGerenciar.id,
+          );
         },
-        error: () => alert('Erro ao cancelar agendamento.')
+        error: () => alert('Erro ao cancelar agendamento.'),
       });
     }
   }
