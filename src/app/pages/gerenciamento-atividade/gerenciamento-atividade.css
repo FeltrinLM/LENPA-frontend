@@ -246,9 +246,7 @@ app-card-atividade-layout:hover .card-admin-seta ::ng-deep .icone-wrapper {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================
-   AUTOCOMPLETE DE CIDADES
-   ========================================== */
+/* AUTOCOMPLETE DE CIDADES */
 .autocomplete-container {
   position: relative;
 }

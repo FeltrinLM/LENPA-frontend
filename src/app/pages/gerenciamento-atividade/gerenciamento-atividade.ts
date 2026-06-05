@@ -46,17 +46,12 @@ export class GerenciamentoAtividade implements OnInit {
     visitante: { nome: '', cidade: '' },
     instituicao: { nome: '', quantidade: null as number | null, local: '' },
     responsavel: { nome: '', cidade: '' },
+    anonimo: { descricao: 'Público Geral', quantidade: null as number | null },
   };
 
-  // ==========================================
-  // VARIÁVEIS DO AUTOCOMPLETE DE NOMES
-  // ==========================================
   visitantesFiltrados: any[] = [];
   exibirDropdownNomes: boolean = false;
 
-  // ==========================================
-  // VARIÁVEIS DO AUTOCOMPLETE DE CIDADES
-  // ==========================================
   listaCidadesNoBanco: string[] = [];
   cidadesFiltradas: string[] = [];
   exibirDropdownCidades: boolean = false;
@@ -89,10 +84,6 @@ export class GerenciamentoAtividade implements OnInit {
       error: (err: any) => console.error('Erro ao carregar visitantes', err),
     });
   }
-
-  // ==========================================
-  // LÓGICA DO AUTOCOMPLETE E PREENCHIMENTO RÁPIDO (NOMES)
-  // ==========================================
 
   private removerAcentos(texto: string): string {
     return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -148,10 +139,6 @@ export class GerenciamentoAtividade implements OnInit {
     }
   }
 
-  // ==========================================
-  // LÓGICA DO AUTOCOMPLETE DE CIDADES (IBGE)
-  // ==========================================
-
   buscarCidadesIBGE() {
     const urlIbge = 'https://servicodados.ibge.gov.br/api/v1/localidades/estados/RS/municipios';
 
@@ -198,18 +185,17 @@ export class GerenciamentoAtividade implements OnInit {
     }, 200);
   }
 
-  // ==========================================
-  // LÓGICA DE SALVAR E GERENCIAR
-  // ==========================================
+  private limparFormulario() {
+    this.formCadastro.visitante = { nome: '', cidade: '' };
+    this.cidadeConfirmada = false;
+    this.formCadastro.instituicao = { nome: '', quantidade: null, local: '' };
+    this.formCadastro.responsavel = { nome: '', cidade: '' };
+    this.formCadastro.anonimo = { descricao: 'Público Geral', quantidade: null };
+  }
 
   salvarCadastro() {
     if (!this.formCadastro.eventoSelecionado) {
       alert('Por favor, selecione uma atividade.');
-      return;
-    }
-
-    if (this.formCadastro.acao === 'confirmar') {
-      alert('Para confirmar a presença, abra a lista da atividade lá embaixo!');
       return;
     }
 
@@ -225,13 +211,22 @@ export class GerenciamentoAtividade implements OnInit {
     if (this.formCadastro.tipoVisitante === 'individual') {
       nomeFinal = this.formCadastro.visitante.nome;
       cidadeFinal = this.formCadastro.visitante.cidade;
-    } else {
+    } else if (this.formCadastro.tipoVisitante === 'instituicao') {
       nomeFinal = this.formCadastro.instituicao.nome;
       if (this.formCadastro.responsavel.nome) {
         nomeFinal += ' (Resp: ' + this.formCadastro.responsavel.nome + ')';
       }
       cidadeFinal = this.formCadastro.instituicao.local || this.formCadastro.responsavel.cidade;
       quantidadeFinal = this.formCadastro.instituicao.quantidade || 2;
+    } else if (this.formCadastro.tipoVisitante === 'anonimo') {
+      nomeFinal = this.formCadastro.anonimo.descricao || 'Público Geral';
+      cidadeFinal = 'Não informada';
+      quantidadeFinal = this.formCadastro.anonimo.quantidade || 1;
+
+      if (quantidadeFinal < 1) {
+        alert('Por favor, insira uma quantidade válida de pessoas.');
+        return;
+      }
     }
 
     if (!nomeFinal || !cidadeFinal) {
@@ -247,15 +242,32 @@ export class GerenciamentoAtividade implements OnInit {
       quantidade: quantidadeFinal,
     };
 
+    const acaoDesejada = this.formCadastro.acao;
+
     this.agendarService.agendar(payload).subscribe({
-      next: () => {
-        alert('Agendamento registrado!');
-        this.formCadastro.visitante = { nome: '', cidade: '' };
-        this.cidadeConfirmada = false;
-        this.formCadastro.instituicao = { nome: '', quantidade: null, local: '' };
-        this.formCadastro.responsavel = { nome: '', cidade: '' };
+      next: (res: any) => {
+        if (acaoDesejada === 'confirmar') {
+          const idGerado = res?.idAgendamento || res?.id;
+
+          if (idGerado) {
+            this.agendarService.confirmarPresenca(idGerado).subscribe({
+              next: () => {
+                alert('Presença confirmada com sucesso!');
+                this.limparFormulario();
+              },
+              error: () => {
+                alert('O visitante foi agendado, mas houve uma falha ao confirmar a presença.');
+                this.limparFormulario();
+              },
+            });
+          }
+        } else {
+          alert('Agendamento registrado!');
+          this.limparFormulario();
+        }
       },
-      error: (err: any) => alert('Erro: ' + (err.error?.message || 'Falha no agendamento.')),
+      error: (err: any) =>
+        alert('Erro: ' + (err.error?.message || err.error || 'Falha no agendamento.')),
     });
   }
 
@@ -281,6 +293,8 @@ export class GerenciamentoAtividade implements OnInit {
             return {
               ...a,
               cidadeDisplay: a.cidadeVisitante || a.cidade || 'Não informada',
+              presencaConfirmada:
+                a.presenca === true || a.presencaConfirmada === true || a.status === 'CONFIRMADO',
             };
           });
 
@@ -312,10 +326,11 @@ export class GerenciamentoAtividade implements OnInit {
       const id = agendamento.idAgendamento || agendamento.id;
       this.agendarService.cancelar(id).subscribe({
         next: () => {
-          this.carregarListaAgendamentos(
+          // Extraí a variável para remover a quebra de linha maluca que deu erro de compilação
+          const idAtiv =
             this.eventoSelecionadoParaGerenciar.idAtividade ||
-              this.eventoSelecionadoParaGerenciar.id,
-          );
+            this.eventoSelecionadoParaGerenciar.id;
+          this.carregarListaAgendamentos(idAtiv);
         },
         error: () => alert('Erro ao cancelar agendamento.'),
       });

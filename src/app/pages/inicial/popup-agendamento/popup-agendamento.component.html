@@ -8,7 +8,7 @@
       </p>
     </div>
 
-    <p class="modal-texto-instrucao" *ngIf="!mensagemSucessoAgendamento">
+    <p class="modal-texto-instrucao" *ngIf="!mensagemSucessoAgendamento && !mostrarTelaEsgotado">
       Preencha seus dados abaixo para garantir sua vaga.<br>
       <span style="font-weight: bold; color: #1e5233;">Já nos visitou antes?</span> Basta digitar seu e-mail que preencheremos o resto para você!
     </p>
@@ -18,7 +18,17 @@
       <h2>{{ mensagemSucessoAgendamento }}</h2>
     </div>
 
-    <form class="form-agendamento" *ngIf="!mensagemSucessoAgendamento" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+    <div *ngIf="mostrarTelaEsgotado" class="mensagem-erro-amigavel">
+      <app-icone nome="alerta"></app-icone>
+      <h2>Poxa...</h2>
+      <p>Sentimos muito, porém todas as vagas desta atividade já foram preenchidas. Um membro da nossa equipe entrará em contato com você assim que possível para resolver este problema.</p>
+
+      <div style="margin-top: 20px;">
+        <app-botao-padrao tipo="secundario" (acaoClique)="fecharModal()">Fechar</app-botao-padrao>
+      </div>
+    </div>
+
+    <form class="form-agendamento" *ngIf="!mensagemSucessoAgendamento && !mostrarTelaEsgotado" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
 
       <div class="campo-agendamento" style="position: relative;">
         <input type="email" name="emailAgendamento" [(ngModel)]="emailAgendamento" (blur)="buscarVisitantePorEmail()" placeholder="Seu melhor e-mail..." required class="input-padrao-lenpa">
@@ -73,8 +83,8 @@
         </div>
       </div>
 
-      <p *ngIf="mensagemErroAgendamento" style="color: #d32f2f; font-size: 14px; text-align: center; margin: 0;">
-        {{ mensagemErroAgendamento }}
+      <p *ngIf="mensagemErroFormulario" style="color: #d32f2f; font-size: 14px; text-align: center; margin: 0;">
+        {{ mensagemErroFormulario }}
       </p>
 
       <div class="modal-botoes-padrao" style="margin-top: 10px; display: flex; gap: 15px;">

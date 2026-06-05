@@ -281,3 +281,39 @@
   color: #888;
   font-weight: normal;
 }
+
+/* ... [Mantenha todo o seu CSS anterior aqui] ... */
+
+/* ==========================================
+   🔥 TELA DE ERRO AMIGÁVEL (VAGAS PREENCHIDAS)
+   ========================================== */
+.mensagem-erro-amigavel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 30px 10px 10px 10px;
+  animation: slideDown 0.4s ease-out forwards;
+}
+
+.mensagem-erro-amigavel ::ng-deep .icone-wrapper {
+  color: #d32f2f;
+  width: 60px !important;
+  height: 60px !important;
+}
+
+.mensagem-erro-amigavel h2 {
+  color: #d32f2f;
+  font-size: 28px;
+  margin: 0;
+  font-family: sans-serif;
+  font-weight: 900;
+}
+
+.mensagem-erro-amigavel p {
+  color: #555;
+  font-size: 16px;
+  margin: 0;
+  line-height: 1.5;
+  text-align: center;
+}

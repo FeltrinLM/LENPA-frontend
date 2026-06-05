@@ -31,7 +31,8 @@
           <label>Tipo de Visitante</label>
           <select [(ngModel)]="formCadastro.tipoVisitante" class="input-lenpa">
             <option value="individual">Individual</option>
-            <option value="instituicao">Instituição/Grupo</option>
+            <option value="instituicao">Instituição/Grupo Nomeado</option>
+            <option value="anonimo">Grupo Anônimo (Rápido)</option>
           </select>
         </div>
       </div>
@@ -117,10 +118,23 @@
         </div>
       </div>
 
+      <div *ngIf="formCadastro.tipoVisitante === 'anonimo'" class="bloco-condicional animacao-surgir">
+        <div class="linha-form">
+          <div class="campo flex-1">
+            <label>Identificação (Opcional)</label>
+            <input type="text" [(ngModel)]="formCadastro.anonimo.descricao" class="input-lenpa" placeholder="Ex: Público Geral">
+          </div>
+          <div class="campo flex-1">
+            <label>Quantidade de Pessoas</label>
+            <input type="number" [(ngModel)]="formCadastro.anonimo.quantidade" class="input-lenpa" placeholder="Ex: 1000">
+          </div>
+        </div>
+      </div>
+
       <div class="rodape-form">
         <app-botao-padrao
           tipo="primario"
-          [desabilitado]="formCadastro.tipoVisitante === 'individual' && !isCidadeIndividualValida"
+          [desabilitado]="(formCadastro.tipoVisitante === 'individual' && !isCidadeIndividualValida) || (formCadastro.tipoVisitante === 'anonimo' && (!formCadastro.anonimo.quantidade || formCadastro.anonimo.quantidade < 1))"
           (acaoClique)="salvarCadastro()">
           {{ formCadastro.acao === 'agendar' ? 'Registrar Agendamento' : 'Confirmar Presença' }}
         </app-botao-padrao>
@@ -185,18 +199,18 @@
           <td>{{ ag.cidadeDisplay }}</td>
           <td>{{ ag.quantidade || 1 }}</td>
           <td>
-              <span class="badge-status" [ngClass]="{'confirmado': ag.presencaConfirmada || ag.status === 'CONFIRMADO'}">
-                {{ (ag.presencaConfirmada || ag.status === 'CONFIRMADO') ? 'PRESENTE' : 'PENDENTE' }}
+              <span class="badge-status" [ngClass]="{'confirmado': ag.presencaConfirmada || ag.presenca}">
+                {{ (ag.presencaConfirmada || ag.presenca) ? 'PRESENTE' : 'PENDENTE' }}
               </span>
           </td>
           <td>
-            <ng-container *ngIf="!ag.presencaConfirmada && ag.status !== 'CONFIRMADO'">
+            <ng-container *ngIf="!ag.presencaConfirmada && !ag.presenca">
               <app-botao-padrao tipo="primario" (acaoClique)="fazerCheckIn(ag)">
                 Confirmar Presença
               </app-botao-padrao>
             </ng-container>
 
-            <ng-container *ngIf="ag.presencaConfirmada || ag.status === 'CONFIRMADO'">
+            <ng-container *ngIf="ag.presencaConfirmada || ag.presenca">
               <app-botao-padrao tipo="primario" [desabilitado]="true">✓ Liberado</app-botao-padrao>
             </ng-container>
 

@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+  OnInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -16,7 +24,7 @@ import { IconeComponent } from '../../../shared/components/icone/icone.component
   standalone: true,
   imports: [CommonModule, FormsModule, BotaoPadraoComponent, IconeComponent],
   templateUrl: './popup-agendamento.component.html',
-  styleUrl: './popup-agendamento.component.css'
+  styleUrl: './popup-agendamento.component.css',
 })
 export class PopupAgendamentoComponent implements OnInit {
   @Input() atividade: any = null;
@@ -26,29 +34,24 @@ export class PopupAgendamentoComponent implements OnInit {
   private visitanteService = inject(VisitanteService);
   private agendarService = inject(AgendarService);
   private http = inject(HttpClient);
+  private cdr = inject(ChangeDetectorRef);
 
   carregandoAgendamento: boolean = false;
   mensagemSucessoAgendamento: string = '';
-  mensagemErroAgendamento: string = '';
+  mensagemErroFormulario: string = '';
+
+  mostrarTelaEsgotado: boolean = false;
 
   emailAgendamento: string = '';
   nomeAgendamento: string = '';
   cidadeAgendamento: string = '';
   tipoAgendamento: 'INDIVIDUAL' | 'GRUPO' = 'INDIVIDUAL';
-
-  // SOLUÇÃO 2: Agora começa como null, permitindo que o placeholder apareça no HTML!
   quantidadeAgendamento: number | null = null;
-
   buscandoEmail: boolean = false;
 
-  // ==========================================
-  // AUTOCOMPLETE COM API DO IBGE
-  // ==========================================
   listaCidadesNoBanco: string[] = [];
   cidadesFiltradas: string[] = [];
   exibirDropdownCidades: boolean = false;
-
-  // SOLUÇÃO 1: A chave do nosso "Passe Livre"
   cidadeVeioDoBanco: boolean = false;
 
   ngOnInit() {
@@ -60,12 +63,12 @@ export class PopupAgendamentoComponent implements OnInit {
 
     this.http.get<any[]>(urlIbge).subscribe({
       next: (dados) => {
-        this.listaCidadesNoBanco = dados.map(cidade => cidade.nome);
+        this.listaCidadesNoBanco = dados.map((cidade) => cidade.nome);
       },
       error: (err) => {
         console.error('Erro ao conectar com IBGE', err);
         this.listaCidadesNoBanco = ['Santa Maria', 'Itaara', 'Silveira Martins'];
-      }
+      },
     });
   }
 
@@ -74,7 +77,6 @@ export class PopupAgendamentoComponent implements OnInit {
   }
 
   filtrarCidades() {
-    // Se o usuário digitou qualquer coisa, ele perde o passe livre e precisa escolher da lista
     this.cidadeVeioDoBanco = false;
 
     const termoOriginal = this.cidadeAgendamento.trim();
@@ -82,7 +84,7 @@ export class PopupAgendamentoComponent implements OnInit {
 
     if (termo.length > 0) {
       this.cidadesFiltradas = this.listaCidadesNoBanco
-        .filter(cidade => {
+        .filter((cidade) => {
           const cidadeNormalizada = this.removerAcentos(cidade.toLowerCase());
           return cidadeNormalizada.startsWith(termo);
         })
@@ -100,16 +102,9 @@ export class PopupAgendamentoComponent implements OnInit {
   }
 
   get cidadeValida(): boolean {
-    // A MÁGICA AQUI: Se a cidade veio preenchida do banco pelo e-mail, ela é válida automaticamente!
     if (this.cidadeVeioDoBanco) return true;
-
-    // Se não, passa pela verificação normal do IBGE
     return this.listaCidadesNoBanco.includes(this.cidadeAgendamento);
   }
-
-  // ==========================================
-  // LÓGICA DE AGENDAMENTO
-  // ==========================================
 
   fecharModal() {
     this.fechar.emit();
@@ -130,8 +125,6 @@ export class PopupAgendamentoComponent implements OnInit {
         if (visitante && visitante.nome) {
           this.nomeAgendamento = visitante.nome;
           this.cidadeAgendamento = visitante.cidade;
-
-          // Habilita o "Passe Livre" e garante que o menu de cidades fique escondido
           this.cidadeVeioDoBanco = true;
           this.exibirDropdownCidades = false;
         }
@@ -142,48 +135,61 @@ export class PopupAgendamentoComponent implements OnInit {
         this.cidadeAgendamento = '';
         this.cidadesFiltradas = [];
         this.exibirDropdownCidades = false;
-        this.cidadeVeioDoBanco = false; // Sem visitante = sem passe livre
-      }
+        this.cidadeVeioDoBanco = false;
+      },
     });
   }
 
   enviarPedidoAgendamento() {
     if (!this.nomeAgendamento || !this.emailAgendamento || !this.cidadeAgendamento) {
-      this.mensagemErroAgendamento = 'Por favor, preencha todos os campos obrigatórios.';
+      this.mensagemErroFormulario = 'Por favor, preencha todos os campos obrigatórios.';
       return;
     }
 
     if (!this.cidadeValida) {
-      this.mensagemErroAgendamento = 'Por favor, selecione uma cidade válida clicando nas opções da lista.';
+      this.mensagemErroFormulario =
+        'Por favor, selecione uma cidade válida clicando nas opções da lista.';
       return;
     }
 
     this.carregandoAgendamento = true;
-    this.mensagemErroAgendamento = '';
+    this.mensagemErroFormulario = '';
 
     const payload = {
       idAtividade: this.atividade.idAtividade,
       nomeVisitante: this.nomeAgendamento,
       emailVisitante: this.emailAgendamento,
       cidadeVisitante: this.cidadeAgendamento,
-      // Fallback de segurança: Se vier null, manda 2 pro Java.
-      quantidade: this.tipoAgendamento === 'INDIVIDUAL' ? 1 : (this.quantidadeAgendamento || 2)
+      quantidade: this.tipoAgendamento === 'INDIVIDUAL' ? 1 : this.quantidadeAgendamento || 2,
     };
+
+    console.log('🚀 1. Disparando requisição para o backend...', payload);
 
     this.agendarService.agendar(payload).subscribe({
       next: (response: any) => {
+        console.log('✅ 2. Backend respondeu com SUCESSO!', response);
         this.carregandoAgendamento = false;
-        this.mensagemSucessoAgendamento = 'Reserva confirmada! Um e-mail com os detalhes foi enviado.';
+        this.mensagemSucessoAgendamento =
+          'Reserva confirmada! Um e-mail com os detalhes foi enviado.';
         this.sucesso.emit();
+        this.cdr.detectChanges();
 
         setTimeout(() => {
           this.fecharModal();
         }, 4000);
       },
       error: (err: any) => {
+        console.error('❌ 2. Backend rejeitou a requisição:', err);
+
         this.carregandoAgendamento = false;
-        this.mensagemErroAgendamento = err.error?.message || 'Ocorreu um erro ao tentar agendar. Tente novamente.';
-      }
+        this.mostrarTelaEsgotado = true;
+        this.cdr.detectChanges();
+      },
+      complete: () => {
+        console.log('🏁 3. Observable concluído.');
+        this.carregandoAgendamento = false;
+        this.cdr.detectChanges();
+      },
     });
   }
 }
