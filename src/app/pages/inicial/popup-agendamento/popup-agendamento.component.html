@@ -31,31 +31,47 @@
     <form class="form-agendamento" *ngIf="!mensagemSucessoAgendamento && !mostrarTelaEsgotado" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
 
       <div class="campo-agendamento" style="position: relative;">
-        <input type="email" name="emailAgendamento" [(ngModel)]="emailAgendamento" (blur)="buscarVisitantePorEmail()" placeholder="Seu melhor e-mail..." required class="input-padrao-lenpa">
+        <input type="email" name="emailAgendamento" [(ngModel)]="emailAgendamento" (blur)="buscarVisitantePorEmail()" placeholder="Seu melhor e-mail..." autocomplete="off" required class="input-padrao-lenpa">
         <span *ngIf="buscandoEmail" style="color: #666; font-size: 12px; position: absolute; right: 10px; top: 12px;">Buscando...</span>
       </div>
 
       <div class="campo-agendamento select-container">
-        <label class="label-flutuante">Você vai</label>
-        <select name="tipoAgendamento" [(ngModel)]="tipoAgendamento" class="input-padrao-lenpa select-lenpa">
-          <option value="INDIVIDUAL">Sozinho</option>
-          <option value="GRUPO">Com várias pessoas</option>
+        <label class="label-flutuante">Você é ou representa:</label>
+        <select name="tipoAgendamento" [(ngModel)]="tipoAgendamento" (change)="aoMudarTipo()" class="input-padrao-lenpa select-lenpa">
+          <option value="INDIVIDUAL">Visitante Individual (Sozinho)</option>
+          <option value="GRUPO">Família ou Grupo de Amigos</option>
+          <option value="INSTITUICAO">Escola, Universidade ou Instituição</option>
         </select>
       </div>
 
-      <div class="campo-agendamento slide-down" *ngIf="tipoAgendamento === 'GRUPO'">
+      <ng-container *ngIf="tipoAgendamento === 'INSTITUICAO'">
+        <div class="campo-agendamento slide-down">
+          <input type="text" name="nomeInstituicao" [(ngModel)]="nomeInstituicao" placeholder="Nome da Escola ou Instituição" autocomplete="off" required class="input-padrao-lenpa">
+        </div>
+        <div class="campo-agendamento slide-down">
+          <input type="text" name="nomeResponsavel" [(ngModel)]="nomeResponsavel" placeholder="Nome do Responsável" autocomplete="off" required class="input-padrao-lenpa">
+        </div>
+      </ng-container>
+
+      <div class="campo-agendamento" *ngIf="tipoAgendamento !== 'INSTITUICAO'">
+        <input type="text" name="nomeAgendamento" [(ngModel)]="nomeAgendamento" placeholder="Nome Completo" autocomplete="off" required class="input-padrao-lenpa">
+      </div>
+
+      <div class="campo-agendamento slide-down" *ngIf="tipoAgendamento !== 'INDIVIDUAL'">
         <input
           type="number"
           name="quantidadeAgendamento"
           [(ngModel)]="quantidadeAgendamento"
           min="2"
+          [max]="atividade?.vagasDisponiveis"
           onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-          placeholder="Quantas pessoas vão junto com você?"
+          placeholder="Quantas pessoas no total?"
+          autocomplete="off"
           class="input-padrao-lenpa">
-      </div>
 
-      <div class="campo-agendamento">
-        <input type="text" name="nomeAgendamento" [(ngModel)]="nomeAgendamento" placeholder="Nome Completo" required class="input-padrao-lenpa">
+        <span *ngIf="quantidadeAgendamento && atividade && quantidadeAgendamento > atividade.vagasDisponiveis" style="color: #d32f2f; font-size: 12px; margin-top: 5px; display: block;">
+          Atenção: Restam apenas {{ atividade.vagasDisponiveis }} vagas para esta atividade.
+        </span>
       </div>
 
       <div class="campo-agendamento autocomplete-container">
@@ -64,7 +80,7 @@
           name="cidadeAgendamento"
           [(ngModel)]="cidadeAgendamento"
           (input)="filtrarCidades()"
-          placeholder="Cidade onde mora"
+          [placeholder]="tipoAgendamento === 'INSTITUICAO' ? 'Cidade da Instituição' : 'Cidade onde mora'"
           autocomplete="off"
           required
           class="input-padrao-lenpa">
@@ -92,7 +108,7 @@
 
         <app-botao-padrao
           tipo="primario"
-          [desabilitado]="carregandoAgendamento || !emailAgendamento || !nomeAgendamento || !cidadeValida || (tipoAgendamento === 'GRUPO' && (!quantidadeAgendamento || quantidadeAgendamento < 2))"
+          [desabilitado]="carregandoAgendamento || isFormularioInvalido"
           (acaoClique)="enviarPedidoAgendamento()">
           {{ carregandoAgendamento ? 'Confirmando...' : 'Confirmar Vaga' }}
         </app-botao-padrao>

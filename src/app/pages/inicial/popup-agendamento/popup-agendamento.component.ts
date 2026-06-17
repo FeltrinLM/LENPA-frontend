@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
-// Serviços
+// Servicos
 import { VisitanteService } from '../../../core/services/api/visitante.service';
 import { AgendarService } from '../../../core/services/api/agendar.service';
 
@@ -45,8 +45,13 @@ export class PopupAgendamentoComponent implements OnInit {
   emailAgendamento: string = '';
   nomeAgendamento: string = '';
   cidadeAgendamento: string = '';
-  tipoAgendamento: 'INDIVIDUAL' | 'GRUPO' = 'INDIVIDUAL';
+
+  tipoAgendamento: 'INDIVIDUAL' | 'GRUPO' | 'INSTITUICAO' = 'INDIVIDUAL';
   quantidadeAgendamento: number | null = null;
+
+  nomeInstituicao: string = '';
+  nomeResponsavel: string = '';
+
   buscandoEmail: boolean = false;
 
   listaCidadesNoBanco: string[] = [];
@@ -56,6 +61,18 @@ export class PopupAgendamentoComponent implements OnInit {
 
   ngOnInit() {
     this.buscarCidadesIBGE();
+  }
+
+  aoMudarTipo() {
+    this.nomeInstituicao = '';
+    this.nomeResponsavel = '';
+    this.cidadeAgendamento = '';
+    this.exibirDropdownCidades = false;
+    this.cidadeVeioDoBanco = false;
+
+    if (this.tipoAgendamento !== 'INSTITUICAO') {
+      this.buscarVisitantePorEmail();
+    }
   }
 
   buscarCidadesIBGE() {
@@ -102,8 +119,33 @@ export class PopupAgendamentoComponent implements OnInit {
   }
 
   get cidadeValida(): boolean {
+    if (this.tipoAgendamento === 'INSTITUICAO') return true;
     if (this.cidadeVeioDoBanco) return true;
     return this.listaCidadesNoBanco.includes(this.cidadeAgendamento);
+  }
+
+  get isFormularioInvalido(): boolean {
+    if (!this.emailAgendamento || !this.cidadeValida) return true;
+
+    // Pega a quantidade informada (ou 1 se for individual)
+    const qtdDesejada = this.tipoAgendamento === 'INDIVIDUAL' ? 1 : this.quantidadeAgendamento || 0;
+
+    // Bloqueia se a quantidade for maior que as vagas que restam no banco
+    if (this.atividade && qtdDesejada > this.atividade.vagasDisponiveis) {
+      return true;
+    }
+
+    if (this.tipoAgendamento === 'INSTITUICAO') {
+      if (!this.nomeInstituicao || !this.nomeResponsavel || !this.cidadeAgendamento) return true;
+      if (!this.quantidadeAgendamento || this.quantidadeAgendamento < 2) return true;
+    } else if (this.tipoAgendamento === 'GRUPO') {
+      if (!this.nomeAgendamento || !this.cidadeAgendamento) return true;
+      if (!this.quantidadeAgendamento || this.quantidadeAgendamento < 2) return true;
+    } else {
+      if (!this.nomeAgendamento || !this.cidadeAgendamento) return true;
+    }
+
+    return false;
   }
 
   fecharModal() {
@@ -123,16 +165,16 @@ export class PopupAgendamentoComponent implements OnInit {
         this.buscandoEmail = false;
 
         if (visitante && visitante.nome) {
-          this.nomeAgendamento = visitante.nome;
-          this.cidadeAgendamento = visitante.cidade;
-          this.cidadeVeioDoBanco = true;
-          this.exibirDropdownCidades = false;
+          if (this.tipoAgendamento !== 'INSTITUICAO') {
+            this.nomeAgendamento = visitante.nome;
+            this.cidadeAgendamento = visitante.cidade;
+            this.cidadeVeioDoBanco = true;
+            this.exibirDropdownCidades = false;
+          }
         }
       },
       error: (err: any) => {
         this.buscandoEmail = false;
-        this.nomeAgendamento = '';
-        this.cidadeAgendamento = '';
         this.cidadesFiltradas = [];
         this.exibirDropdownCidades = false;
         this.cidadeVeioDoBanco = false;
@@ -141,33 +183,32 @@ export class PopupAgendamentoComponent implements OnInit {
   }
 
   enviarPedidoAgendamento() {
-    if (!this.nomeAgendamento || !this.emailAgendamento || !this.cidadeAgendamento) {
-      this.mensagemErroFormulario = 'Por favor, preencha todos os campos obrigatórios.';
-      return;
-    }
-
-    if (!this.cidadeValida) {
+    if (this.isFormularioInvalido) {
       this.mensagemErroFormulario =
-        'Por favor, selecione uma cidade válida clicando nas opções da lista.';
+        'Por favor, preencha todos os campos obrigatorios corretamente.';
       return;
     }
 
     this.carregandoAgendamento = true;
     this.mensagemErroFormulario = '';
 
+    let nomeFinal = this.nomeAgendamento;
+    if (this.tipoAgendamento === 'INSTITUICAO') {
+      nomeFinal = `${this.nomeInstituicao.trim()} (Resp: ${this.nomeResponsavel.trim()})`;
+    }
+
     const payload = {
       idAtividade: this.atividade.idAtividade,
-      nomeVisitante: this.nomeAgendamento,
+      nomeVisitante: nomeFinal,
       emailVisitante: this.emailAgendamento,
       cidadeVisitante: this.cidadeAgendamento,
       quantidade: this.tipoAgendamento === 'INDIVIDUAL' ? 1 : this.quantidadeAgendamento || 2,
     };
 
-    console.log('🚀 1. Disparando requisição para o backend...', payload);
+    console.log('Disparando requisicao para o backend...', payload);
 
     this.agendarService.agendar(payload).subscribe({
       next: (response: any) => {
-        console.log('✅ 2. Backend respondeu com SUCESSO!', response);
         this.carregandoAgendamento = false;
         this.mensagemSucessoAgendamento =
           'Reserva confirmada! Um e-mail com os detalhes foi enviado.';
@@ -179,15 +220,8 @@ export class PopupAgendamentoComponent implements OnInit {
         }, 4000);
       },
       error: (err: any) => {
-        console.error('❌ 2. Backend rejeitou a requisição:', err);
-
         this.carregandoAgendamento = false;
         this.mostrarTelaEsgotado = true;
-        this.cdr.detectChanges();
-      },
-      complete: () => {
-        console.log('🏁 3. Observable concluído.');
-        this.carregandoAgendamento = false;
         this.cdr.detectChanges();
       },
     });

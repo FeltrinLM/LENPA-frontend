@@ -4,6 +4,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  /* Garante que o container principal também possa crescer infinitamente */
+  height: auto !important;
+  min-height: min-content;
+  overflow: visible !important;
+  margin-bottom: 150px; /* Margem extra de segurança pro botão fixo não cobrir a tabela */
 }
 
 .btn-voltar-fixo {
@@ -27,6 +33,9 @@
   padding: 16px 26px;
   box-shadow: 0 5px 13px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
+
+  /* JOGANDO UM POUQUINHO PARA A DIREITA */
+  margin-left: 40px;
 }
 
 .header-img-bg {
@@ -68,10 +77,25 @@
   padding: 13px 20px;
   box-shadow: 0 7px 16px rgba(0,0,0,0.1);
   margin-bottom: 50px;
+
+  /* JOGANDO UM POUQUINHO PARA A DIREITA */
+  margin-left: 40px;
+
+  /* GARANTIA ABSOLUTA DE ALTURA ILIMITADA NO CSS */
+  height: auto !important;
+  max-height: none !important;
+  min-height: min-content;
+  overflow: visible !important;
+}
+
+.wrapper-tabela {
+  width: 100%;
+  overflow-x: auto; /* Permite rolagem horizontal se a tela for pequena */
 }
 
 .tabela-lenpa {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
   font-family: sans-serif;
   table-layout: auto;

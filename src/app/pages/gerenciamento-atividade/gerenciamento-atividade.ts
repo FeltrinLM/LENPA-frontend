@@ -38,6 +38,7 @@ export class GerenciamentoAtividade implements OnInit {
   eventoSelecionadoParaGerenciar: any = null;
   listaAgendamentos: any[] = [];
   carregandoLista: boolean = false;
+  salvandoCadastro: boolean = false; // Trava para o botão não permitir duplo clique
 
   formCadastro = {
     eventoSelecionado: '',
@@ -45,7 +46,7 @@ export class GerenciamentoAtividade implements OnInit {
     tipoVisitante: 'individual',
     visitante: { nome: '', cidade: '' },
     instituicao: { nome: '', quantidade: null as number | null, local: '' },
-    responsavel: { nome: '', cidade: '' },
+    responsavel: { nome: '' },
     anonimo: { descricao: 'Público Geral', quantidade: null as number | null },
   };
 
@@ -57,9 +58,14 @@ export class GerenciamentoAtividade implements OnInit {
   exibirDropdownCidades: boolean = false;
   cidadeConfirmada: boolean = false;
 
-  get isCidadeIndividualValida(): boolean {
-    if (this.formCadastro.tipoVisitante !== 'individual') return true;
-    return this.cidadeConfirmada;
+  get isCidadeValida(): boolean {
+    if (
+      this.formCadastro.tipoVisitante === 'individual' ||
+      this.formCadastro.tipoVisitante === 'instituicao'
+    ) {
+      return this.cidadeConfirmada;
+    }
+    return true;
   }
 
   ngOnInit() {
@@ -155,8 +161,14 @@ export class GerenciamentoAtividade implements OnInit {
 
   filtrarCidades() {
     this.cidadeConfirmada = false;
+    let termoOriginal = '';
 
-    const termoOriginal = (this.formCadastro.visitante.cidade || '').trim();
+    if (this.formCadastro.tipoVisitante === 'individual') {
+      termoOriginal = (this.formCadastro.visitante.cidade || '').trim();
+    } else if (this.formCadastro.tipoVisitante === 'instituicao') {
+      termoOriginal = (this.formCadastro.instituicao.local || '').trim();
+    }
+
     const termo = this.removerAcentos(termoOriginal.toLowerCase());
 
     if (termo.length > 0) {
@@ -174,7 +186,12 @@ export class GerenciamentoAtividade implements OnInit {
   }
 
   selecionarCidade(cidadeEscolhida: string) {
-    this.formCadastro.visitante.cidade = cidadeEscolhida;
+    if (this.formCadastro.tipoVisitante === 'individual') {
+      this.formCadastro.visitante.cidade = cidadeEscolhida;
+    } else if (this.formCadastro.tipoVisitante === 'instituicao') {
+      this.formCadastro.instituicao.local = cidadeEscolhida;
+    }
+
     this.cidadeConfirmada = true;
     this.exibirDropdownCidades = false;
   }
@@ -189,7 +206,7 @@ export class GerenciamentoAtividade implements OnInit {
     this.formCadastro.visitante = { nome: '', cidade: '' };
     this.cidadeConfirmada = false;
     this.formCadastro.instituicao = { nome: '', quantidade: null, local: '' };
-    this.formCadastro.responsavel = { nome: '', cidade: '' };
+    this.formCadastro.responsavel = { nome: '' };
     this.formCadastro.anonimo = { descricao: 'Público Geral', quantidade: null };
   }
 
@@ -199,10 +216,16 @@ export class GerenciamentoAtividade implements OnInit {
       return;
     }
 
-    if (this.formCadastro.tipoVisitante === 'individual' && !this.isCidadeIndividualValida) {
-      alert('Por favor, selecione a cidade do visitante clicando em uma das opções da lista.');
+    if (
+      (this.formCadastro.tipoVisitante === 'individual' ||
+        this.formCadastro.tipoVisitante === 'instituicao') &&
+      !this.isCidadeValida
+    ) {
+      alert('Por favor, selecione uma cidade válida clicando em uma das opções da lista.');
       return;
     }
+
+    this.salvandoCadastro = true;
 
     let nomeFinal = '';
     let cidadeFinal = '';
@@ -216,7 +239,7 @@ export class GerenciamentoAtividade implements OnInit {
       if (this.formCadastro.responsavel.nome) {
         nomeFinal += ' (Resp: ' + this.formCadastro.responsavel.nome + ')';
       }
-      cidadeFinal = this.formCadastro.instituicao.local || this.formCadastro.responsavel.cidade;
+      cidadeFinal = this.formCadastro.instituicao.local;
       quantidadeFinal = this.formCadastro.instituicao.quantidade || 2;
     } else if (this.formCadastro.tipoVisitante === 'anonimo') {
       nomeFinal = this.formCadastro.anonimo.descricao || 'Público Geral';
@@ -225,50 +248,136 @@ export class GerenciamentoAtividade implements OnInit {
 
       if (quantidadeFinal < 1) {
         alert('Por favor, insira uma quantidade válida de pessoas.');
+        this.salvandoCadastro = false;
         return;
       }
     }
 
     if (!nomeFinal || !cidadeFinal) {
       alert('Preencha os campos obrigatórios.');
+      this.salvandoCadastro = false;
       return;
     }
 
-    const payload = {
-      idAtividade: this.formCadastro.eventoSelecionado,
-      nomeVisitante: nomeFinal,
-      emailVisitante: null,
-      cidadeVisitante: cidadeFinal,
-      quantidade: quantidadeFinal,
-    };
-
+    const idAtividadeSelecionada = Number(this.formCadastro.eventoSelecionado);
     const acaoDesejada = this.formCadastro.acao;
 
-    this.agendarService.agendar(payload).subscribe({
-      next: (res: any) => {
-        if (acaoDesejada === 'confirmar') {
-          const idGerado = res?.idAgendamento || res?.id;
-
-          if (idGerado) {
-            this.agendarService.confirmarPresenca(idGerado).subscribe({
-              next: () => {
-                alert('Presença confirmada com sucesso!');
-                this.limparFormulario();
-              },
-              error: () => {
-                alert('O visitante foi agendado, mas houve uma falha ao confirmar a presença.');
-                this.limparFormulario();
-              },
-            });
+    // Função interna que executa o fluxo final de comunicação com o backend
+    const executarAgendamentoFinal = (
+      payloadFinal: any,
+      idAntigoParaCancelar: number | null = null,
+    ) => {
+      const recarregarTabelaSeNecessario = () => {
+        if (this.eventoSelecionadoParaGerenciar) {
+          const idGerenciado =
+            this.eventoSelecionadoParaGerenciar.idAtividade ||
+            this.eventoSelecionadoParaGerenciar.id;
+          if (idGerenciado === idAtividadeSelecionada) {
+            this.carregarListaAgendamentos(idGerenciado);
           }
-        } else {
-          alert('Agendamento registrado!');
-          this.limparFormulario();
         }
-      },
-      error: (err: any) =>
-        alert('Erro: ' + (err.error?.message || err.error || 'Falha no agendamento.')),
-    });
+      };
+
+      const concluirRequisicao = () => {
+        this.agendarService.agendar(payloadFinal).subscribe({
+          next: (res: any) => {
+            if (acaoDesejada === 'confirmar') {
+              const idGerado = res?.idAgendamento || res?.id;
+              if (idGerado) {
+                this.agendarService.confirmarPresenca(idGerado).subscribe({
+                  next: () => {
+                    alert('Registro atualizado e presença confirmada!');
+                    recarregarTabelaSeNecessario();
+                    this.limparFormulario();
+                    this.salvandoCadastro = false;
+                  },
+                  error: () => {
+                    alert('Visitante registrado, mas houve falha ao dar check-in.');
+                    recarregarTabelaSeNecessario();
+                    this.limparFormulario();
+                    this.salvandoCadastro = false;
+                  },
+                });
+              } else {
+                this.salvandoCadastro = false;
+              }
+            } else {
+              alert('Registro atualizado com sucesso!');
+              recarregarTabelaSeNecessario();
+              this.limparFormulario();
+              this.salvandoCadastro = false;
+            }
+          },
+          error: (err: any) => {
+            alert('Erro: ' + (err.error?.message || err.error || 'Falha no agendamento.'));
+            this.salvandoCadastro = false;
+          },
+        });
+      };
+
+      // Se houver um ID antigo para cancelar (por causa da soma), exclui antes de recriar
+      if (idAntigoParaCancelar) {
+        this.agendarService.cancelar(idAntigoParaCancelar).subscribe({
+          next: () => concluirRequisicao(),
+          error: () => {
+            alert('Falha ao atualizar o grupo anônimo existente no sistema.');
+            this.salvandoCadastro = false;
+          },
+        });
+      } else {
+        concluirRequisicao();
+      }
+    };
+
+    // LOGICA DE SOMA EXCLUSIVA PARA O GRUPO ANÔNIMO
+    if (this.formCadastro.tipoVisitante === 'anonimo') {
+      this.agendarService.listar().subscribe({
+        next: (res: any) => {
+          const todos = res.content || (Array.isArray(res) ? res : []);
+
+          // Busca se já existe o exato mesmo nome no mesmo evento que NÃO esteja cancelado
+          const agendamentoExistente = todos.find(
+            (a: any) =>
+              a.idAtividade === idAtividadeSelecionada &&
+              a.nomeVisitante.toLowerCase() === nomeFinal.toLowerCase() &&
+              a.agendamento !== false,
+          );
+
+          let payload = {
+            idAtividade: idAtividadeSelecionada,
+            nomeVisitante: nomeFinal,
+            emailVisitante: null,
+            cidadeVisitante: cidadeFinal,
+            quantidade: quantidadeFinal,
+          };
+
+          if (agendamentoExistente) {
+            // Soma a quantidade do novo form com a quantidade que já estava no banco
+            payload.quantidade = quantidadeFinal + (agendamentoExistente.quantidade || 1);
+            const idAntigo = agendamentoExistente.idAgendamento || agendamentoExistente.id;
+
+            executarAgendamentoFinal(payload, idAntigo);
+          } else {
+            executarAgendamentoFinal(payload, null);
+          }
+        },
+        error: () => {
+          alert('Erro ao buscar lista para verificação de grupos existentes.');
+          this.salvandoCadastro = false;
+        },
+      });
+    } else {
+      // Fluxo normal para individuais e instituições (não soma)
+      const payload = {
+        idAtividade: idAtividadeSelecionada,
+        nomeVisitante: nomeFinal,
+        emailVisitante: null,
+        cidadeVisitante: cidadeFinal,
+        quantidade: quantidadeFinal,
+      };
+
+      executarAgendamentoFinal(payload, null);
+    }
   }
 
   abrirGerenciamentoAtividade(evento: any) {
@@ -326,7 +435,6 @@ export class GerenciamentoAtividade implements OnInit {
       const id = agendamento.idAgendamento || agendamento.id;
       this.agendarService.cancelar(id).subscribe({
         next: () => {
-          // Extraí a variável para remover a quebra de linha maluca que deu erro de compilação
           const idAtiv =
             this.eventoSelecionadoParaGerenciar.idAtividade ||
             this.eventoSelecionadoParaGerenciar.id;

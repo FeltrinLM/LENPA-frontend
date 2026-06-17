@@ -101,19 +101,36 @@
             <label>Quantidade de Pessoas</label>
             <input type="number" [(ngModel)]="formCadastro.instituicao.quantidade" class="input-lenpa" placeholder="Ex: 40">
           </div>
-          <div class="campo">
+
+          <div class="campo autocomplete-container">
             <label>Cidade da Instituição</label>
-            <input type="text" [(ngModel)]="formCadastro.instituicao.local" class="input-lenpa" placeholder="Ex: Santa Maria">
+            <input
+              type="text"
+              [(ngModel)]="formCadastro.instituicao.local"
+              (input)="filtrarCidades()"
+              (blur)="esconderDropdownCidades()"
+              autocomplete="off"
+              class="input-lenpa"
+              placeholder="Ex: Santa Maria">
+
+            <div class="dropdown-cidades" *ngIf="exibirDropdownCidades && cidadesFiltradas.length > 0">
+              <div
+                class="item-cidade"
+                *ngFor="let cid of cidadesFiltradas"
+                (mousedown)="selecionarCidade(cid)">
+                {{ cid }}
+              </div>
+            </div>
+
+            <div class="dropdown-cidades item-cidade-vazio" *ngIf="exibirDropdownCidades && cidadesFiltradas.length === 0">
+              Buscando ou não encontrada...
+            </div>
           </div>
         </div>
         <div class="linha-form caixa-nova-pessoa">
-          <div class="campo">
+          <div class="campo flex-1">
             <label>Nome do Responsável</label>
-            <input type="text" [(ngModel)]="formCadastro.responsavel.nome" class="input-lenpa">
-          </div>
-          <div class="campo">
-            <label>Cidade do Responsável</label>
-            <input type="text" [(ngModel)]="formCadastro.responsavel.cidade" class="input-lenpa" placeholder="Ex: Santa Maria">
+            <input type="text" [(ngModel)]="formCadastro.responsavel.nome" class="input-lenpa" placeholder="Ex: João da Silva">
           </div>
         </div>
       </div>
@@ -134,9 +151,9 @@
       <div class="rodape-form">
         <app-botao-padrao
           tipo="primario"
-          [desabilitado]="(formCadastro.tipoVisitante === 'individual' && !isCidadeIndividualValida) || (formCadastro.tipoVisitante === 'anonimo' && (!formCadastro.anonimo.quantidade || formCadastro.anonimo.quantidade < 1))"
+          [desabilitado]="salvandoCadastro || !isCidadeValida || (formCadastro.tipoVisitante === 'anonimo' && (!formCadastro.anonimo.quantidade || formCadastro.anonimo.quantidade < 1))"
           (acaoClique)="salvarCadastro()">
-          {{ formCadastro.acao === 'agendar' ? 'Registrar Agendamento' : 'Confirmar Presença' }}
+          {{ salvandoCadastro ? 'Processando...' : (formCadastro.acao === 'agendar' ? 'Registrar Agendamento' : 'Confirmar Presença') }}
         </app-botao-padrao>
       </div>
     </div>
@@ -171,7 +188,7 @@
     </app-botao-padrao>
   </div>
 
-  <div class="container-visao-lista animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar">
+  <div class="container-visao-lista animacao-surgir" *ngIf="eventoSelecionadoParaGerenciar" style="margin-bottom: 120px; overflow: visible;">
     <div class="header-painel-lista">
       <div class="header-img-bg" [style.backgroundImage]="'url(' + (eventoSelecionadoParaGerenciar.imagem ? (eventoSelecionadoParaGerenciar.imagem.startsWith('http') ? eventoSelecionadoParaGerenciar.imagem : 'http://localhost:8080/uploads/' + eventoSelecionadoParaGerenciar.imagem) : '/assets/images/placeholder_background.jpg') + ')'"></div>
       <div class="header-texto">
@@ -180,47 +197,49 @@
       </div>
     </div>
 
-    <div class="card-tabela">
+    <div class="card-tabela" style="height: auto !important; max-height: none !important; overflow: visible !important;">
       <h3 *ngIf="carregandoLista" class="texto-carregando">Buscando lista no servidor...</h3>
 
-      <table class="tabela-lenpa" *ngIf="!carregandoLista && listaAgendamentos.length > 0">
-        <thead>
-        <tr>
-          <th>Nome do Visitante / Grupo</th>
-          <th>Cidade</th>
-          <th>Qtd</th>
-          <th>Status</th>
-          <th>Ação</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let ag of listaAgendamentos">
-          <td class="td-destaque">{{ ag.nomeVisitante }}</td>
-          <td>{{ ag.cidadeDisplay }}</td>
-          <td>{{ ag.quantidade || 1 }}</td>
-          <td>
-              <span class="badge-status" [ngClass]="{'confirmado': ag.presencaConfirmada || ag.presenca}">
-                {{ (ag.presencaConfirmada || ag.presenca) ? 'PRESENTE' : 'PENDENTE' }}
-              </span>
-          </td>
-          <td>
-            <ng-container *ngIf="!ag.presencaConfirmada && !ag.presenca">
-              <app-botao-padrao tipo="primario" (acaoClique)="fazerCheckIn(ag)">
-                Confirmar Presença
+      <div style="width: 100%; overflow-x: auto;">
+        <table class="tabela-lenpa" *ngIf="!carregandoLista && listaAgendamentos.length > 0" style="min-width: 600px;">
+          <thead>
+          <tr>
+            <th>Nome do Visitante / Grupo</th>
+            <th>Cidade</th>
+            <th>Qtd</th>
+            <th>Status</th>
+            <th>Ação</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let ag of listaAgendamentos">
+            <td class="td-destaque">{{ ag.nomeVisitante }}</td>
+            <td>{{ ag.cidadeDisplay }}</td>
+            <td>{{ ag.quantidade || 1 }}</td>
+            <td>
+                <span class="badge-status" [ngClass]="{'confirmado': ag.presencaConfirmada || ag.presenca}">
+                  {{ (ag.presencaConfirmada || ag.presenca) ? 'PRESENTE' : 'PENDENTE' }}
+                </span>
+            </td>
+            <td>
+              <ng-container *ngIf="!ag.presencaConfirmada && !ag.presenca">
+                <app-botao-padrao tipo="primario" (acaoClique)="fazerCheckIn(ag)">
+                  Confirmar Presença
+                </app-botao-padrao>
+              </ng-container>
+
+              <ng-container *ngIf="ag.presencaConfirmada || ag.presenca">
+                <app-botao-padrao tipo="primario" [desabilitado]="true">✓ Liberado</app-botao-padrao>
+              </ng-container>
+
+              <app-botao-padrao tipo="secundario" (acaoClique)="cancelarAgendamento(ag)">
+                Excluir Agendamento
               </app-botao-padrao>
-            </ng-container>
-
-            <ng-container *ngIf="ag.presencaConfirmada || ag.presenca">
-              <app-botao-padrao tipo="primario" [desabilitado]="true">✓ Liberado</app-botao-padrao>
-            </ng-container>
-
-            <app-botao-padrao tipo="secundario" (acaoClique)="cancelarAgendamento(ag)">
-              Excluir Agendamento
-            </app-botao-padrao>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
 
       <div class="empty-state" *ngIf="!carregandoLista && listaAgendamentos.length === 0">
         <app-icone nome="alerta"></app-icone>

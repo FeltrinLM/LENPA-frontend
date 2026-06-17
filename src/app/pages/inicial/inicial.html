@@ -1,4 +1,3 @@
-<!-- Container Principal com classe dinâmica amarrada ao login -->
 <div class="pagina-inicial-container" [class.com-sidebar]="authService.isLoggedIn()">
 
   <div class="banner-imagem">
@@ -39,7 +38,9 @@
       <div class="hover-meta-grid">
         <div class="meta-item">
           <span class="meta-label">Vagas</span>
-          <span class="meta-value">{{ ativ.vagas ? ativ.vagas : '25' }} disponíveis</span>
+          <span class="meta-value" [style.color]="ativ.vagasDisponiveis === 0 ? '#ff6b6b' : null">
+            {{ ativ.vagasDisponiveis !== undefined ? ativ.vagasDisponiveis : '25' }} disponíveis
+          </span>
         </div>
 
         <div class="meta-item">
@@ -61,7 +62,12 @@
 
       <div class="hover-footer">
         <div style="width: 500px; display: flex;">
-          <app-botao-padrao tipo="primario" (acaoClique)="abrirAgendamento(ativ)">Agendar</app-botao-padrao>
+          <app-botao-padrao
+            tipo="primario"
+            [desabilitado]="ativ.vagasDisponiveis === 0"
+            (acaoClique)="ativ.vagasDisponiveis > 0 ? abrirAgendamento(ativ) : null">
+            {{ ativ.vagasDisponiveis === 0 ? 'Esgotado' : 'Agendar' }}
+          </app-botao-padrao>
         </div>
       </div>
 
