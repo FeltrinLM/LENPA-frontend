@@ -127,14 +127,6 @@ export class PopupAgendamentoComponent implements OnInit {
   get isFormularioInvalido(): boolean {
     if (!this.emailAgendamento || !this.cidadeValida) return true;
 
-    // Pega a quantidade informada (ou 1 se for individual)
-    const qtdDesejada = this.tipoAgendamento === 'INDIVIDUAL' ? 1 : this.quantidadeAgendamento || 0;
-
-    // Bloqueia se a quantidade for maior que as vagas que restam no banco
-    if (this.atividade && qtdDesejada > this.atividade.vagasDisponiveis) {
-      return true;
-    }
-
     if (this.tipoAgendamento === 'INSTITUICAO') {
       if (!this.nomeInstituicao || !this.nomeResponsavel || !this.cidadeAgendamento) return true;
       if (!this.quantidadeAgendamento || this.quantidadeAgendamento < 2) return true;

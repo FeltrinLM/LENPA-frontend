@@ -63,15 +63,10 @@
           name="quantidadeAgendamento"
           [(ngModel)]="quantidadeAgendamento"
           min="2"
-          [max]="atividade?.vagasDisponiveis"
           onkeypress="return event.charCode >= 48 && event.charCode <= 57"
           placeholder="Quantas pessoas no total?"
           autocomplete="off"
           class="input-padrao-lenpa">
-
-        <span *ngIf="quantidadeAgendamento && atividade && quantidadeAgendamento > atividade.vagasDisponiveis" style="color: #d32f2f; font-size: 12px; margin-top: 5px; display: block;">
-          Atenção: Restam apenas {{ atividade.vagasDisponiveis }} vagas para esta atividade.
-        </span>
       </div>
 
       <div class="campo-agendamento autocomplete-container">
