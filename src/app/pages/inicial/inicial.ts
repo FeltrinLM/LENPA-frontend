@@ -10,19 +10,18 @@ import { BotaoPadraoComponent } from '../../shared/components/botao-padrao/botao
 import { IconeComponent } from '../../shared/components/icone/icone.component';
 import { CardAtividadeLayoutComponent } from '../../shared/components/card-atividade/card-atividade.component';
 // IMPORTANDO O NOVO COMPONENTE DO POPUP
-import { PopupAgendamentoComponent } from './popup-agendamento/popup-agendamento.component'; // Ajuste o caminho da pasta se necessário
+import { PopupAgendamentoComponent } from './popup-agendamento/popup-agendamento.component';
 
 @Component({
   selector: 'app-inicial',
   standalone: true,
-  // ADICIONADO AQUI NO ARRAY DE IMPORTS
   imports: [
     CommonModule,
     FormsModule,
     BotaoPadraoComponent,
     IconeComponent,
     CardAtividadeLayoutComponent,
-    PopupAgendamentoComponent
+    PopupAgendamentoComponent,
   ],
   templateUrl: './inicial.html',
   styleUrl: './inicial.css',
@@ -55,13 +54,13 @@ export class Inicial implements OnInit {
   carregarAtividades() {
     this.atividadeService.listar().subscribe({
       next: (res: any) => {
-        this.atividades = res.content ? res.content : (Array.isArray(res) ? res : []);
+        this.atividades = res.content ? res.content : Array.isArray(res) ? res : [];
         console.log('✅ Atividades recebidas do Java:', this.atividades);
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('❌ Erro ao conectar com a API de atividades:', err);
-      }
+      },
     });
   }
 
@@ -88,10 +87,9 @@ export class Inicial implements OnInit {
         this.carregando = false;
         if (err.status === 403) {
           this.mensagemErro = 'E-mail ou senha incorretos.';
-        } else {
-          this.mensagemErro = 'Erro ao conectar com o servidor.';
         }
-      }
+        // Else removido: Não exibe mais a mensagem de erro genérico do servidor na tela
+      },
     });
   }
 

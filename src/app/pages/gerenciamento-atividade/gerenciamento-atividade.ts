@@ -38,7 +38,7 @@ export class GerenciamentoAtividade implements OnInit {
   eventoSelecionadoParaGerenciar: any = null;
   listaAgendamentos: any[] = [];
   carregandoLista: boolean = false;
-  salvandoCadastro: boolean = false; // Trava para o botão não permitir duplo clique
+  salvandoCadastro: boolean = false;
 
   formCadastro = {
     eventoSelecionado: '',
@@ -262,7 +262,6 @@ export class GerenciamentoAtividade implements OnInit {
     const idAtividadeSelecionada = Number(this.formCadastro.eventoSelecionado);
     const acaoDesejada = this.formCadastro.acao;
 
-    // Função interna que executa o fluxo final de comunicação com o backend
     const executarAgendamentoFinal = (
       payloadFinal: any,
       idAntigoParaCancelar: number | null = null,
@@ -315,7 +314,6 @@ export class GerenciamentoAtividade implements OnInit {
         });
       };
 
-      // Se houver um ID antigo para cancelar (por causa da soma), exclui antes de recriar
       if (idAntigoParaCancelar) {
         this.agendarService.cancelar(idAntigoParaCancelar).subscribe({
           next: () => concluirRequisicao(),
@@ -329,13 +327,11 @@ export class GerenciamentoAtividade implements OnInit {
       }
     };
 
-    // LOGICA DE SOMA EXCLUSIVA PARA O GRUPO ANÔNIMO
     if (this.formCadastro.tipoVisitante === 'anonimo') {
       this.agendarService.listar().subscribe({
         next: (res: any) => {
           const todos = res.content || (Array.isArray(res) ? res : []);
 
-          // Busca se já existe o exato mesmo nome no mesmo evento que NÃO esteja cancelado
           const agendamentoExistente = todos.find(
             (a: any) =>
               a.idAtividade === idAtividadeSelecionada &&
@@ -352,7 +348,6 @@ export class GerenciamentoAtividade implements OnInit {
           };
 
           if (agendamentoExistente) {
-            // Soma a quantidade do novo form com a quantidade que já estava no banco
             payload.quantidade = quantidadeFinal + (agendamentoExistente.quantidade || 1);
             const idAntigo = agendamentoExistente.idAgendamento || agendamentoExistente.id;
 
@@ -367,7 +362,6 @@ export class GerenciamentoAtividade implements OnInit {
         },
       });
     } else {
-      // Fluxo normal para individuais e instituições (não soma)
       const payload = {
         idAtividade: idAtividadeSelecionada,
         nomeVisitante: nomeFinal,
@@ -443,5 +437,18 @@ export class GerenciamentoAtividade implements OnInit {
         error: () => alert('Erro ao cancelar agendamento.'),
       });
     }
+  }
+
+  // 🔥 NOVO: Função limpa e robusta para tratar o link da imagem com encodeURI
+  obterUrlImagem(imagemRaw: string | null | undefined): string {
+    let url = '';
+    if (!imagemRaw) {
+      url = '/assets/images/placeholder_background.jpg';
+    } else if (imagemRaw.startsWith('http')) {
+      url = imagemRaw;
+    } else {
+      url = `http://localhost:8080/uploads/${imagemRaw}`;
+    }
+    return encodeURI(url);
   }
 }

@@ -73,7 +73,16 @@
           <div class="container-editar-senha" *ngIf="editandoSenha">
             <div class="campo-senha-duplo">
               <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="senhaAtual" placeholder="Senha atual...">
-              <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="novaSenha" placeholder="Nova senha...">
+
+              <div style="display: flex; flex-direction: column; width: 100%;">
+                <input type="password" class="input-falso campo-senha-interno" [(ngModel)]="novaSenha" placeholder="Nova senha..." style="width: 100%; box-sizing: border-box;">
+
+                <span style="font-size: 11px; margin-top: 4px; padding-left: 5px; transition: color 0.3s ease;"
+                      [style.color]="novaSenha && novaSenha.length < 6 ? '#d32f2f' : (novaSenha && novaSenha.length >= 6 ? '#1e5233' : '#666')">
+                  {{ novaSenha && novaSenha.length >= 6 ? '✓ Mínimo de 6 caracteres atingido' : 'ℹ️ Deve ter no mínimo 6 caracteres' }}
+                </span>
+              </div>
+
             </div>
             <span class="mensagem-erro-senha" *ngIf="erroSenha">{{ erroSenha }}</span>
             <div class="acoes-edicao-senha">

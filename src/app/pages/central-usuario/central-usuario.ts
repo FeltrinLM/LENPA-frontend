@@ -1,6 +1,13 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService, UsuarioLogado } from '../../core/services/auth/auth.service';
@@ -14,18 +21,23 @@ import { IconeComponent } from '../../shared/components/icone/icone.component';
 @Component({
   selector: 'app-central-usuario',
   standalone: true,
-  // O ICONE FOI ADICIONADO AQUI
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, BotaoPadraoComponent, BotaoFlutuanteComponent, IconeComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BotaoPadraoComponent,
+    BotaoFlutuanteComponent,
+    IconeComponent,
+  ],
   templateUrl: './central-usuario.html',
   styleUrls: [
     './css/central-usuario-layout.css',
     './css/central-usuario-perfil.css',
     './css/central-usuario-modais.css',
-    './css/central-usuario-card-funcionarios.css'
-  ]
+    './css/central-usuario-card-funcionarios.css',
+  ],
 })
 export class CentralUsuario implements OnInit {
-
   private authService = inject(AuthService);
   private funcionarioService = inject(FuncionarioService);
   private router = inject(Router);
@@ -37,12 +49,15 @@ export class CentralUsuario implements OnInit {
   // ==========================================
   // FORMULÁRIOS REATIVOS
   // ==========================================
-  formFuncionario: FormGroup = this.fb.group({
-    nome: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    senha: ['', [Validators.required, Validators.minLength(6)]],
-    confirmarSenha: ['', Validators.required]
-  }, { validators: this.validarSenhasIguais });
+  formFuncionario: FormGroup = this.fb.group(
+    {
+      nome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required, Validators.minLength(6)]],
+      confirmarSenha: ['', Validators.required],
+    },
+    { validators: this.validarSenhasIguais },
+  );
 
   private validarSenhasIguais(group: AbstractControl) {
     const senha = group.get('senha')?.value;
@@ -50,7 +65,9 @@ export class CentralUsuario implements OnInit {
     return senha === confirmarSenha ? null : { senhasDiferentes: true };
   }
 
-  get fFunc() { return this.formFuncionario.controls; }
+  get fFunc() {
+    return this.formFuncionario.controls;
+  }
 
   // --- CONTROLES VISUAIS DO PERFIL ---
   editandoNome: boolean = false;
@@ -95,7 +112,7 @@ export class CentralUsuario implements OnInit {
     this.carregandoFuncionarios = true;
     this.funcionarioService.listar().subscribe({
       next: (res: any) => {
-        let listaBruta = res.content ? res.content : (Array.isArray(res) ? res : []);
+        let listaBruta = res.content ? res.content : Array.isArray(res) ? res : [];
         this.funcionarios = listaBruta.filter((func: any) => func.email !== this.usuario?.email);
         this.carregandoFuncionarios = false;
 
@@ -106,7 +123,7 @@ export class CentralUsuario implements OnInit {
         this.carregandoFuncionarios = false;
         this.cdr.detectChanges();
         alert('Erro ao carregar a lista de funcionários.');
-      }
+      },
     });
   }
 
@@ -115,7 +132,7 @@ export class CentralUsuario implements OnInit {
       'Atenção!',
       `Deseja mesmo excluir o ${func.nivelPermissao.toLowerCase()} ${func.nome} do sistema?`,
       'Sim, excluir',
-      () => this.executarExclusaoFuncionario(func.idFuncionario)
+      () => this.executarExclusaoFuncionario(func.idFuncionario),
     );
   }
 
@@ -129,54 +146,118 @@ export class CentralUsuario implements OnInit {
       error: (err: any) => {
         this.fecharModal();
         alert(err.error?.message || 'Erro ao excluir o funcionário.');
-      }
+      },
     });
   }
 
   // ==========================================
   // ATUALIZAR NOME, EMAIL E SENHA DO PERFIL
   // ==========================================
-  editarNome() { this.nomeEditado = this.usuario?.nome || ''; this.editandoNome = true; }
+  editarNome() {
+    this.nomeEditado = this.usuario?.nome || '';
+    this.editandoNome = true;
+  }
+
   salvarNome() {
     if (!this.usuario) return;
     const dados = { nome: this.nomeEditado, email: this.usuario.email };
     this.funcionarioService.atualizarPerfil(dados).subscribe({
-      next: () => { this.usuario!.nome = this.nomeEditado; this.editandoNome = false; alert('Nome atualizado com sucesso!'); },
-      error: (err: any) => alert(err.error?.message || 'Erro ao atualizar nome.')
+      next: (res: any) => {
+        if (res.token) {
+          localStorage.setItem('lenpa_token', res.token);
+        }
+
+        this.usuario!.nome = res.usuario ? res.usuario.nome : this.nomeEditado;
+        this.editandoNome = false;
+        alert('Nome atualizado com sucesso!');
+      },
+      error: (err: any) => alert(err.error?.message || 'Erro ao atualizar nome.'),
     });
   }
 
-  editarEmail() { this.emailEditado = this.usuario?.email || ''; this.editandoEmail = true; }
+  editarEmail() {
+    this.emailEditado = this.usuario?.email || '';
+    this.editandoEmail = true;
+  }
+
   salvarEmail() {
     if (!this.usuario) return;
     const dados = { nome: this.usuario.nome, email: this.emailEditado };
     this.funcionarioService.atualizarPerfil(dados).subscribe({
-      next: () => { this.usuario!.email = this.emailEditado; this.editandoEmail = false; alert('E-mail atualizado com sucesso!'); },
-      error: (err: any) => alert(err.error?.message || 'Erro ao atualizar e-mail.')
+      next: (res: any) => {
+        if (res.token) {
+          localStorage.setItem('lenpa_token', res.token);
+        }
+
+        this.usuario!.email = res.usuario ? res.usuario.email : this.emailEditado;
+        this.editandoEmail = false;
+        alert('E-mail atualizado com sucesso!');
+      },
+      error: (err: any) => alert(err.error?.message || 'Erro ao atualizar e-mail.'),
     });
   }
 
   cancelarEdicao(campo: 'nome' | 'email' | 'senha') {
     if (campo === 'nome') this.editandoNome = false;
     if (campo === 'email') this.editandoEmail = false;
-    if (campo === 'senha') { this.editandoSenha = false; this.erroSenha = ''; }
+    if (campo === 'senha') {
+      this.editandoSenha = false;
+      this.erroSenha = '';
+    }
   }
 
-  editarSenha() { this.editandoSenha = true; this.senhaAtual = ''; this.novaSenha = ''; this.erroSenha = ''; }
+  editarSenha() {
+    this.editandoSenha = true;
+    this.senhaAtual = '';
+    this.novaSenha = '';
+    this.erroSenha = '';
+  }
 
   tentarSalvarSenha() {
     this.erroSenha = '';
-    if (!this.senhaAtual) { this.erroSenha = 'Por favor, informe a senha atual.'; return; }
-    if (!this.novaSenha) { this.erroSenha = 'A nova senha não pode ficar em branco.'; return; }
-    if (this.senhaAtual === this.novaSenha) { this.erroSenha = 'A nova senha deve ser diferente da atual.'; return; }
-    this.abrirModal('Confirmar Alteração', 'Deseja realmente alterar a sua senha?', 'Sim, alterar', () => this.executarTrocaSenha());
+
+    if (!this.senhaAtual) {
+      this.erroSenha = 'Por favor, informe a senha atual.';
+      return;
+    }
+
+    if (!this.novaSenha) {
+      this.erroSenha = 'A nova senha não pode ficar em branco.';
+      return;
+    }
+
+    // 🔥 VALIDAÇÃO DE TAMANHO DE SENHA ADICIONADA AQUI 🔥
+    if (this.novaSenha.length < 6) {
+      this.erroSenha = 'A nova senha deve ter no mínimo 6 caracteres.';
+      return;
+    }
+
+    if (this.senhaAtual === this.novaSenha) {
+      this.erroSenha = 'A nova senha deve ser diferente da atual.';
+      return;
+    }
+
+    this.abrirModal(
+      'Confirmar Alteração',
+      'Deseja realmente alterar a sua senha?',
+      'Sim, alterar',
+      () => this.executarTrocaSenha(),
+    );
   }
 
   executarTrocaSenha() {
     const dados = { senhaAtual: this.senhaAtual, novaSenha: this.novaSenha };
     this.funcionarioService.alterarSenha(dados).subscribe({
-      next: () => { this.fecharModal(); this.editandoSenha = false; alert('Senha alterada com sucesso!'); },
-      error: (err: any) => { this.fecharModal(); this.erroSenha = err.error?.message || 'Erro ao alterar senha.'; }
+      next: () => {
+        this.fecharModal();
+        this.editandoSenha = false;
+        alert('Senha alterada com sucesso!');
+      },
+      error: (err: any) => {
+        this.fecharModal();
+        const msgErro = typeof err.error === 'string' ? err.error : err.error?.message;
+        this.erroSenha = msgErro || 'Erro ao alterar senha.';
+      },
     });
   }
 
@@ -188,7 +269,9 @@ export class CentralUsuario implements OnInit {
     this.formFuncionario.reset();
   }
 
-  fecharModalNovoUsuario() { this.modalNovoUsuario.exibir = false; }
+  fecharModalNovoUsuario() {
+    this.modalNovoUsuario.exibir = false;
+  }
 
   confirmarNovoUsuario() {
     const nivel = this.modalNovoUsuario.nivelPermissao;
@@ -209,7 +292,7 @@ export class CentralUsuario implements OnInit {
       nome: this.formFuncionario.value.nome,
       email: this.formFuncionario.value.email,
       senha: this.formFuncionario.value.senha,
-      nivelPermissao: nivel === 'Administrador' ? 'ADMINISTRADOR' : 'BOLSISTA'
+      nivelPermissao: nivel === 'Administrador' ? 'ADMINISTRADOR' : 'BOLSISTA',
     };
     this.funcionarioService.cadastrar(payload).subscribe({
       next: () => {
@@ -220,7 +303,7 @@ export class CentralUsuario implements OnInit {
           this.carregarFuncionarios();
         }
       },
-      error: (err: any) => alert(err.error?.message || 'Erro ao cadastrar funcionário.')
+      error: (err: any) => alert(err.error?.message || 'Erro ao cadastrar funcionário.'),
     });
   }
 
@@ -238,5 +321,7 @@ export class CentralUsuario implements OnInit {
     this.modal = { exibir: true, titulo, mensagem, textoConfirmar, acaoConfirmar: acao };
   }
 
-  fecharModal() { this.modal.exibir = false; }
+  fecharModal() {
+    this.modal.exibir = false;
+  }
 }

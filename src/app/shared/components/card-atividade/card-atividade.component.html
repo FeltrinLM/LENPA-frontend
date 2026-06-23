@@ -5,14 +5,15 @@
   </div>
 
   <div class="card-info-container">
-    <div class="fundo-blur" [style.backgroundImage]="'url(' + urlImagem + ')'"></div>
+    <div class="fundo-blur" [style.background-image]="'url(\'' + urlImagem + '\')'"></div>
+
     <div class="conteudo-info">
       <h3 class="titulo-atividade">{{ titulo }}</h3>
     </div>
   </div>
 
   <div class="card-hover-overlay">
-    <div class="fundo-blur-expandido" [style.backgroundImage]="'url(' + urlImagem + ')'"></div>
+    <div class="fundo-blur-expandido" [style.background-image]="'url(\'' + urlImagem + '\')'"></div>
 
     <div class="conteudo-hover">
       <ng-content></ng-content>

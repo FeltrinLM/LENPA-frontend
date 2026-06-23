@@ -4,37 +4,37 @@
 .lista-atividades {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Reduzido de 60px */
+  gap: 20px;
   width: 100%;
-  margin-top: 20px; /* Reduzido de 60px */
+  margin-top: 20px;
 }
 
 .item-atividade {
   display: flex;
   align-items: flex-start;
   background-color: white;
-  border: 2px solid #e2e8f0; /* Reduzido de 6px */
-  border-radius: 16px; /* Reduzido de 48px */
-  padding: 20px 30px; /* Reduzido de 60px 90px */
-  gap: 30px; /* Reduzido de 90px */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03); /* Reduzido de 24px 60px */
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px 30px;
+  gap: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.3s ease;
 }
 
 .item-atividade:hover {
-  transform: translateY(-3px); /* Reduzido de -9px */
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08); /* Reduzido de 36px 75px */
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
   border-color: #cbd5e1;
 }
 
 .item-imagem {
-  width: 180px; /* Reduzido de 540px */
-  height: 120px; /* Reduzido de 360px */
+  width: 180px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 8px; /* Reduzido de 24px */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Reduzido de 15px 45px */
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   background-color: #f0fdf4;
-  border: 2px solid #e2e8f0; /* Reduzido de 6px */
+  border: 2px solid #e2e8f0;
 }
 
 .item-info {
@@ -46,7 +46,7 @@
 .item-titulo {
   color: #005A32;
   font-family: monospace, sans-serif;
-  font-size: 26px; /* Reduzido de 78px */
+  font-size: 26px;
   font-weight: bold;
   margin: 0;
   line-height: 1.3;
@@ -55,34 +55,43 @@
 .item-acoes {
   display: flex;
   align-items: flex-start;
-  gap: 20px; /* Reduzido de 60px */
+  gap: 20px;
 }
 
 /* ==========================================
-   ÍCONES DE AÇÃO DO CARD (Refatorado)
+   ÍCONES DE AÇÃO DO CARD (Novo Sistema)
    ========================================== */
 .icone-item {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
 }
 
-/* Injeta o tamanho (que estava no comentário mas faltava no CSS) e a cor base */
+/* Tamanho e cor base padrão */
 .icone-item ::ng-deep .icone-wrapper {
-  color: #005A32 !important;
-  width: 40px !important; /* Adicionado/Reduzido de 120px */
-  height: 40px !important; /* Adicionado/Reduzido de 120px */
+  color: #005A32; /* Sem o !important para não engessar o sistema */
+  width: 40px;
+  height: 40px;
+  transition: color 0.2s ease;
 }
 
-/* Hover genérico (Engrenagem fica verde clara) */
-.icone-item:hover ::ng-deep .icone-wrapper {
-  color: #A6CD29 !important;
+/* Cor quando for uma engrenagem e o mouse passar por cima */
+.icone-item.icone-engrenagem:hover ::ng-deep .icone-wrapper {
+  color: #A6CD29;
 }
 
-/* Hover específico da Lixeira (Laranja) */
-.icone-item.icone-excluir:hover ::ng-deep .icone-wrapper {
-  color: #F0A400 !important;
+/* Cor quando for o botão de ocultar e o mouse passar por cima */
+.icone-item.icone-ocultar:hover ::ng-deep .icone-wrapper {
+  color: #ff6b6b; /* Vermelho claro, alertando sobre esconder a atividade */
 }
+
+/* Cor quando for o botão de mostrar e o mouse passar por cima */
+.icone-item.icone-mostrar:hover ::ng-deep .icone-wrapper {
+  color: #1e5233; /* Verde escuro, ação positiva */
+}
+
 
 /* ==========================================
    MODO DE EDIÇÃO INLINE
@@ -91,23 +100,23 @@
   align-items: flex-start;
   background-color: #ffffff;
   border-color: #005A32;
-  box-shadow: 0 10px 30px rgba(0, 90, 50, 0.1); /* Reduzido de 30px 90px */
+  box-shadow: 0 10px 30px rgba(0, 90, 50, 0.1);
 }
 
 .form-edicao-inline {
   display: flex;
   width: 100%;
-  gap: 30px; /* Reduzido de 90px */
+  gap: 30px;
   align-items: flex-start;
 }
 
 .container-imagem-edicao {
   position: relative;
   cursor: pointer;
-  border-radius: 8px; /* Reduzido de 24px */
+  border-radius: 8px;
   overflow: hidden;
-  width: 180px; /* Reduzido de 540px */
-  height: 120px; /* Reduzido de 360px */
+  width: 180px;
+  height: 120px;
   flex-shrink: 0;
 }
 
@@ -130,7 +139,7 @@
   color: white;
   font-family: monospace;
   font-weight: bold;
-  font-size: 18px; /* Reduzido de 54px */
+  font-size: 18px;
   text-align: center;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -149,38 +158,38 @@
 .input-titulo-edicao {
   background: transparent;
   border: none;
-  border-bottom: 2px dashed #cbd5e1; /* Reduzido de 6px */
+  border-bottom: 2px dashed #cbd5e1;
   color: #005A32;
   font-family: monospace, sans-serif;
-  font-size: 26px; /* Reduzido de 78px */
+  font-size: 26px;
   font-weight: bold;
   width: 100%;
-  margin-bottom: 20px; /* Reduzido de 60px */
-  padding-bottom: 7px; /* Reduzido de 20px */
+  margin-bottom: 20px;
+  padding-bottom: 7px;
   outline: none;
   transition: border-color 0.2s;
 }
 
 .input-titulo-edicao:focus {
-  border-bottom: 2px solid #005A32; /* Reduzido de 6px */
+  border-bottom: 2px solid #005A32;
 }
 
 /* Grid para campos lado a lado */
 .grid-campos-edicao {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 26px; /* Reduzido de 80px */
-  row-gap: 13px; /* Reduzido de 40px */
+  column-gap: 26px;
+  row-gap: 13px;
 }
 
 .campo-edicao-linha {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 5px; /* Reduzido de 15px */
+  gap: 5px;
   color: #475569;
   font-family: monospace, sans-serif;
-  font-size: 15px; /* Reduzido de 45px */
+  font-size: 15px;
   font-weight: bold;
 }
 
@@ -189,33 +198,32 @@
   color: #64748b;
 }
 
-/* Nova classe específica para isolar a descrição e forçar margens */
 .campo-edicao-descricao {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 5px; /* Reduzido de 15px */
+  gap: 5px;
   width: 100%;
-  margin-top: 20px; /* Reduzido de 60px */
+  margin-top: 20px;
 }
 
 .campo-edicao-descricao label {
   color: #64748b;
   font-family: monospace, sans-serif;
-  font-size: 15px; /* Reduzido de 45px */
+  font-size: 15px;
   font-weight: bold;
 }
 
 .input-linha {
   background: #f8fafc;
-  border: 1px solid #cbd5e1; /* Reduzido de 4px */
-  border-radius: 5px; /* Reduzido de 16px */
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
   color: #005A32;
-  font-size: 16px; /* Reduzido de 48px */
+  font-size: 16px;
   font-family: sans-serif;
   font-weight: bold;
   outline: none;
-  padding: 7px 10px; /* Reduzido de 20px 30px */
+  padding: 7px 10px;
   width: 100%;
   box-sizing: border-box;
   transition: all 0.2s ease;
@@ -224,22 +232,22 @@
 .input-linha:focus {
   border-color: #005A32;
   background: #ffffff;
-  box-shadow: 0 0 0 2px rgba(0, 90, 50, 0.1); /* Reduzido de 8px */
+  box-shadow: 0 0 0 2px rgba(0, 90, 50, 0.1);
 }
 
 textarea.input-linha {
-  padding: 10px; /* Reduzido de 30px */
+  padding: 10px;
   line-height: 1.5;
   font-weight: normal;
   resize: vertical;
-  min-height: 66px; /* Reduzido de 200px */
+  min-height: 66px;
   font-family: inherit;
 }
 
 .data-input::-webkit-calendar-picker-indicator {
   cursor: pointer;
-  width: 18px; /* Reduzido de 54px */
-  height: 18px; /* Reduzido de 54px */
+  width: 18px;
+  height: 18px;
 }
 
 /* ==========================================
@@ -248,13 +256,13 @@ textarea.input-linha {
 .acoes-edicao-inline {
   display: flex;
   justify-content: flex-end;
-  gap: 10px; /* Reduzido de 30px */
+  gap: 10px;
   width: 100%;
-  margin-top: 50px; /* Reduzido de 150px */
+  margin-top: 50px;
 }
 
 .acoes-edicao-inline button {
   flex: 0 0 auto;
-  padding-left: 20px; /* Reduzido de 60px */
-  padding-right: 20px; /* Reduzido de 60px */
+  padding-left: 20px;
+  padding-right: 20px;
 }

@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './card-atividade.component.html',
-  styleUrl: './card-atividade.component.css'
+  styleUrl: './card-atividade.component.css',
 })
 export class CardAtividadeLayoutComponent {
   // Define a "cara" do card
@@ -16,12 +16,17 @@ export class CardAtividadeLayoutComponent {
   @Input() titulo: string = '';
 
   get urlImagem(): string {
+    let url = '';
+
     if (!this.imagemRaw) {
-      return '/assets/images/placeholder_background.jpg';
+      url = '/assets/images/placeholder_background.jpg';
+    } else if (this.imagemRaw.startsWith('http')) {
+      url = this.imagemRaw;
+    } else {
+      url = `http://localhost:8080/uploads/${this.imagemRaw}`;
     }
-    if (this.imagemRaw.startsWith('http')) {
-      return this.imagemRaw;
-    }
-    return `http://localhost:8080/uploads/${this.imagemRaw}`;
+
+    // 🔥 O SEGREDO AQUI: O encodeURI trata caracteres especiais e espaços vazios no nome do arquivo
+    return encodeURI(url);
   }
 }

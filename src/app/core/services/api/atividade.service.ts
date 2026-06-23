@@ -36,4 +36,12 @@ export class AtividadeService {
   atualizar(payload: any): Observable<any> {
     return this.http.put(this.BASE_URL, payload);
   }
+
+  listarTodas(): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/todas`);
+  }
+
+  restaurar(id: number): Observable<any> {
+    return this.http.put(`${this.BASE_URL}/${id}/restaurar`, {});
+  }
 }
