@@ -1,59 +1,72 @@
-# LENPAFrontend
+# 🌿 LENPA Web Client | Event Scheduling Portal
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 
-## Development server
+The official web client for the Laboratory of Native Species and Environmental Practices (LENPA). This Single Page Application (SPA) provides a dual-experience platform: a responsive, nature-themed public portal for visitors to explore and book events, and a secure, feature-rich dashboard for administrators to manage operations. 
 
-To start a local development server, run:
+> ⚙️ **Back-end API**
+> 
+> This repository contains the Front-end application built with Angular. The data processing and business logic are handled by our Spring Boot API. **[CLICK HERE TO ACCESS THE BACK-END REPOSITORY](https://github.com/FeltrinLM/LENPA_backend)**.
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🌟 Key Features
 
-## Code scaffolding
+The application is divided into two main environments with distinct use cases:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 👤 Public Portal (Visitors)
+*   **Event Catalog:** Browse active events and workshops with real-time seat availability.
+*   **Public Scheduling:** Seamlessly book individual or group attendance through intuitive pop-up forms.
+*   **Responsive Design:** Optimized for both desktop and mobile viewing.
 
-```bash
-ng generate component component-name
-```
+### 🔐 Administrative Dashboard (Scholars & Admins)
+*   **Secure Authentication:** Dedicated login gateway for authorized personnel.
+*   **Activity Management:** Create, edit, and delete activities (workshops, exhibitions), defining dates, locations, and capacity.
+*   **Attendance & Check-in:** Manage attendee lists, register private appointments, and perform manual check-ins.
+*   **Data Analytics:** Generate statistical reports and visualize visitor demographics via interactive pie charts based on specific timeframes.
+*   **User Management:** Master administrators can easily onboard new scholars or revoke access to the system.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 🎥 Application Demo
 
-## Building
+Watch the video below to see the application in action, including the public scheduling flow and the administrative dashboard.
 
-To build the project run:
 
-```bash
-ng build
-```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+https://github.com/user-attachments/assets/7526dff8-3742-48b6-bff6-1bb9199bc295
 
-## Running unit tests
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## 🚀 Getting Started
 
-For end-to-end (e2e) testing, run:
+### Prerequisites
+*   [Node.js](https://nodejs.org/) installed
+*   [Angular CLI](https://angular.io/cli) installed (`npm install -g @angular/cli`)
 
-```bash
-ng e2e
-```
+### Installation & Execution
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/FeltrinLM/LENPA-frontend.git](https://github.com/FeltrinLM/LENPA-frontend.git)
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd LENPA-frontend
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Configure the environment:
+   * Open `src/environments/environment.ts` and set the back-end API URL.
+5. Start the development server:
+   ```bash
+   ng serve
+   ```
+6. Open your browser and navigate to `http://localhost:4200/`.
